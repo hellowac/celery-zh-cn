@@ -54,7 +54,7 @@ Getting Started
 
     - 如果您是 Celery 新手，可以按照 :ref:`first-steps` 教程开始。
 
-    - 您还可以查看:ref:`FAQ <faq>` 。
+    - 您还可以查看 :ref:`FAQ <faq>` 。
 
 
 .. tab:: 英文
