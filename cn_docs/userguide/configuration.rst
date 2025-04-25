@@ -10,7 +10,7 @@ If you're using the default loader, you must create the :file:`celeryconfig.py`
 module and make sure it's available on the Python path.
 
 
-    :depth: 2
+
 
 .. _conf-example:
 

@@ -78,7 +78,7 @@ Highlights
     https://github.com/celery/django-celery/tree/master/Changelog
 
 
-    :depth: 2
+
 
 .. _v300-important:
 

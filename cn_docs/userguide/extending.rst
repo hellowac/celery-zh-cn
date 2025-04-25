@@ -5,7 +5,7 @@
 ==========================
 
 
-    :depth: 2
+
 
 .. _extending-custom-consumers:
 

@@ -38,7 +38,7 @@ and is also supported on PyPy2 & PyPy3.
     Make sure you read the important notes before upgrading to this version.
 
 
-    :depth: 2
+
 
 Preface
 =======
