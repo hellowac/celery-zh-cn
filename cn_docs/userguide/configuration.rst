@@ -1,8 +1,14 @@
 .. _configuration:
 
 ============================
- Configuration and defaults
+配置和默认值
 ============================
+
+Configuration and defaults
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 This document describes the configuration options available.
 
@@ -14,8 +20,14 @@ module and make sure it's available on the Python path.
 
 .. _conf-example:
 
-Example configuration file
+示例配置文件
 ==========================
+
+Example configuration file
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 This is an example configuration file to get you started.
 It should contain all you need to run a basic Celery set-up.
@@ -36,8 +48,14 @@ It should contain all you need to run a basic Celery set-up.
 
 .. _conf-old-settings-map:
 
-New lowercase settings
+新的小写设置
 ======================
+
+New lowercase settings
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Version 4.0 introduced new lower case settings and setting organization.
 
@@ -180,13 +198,25 @@ have been moved into a new  ``task_`` prefix.
 ``CELERYD_DETECT_QUORUM_QUEUES``           :setting:`worker_detect_quorum_queues`
 ========================================== ==============================================
 
-Configuration Directives
+配置指令
 ========================
+
+Configuration Directives
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. _conf-datetime:
 
-General settings
+常规设置
 ----------------
+
+General settings
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. setting:: accept_content
 
@@ -242,8 +272,14 @@ Example::
     # or the actual content-type (MIME)
     result_accept_content = ['application/json']
 
-Time and date settings
+时间和日期设置
 ----------------------
+
+Time and date settings
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. setting:: enable_utc
 
@@ -280,8 +316,14 @@ to false the system local timezone is used instead.
 
 .. _conf-tasks:
 
-Task settings
+任务设置
 -------------
+
+Task settings
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. setting:: task_annotations
 
@@ -401,8 +443,14 @@ the case of connection loss or other connection errors.
 
 .. _conf-task-execution:
 
-Task execution settings
+任务执行设置
 -----------------------
+
+Task execution settings
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. setting:: task_always_eager
 
@@ -656,8 +704,14 @@ This value is used for tasks that doesn't have a custom rate limit
 
 .. _conf-result-backend:
 
-Task result backend settings
+任务结果后端设置
 ----------------------------
+
+Task result backend settings
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. setting:: result_backend
 
@@ -947,11 +1001,23 @@ Example:
 
 .. _conf-database-result-backend:
 
-Database backend settings
+数据库后端设置
 -------------------------
 
-Database URL Examples
+Database backend settings
+
+.. tab:: 中文
+
+.. tab:: 英文
+
+数据库 URL 示例
 ~~~~~~~~~~~~~~~~~~~~~
+
+Database URL Examples
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 To use the database backend you have to configure the
 :setting:`result_backend` setting with a connection URL and the ``db+``
@@ -1071,8 +1137,10 @@ you to customize the table names:
 
 .. _conf-rpc-result-backend:
 
-RPC backend settings
+RPC 后段设置
 --------------------
+
+RPC backend settings
 
 .. setting:: result_persistent
 
@@ -1084,8 +1152,12 @@ Default: Disabled by default (transient messages).
 If set to :const:`True`, result messages will be persistent. This means the
 messages won't be lost after a broker restart.
 
-Example configuration
+示例配置
 ~~~~~~~~~~~~~~~~~~~~~
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. code-block:: python
 
@@ -1105,8 +1177,14 @@ E.g.
 
 .. _conf-cache-result-backend:
 
-Cache backend settings
+缓存后端设置
 ----------------------
+
+Cache backend settings
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. note::
 
@@ -1165,8 +1243,14 @@ the cache backend directly in the :setting:`result_backend` setting.
 
 .. _conf-mongodb-result-backend:
 
-MongoDB backend settings
+MongoDB 后端设置
 ------------------------
+
+MongoDB backend settings
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. note::
 
@@ -1177,6 +1261,12 @@ MongoDB backend settings
 
 mongodb_backend_settings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+mongodb_backend_settings
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 This is a dict supporting the following keys:
 
@@ -1202,8 +1292,14 @@ This is a dict supporting the following keys:
 
 .. _example-mongodb-result-config:
 
-Example configuration
+示例配置
 ~~~~~~~~~~~~~~~~~~~~~
+
+Example configuration
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. code-block:: python
 
@@ -1215,11 +1311,23 @@ Example configuration
 
 .. _conf-redis-result-backend:
 
-Redis backend settings
+Redis 后端设置
 ----------------------
 
-Configuring the backend URL
+Redis backend settings
+
+.. tab:: 中文
+
+.. tab:: 英文
+
+配置后端 URL
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Configuring the backend URL
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. note::
 
@@ -1401,8 +1509,14 @@ used by the redis result backend.
 
 .. _conf-cassandra-result-backend:
 
-Cassandra/AstraDB backend settings
+Cassandra/AstraDB 后端设置
 ----------------------------------
+
+Cassandra/AstraDB backend settings
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. note::
 
@@ -1642,8 +1756,14 @@ And similarly for Astra DB:
 
 .. _conf-s3-result-backend:
 
-S3 backend settings
+S3 后端设置
 -------------------
+
+S3 backend settings
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. note::
 
@@ -2402,8 +2522,10 @@ The URL is formed out of the following parts:
 
 .. _conf-messaging:
 
-Message Routing
+消息路由
 ---------------
+
+Message Routin
 
 .. _conf-messaging-routing:
 
@@ -2707,8 +2829,10 @@ disk).
 
 .. _conf-broker-settings:
 
-Broker Settings
+Broker 设置
 ---------------
+
+Broker Settings
 
 .. setting:: broker_url
 
@@ -3514,8 +3638,10 @@ An optional `python` executable path for :program:`celery events` to use when de
 
 .. _conf-control:
 
-Remote Control Commands
+远程控制命令
 -----------------------
+
+Remote Control Commands
 
 .. note::
 
@@ -3565,8 +3691,10 @@ Name of the control command exchange.
 
 .. _conf-logging:
 
-Logging
+日志
 -------
+
+Logging
 
 .. setting:: worker_hijack_root_logger
 
@@ -3654,8 +3782,10 @@ Can be one of :const:`DEBUG`, :const:`INFO`, :const:`WARNING`,
 
 .. _conf-security:
 
-Security
+安全
 --------
+
+Security
 
 .. setting:: security_key
 
@@ -3721,8 +3851,10 @@ https://cryptography.io/en/latest/hazmat/primitives/cryptographic-hashes/#module
 
 .. _conf-custom-components:
 
-Custom Component Classes (advanced)
+自定义组建类(高级)
 -----------------------------------
+
+Custom Component Classes (advanced)
 
 .. setting:: worker_pool
 
@@ -3848,8 +3980,10 @@ An optional `python` executable path for :program:`celery worker` to use when de
 
 .. _conf-celerybeat:
 
-Beat Settings (:program:`celery beat`)
+调度设置 (:program:`celery beat`)
 --------------------------------------
+
+Beat Settings (:program:`celery beat`)
 
 .. setting:: beat_schedule
 

@@ -1,7 +1,9 @@
 .. _resources:
 
 ===========
- Resources
+资源
 ===========
+
+Resources
 
 .. include:: ../includes/resources.txt

@@ -1,8 +1,10 @@
 .. _guide:
 
 ============
- User Guide
+用户指南
 ============
+
+User Guide
 
 :Release: |version|
 :Date: |today|

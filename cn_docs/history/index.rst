@@ -1,8 +1,10 @@
 .. _history:
 
 =========
- History
+历史
 =========
+
+History
 
 This section contains historical change histories, for the latest
 version please visit :ref:`changelog`.

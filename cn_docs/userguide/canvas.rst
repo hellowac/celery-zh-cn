@@ -1,8 +1,14 @@
 .. _guide-canvas:
 
 ==============================
- Canvas: Designing Work-flows
+Canvas：设计工作流
 ==============================
+
+Canvas: Designing Work-flows
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 
 
@@ -11,8 +17,14 @@
 
 .. _canvas-signatures:
 
-Signatures
+签名
 ==========
+
+Signatures
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 2.0
 
@@ -108,8 +120,14 @@ or even serialized and sent across the wire.
         >>> add.s(2, 2).set(countdown=1)
         proj.tasks.add(2, 2)
 
-Partials
+部分代码
 --------
+
+Partials
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 With a signature, you can execute the task in a worker:
 
@@ -163,8 +181,14 @@ You can also clone signatures to create derivatives:
     >>> s.clone(args=(4,), kwargs={'debug': True})
     proj.tasks.add(4, 2, debug=True)
 
-Immutability
+不变性
 ------------
+
+Immutability
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 3.0
 
@@ -203,8 +227,14 @@ so it's not possible to call the signature with partial args/kwargs.
 
 .. _canvas-callbacks:
 
-Callbacks
+回调函数
 ---------
+
+Callbacks
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 3.0
 
@@ -245,8 +275,14 @@ arguments:
 As expected this will first launch one task calculating :math:`2 + 2`, then
 another task calculating :math:`8 + 4`.
 
-The Primitives
+原语
 ==============
+
+The Primitives
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 3.0
 
@@ -468,8 +504,14 @@ Here're some examples:
 
 .. _canvas-chain:
 
-Chains
+链
 ------
+
+Chains
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 3.0
 
@@ -603,15 +645,27 @@ Chains can also be made using the ``|`` (pipe) operator:
 
     >>> (add.s(2, 2) | mul.s(8) | mul.s(10)).apply_async()
 
-Task ID
+任务 ID
 ~~~~~~~
+
+Task ID
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 5.4
 
 A chain will inherit the task id of the last task in the chain.
 
-Graphs
+图表
 ~~~~~~
+
+Graphs
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 In addition you can work with the result graph as a
 :class:`~celery.utils.graph.DependencyGraph`:
@@ -645,8 +699,14 @@ and create images:
 
 .. _canvas-group:
 
-Groups
+组
 ------
+
+Groups
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 3.0
 
@@ -691,8 +751,14 @@ with other signatures.
 
 .. _group-callbacks:
 
-Group Callbacks and Error Handling
+组回调函数和错误处理
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Group Callbacks and Error Handling
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Groups can have callback and errback signatures linked to them as well, however
 the behaviour can be somewhat surprising due to the fact that groups are not
@@ -737,8 +803,14 @@ is supported on certain backend implementations.
 
 .. _group-results:
 
-Group Results
+组结果
 ~~~~~~~~~~~~~
+
+Group Results
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The group task returns a special result too,
 this result works just like normal task results, except
@@ -808,8 +880,14 @@ It supports the following operations:
 
 .. _group-unrolling:
 
-Group Unrolling
+组展开
 ~~~~~~~~~~~~~~~
+
+Group Unrolling
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 A group with a single signature will be unrolled to a single signature when chained.
 This means that the following group may pass either a list of results or a single result to the chain
@@ -850,8 +928,14 @@ if you plan to use it as part of a larger canvas.
 
 .. _canvas-chord:
 
-Chords
+和弦
 ------
+
+Chords
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 2.3
 
@@ -928,8 +1012,14 @@ for other tasks <task-synchronous-subtasks>`)
 
 .. _chord-errors:
 
-Error handling
+错误处理
 ~~~~~~~~~~~~~~
+
+Error handling
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 So what happens if one of the tasks raises an exception?
 
@@ -988,8 +1078,14 @@ Enabling this flag will cause the chord header to invoke the errback for the bod
 
 .. _chord-important-notes:
 
-Important Notes
+重要说明
 ~~~~~~~~~~~~~~~
+
+Important Notes
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Tasks used within a chord must *not* ignore their results. In practice this
 means that you must enable a :const:`result_backend` in order to use
@@ -1057,8 +1153,14 @@ implemented in other backends (suggestions welcome!).
 
 .. _canvas-map:
 
-Map & Starmap
+地图和星图
 -------------
+
+Map & Starmap
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 :class:`~celery.map` and :class:`~celery.starmap` are built-in tasks
 that call the provided calling task for every element in a sequence.
@@ -1111,8 +1213,14 @@ to call the starmap after 10 seconds:
 
 .. _canvas-chunks:
 
-Chunks
+数据块
 ------
+
+Chunks
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Chunking lets you divide an iterable of work into pieces, so that if
 you have one million objects, you can create 10 tasks with a hundred
@@ -1175,8 +1283,14 @@ task a countdown of two seconds, and so on.
 
 .. _canvas-stamping:
 
-Stamping
+标记
 ========
+
+Stamping
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 5.3
 
@@ -1210,14 +1324,26 @@ will initialize a group ``g`` and mark its components with stamp ``your_custom_s
 For this feature to be useful, you need to set the :setting:`result_extended`
 configuration option to ``True`` or directive ``result_extended = True``.
 
-Canvas stamping
+Canvas 标记
 ----------------
+
+Canvas stamping
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 We can also stamp the canvas with custom stamping logic, using the visitor class ``StampingVisitor``
 as the base class for the custom stamping visitor.
 
-Custom stamping
+自定义标记
 ----------------
+
+Custom stamping
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 If more complex stamping logic is required, it is possible
 to implement custom stamping behavior based on the Visitor
@@ -1290,8 +1416,14 @@ Next, let's see how to use the ``MonitoringIdStampingVisitor`` example stamping 
 
 Lastly, it's important to mention that each monitoring id stamp in the example above would be different from each other between tasks.
 
-Callbacks stamping
+回调函数标记
 ------------------
+
+Callbacks stamping
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The stamping API also supports stamping callbacks implicitly.
 This means that when a callback is added to a task, the stamping

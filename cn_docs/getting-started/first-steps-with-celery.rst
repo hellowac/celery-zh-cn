@@ -2,8 +2,14 @@
 .. _first-steps:
 
 =========================
- First Steps with Celery
+使用 Celery 的第一步
 =========================
+
+First Steps with Celery
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Celery is a task queue with batteries included.
 It's easy to use so that you can get started without learning
@@ -37,6 +43,12 @@ showcase Celery's capabilities.
 Choosing a Broker
 =================
 
+Choosing a Broker
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 Celery requires a solution to send and receive messages; usually this
 comes in the form of a separate service called a *message broker*.
 
@@ -44,6 +56,12 @@ There are several choices available, including:
 
 RabbitMQ
 --------
+
+RabbitMQ
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 `RabbitMQ`_ is feature-complete, stable, durable and easy to install.
 It's an excellent choice for a production environment.
@@ -78,6 +96,12 @@ platforms, including Microsoft Windows:
 Redis
 -----
 
+Redis
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 `Redis`_ is also feature-complete, but is more susceptible to data loss in
 the event of abrupt termination or power failures. Detailed information about using Redis:
 
@@ -94,6 +118,12 @@ If you want to run it on Docker execute this:
 Other brokers
 -------------
 
+Other brokers
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 In addition to the above, there are other experimental transport implementations
 to choose from, including :ref:`Amazon SQS <broker-sqs>`.
 
@@ -104,6 +134,12 @@ See :ref:`broker-overview` for a full list.
 Installing Celery
 =================
 
+Installing Celery
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 Celery is on the Python Package Index (PyPI), so it can be installed
 with standard Python tools like ``pip``:
 
@@ -113,6 +149,12 @@ with standard Python tools like ``pip``:
 
 Application
 ===========
+
+Application
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The first thing you need is a Celery instance.  We call this the *Celery
 application* or just *app* for short. As this instance is used as
@@ -153,6 +195,12 @@ You defined a single task, called ``add``, returning the sum of two numbers.
 Running the Celery worker server
 ================================
 
+Running the Celery worker server
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 You can now run the worker by executing our program with the ``worker``
 argument:
 
@@ -189,6 +237,12 @@ There are also several other commands available, and help is also available:
 Calling the task
 ================
 
+Calling the task
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 To call our task you can use the :meth:`~@Task.delay` method.
 
 This is a handy shortcut to the :meth:`~@Task.apply_async`
@@ -213,6 +267,12 @@ backend.  This is described in the next section.
 
 Keeping Results
 ===============
+
+Keeping Results
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 If you want to keep track of the tasks' states, Celery needs to store or send
 the states somewhere. There are several
@@ -299,6 +359,12 @@ See :mod:`celery.result` for the complete result object reference.
 
 Configuration
 =============
+
+Configuration
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Celery, like a consumer appliance, doesn't need much configuration to operate.
 It has an input and an output. The input must be connected to a broker, and the output can
@@ -415,6 +481,12 @@ and how to monitor what your workers are doing.
 Where to go from here
 =====================
 
+Where to go from here
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 If you want to learn more you should continue to the
 :ref:`Next Steps <next-steps>` tutorial, and after that you
 can read the :ref:`User Guide <guide>`.
@@ -424,10 +496,22 @@ can read the :ref:`User Guide <guide>`.
 Troubleshooting
 ===============
 
+Troubleshooting
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 There's also a troubleshooting section in the :ref:`faq`.
 
 Worker doesn't start: Permission Error
 --------------------------------------
+
+Worker doesn't start: Permission Error
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 - If you're using Debian, Ubuntu or other Debian-based distributions:
 
@@ -450,6 +534,12 @@ Worker doesn't start: Permission Error
 
 Result backend doesn't work or tasks are always in ``PENDING`` state
 --------------------------------------------------------------------
+
+Result backend doesn't work or tasks are always in ``PENDING`` state
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 All tasks are :state:`PENDING` by default, so the state would've been
 better named "unknown". Celery doesn't update the state when a task

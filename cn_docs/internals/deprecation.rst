@@ -1,9 +1,10 @@
 .. _deprecation-timeline:
 
 ==============================
- Celery Deprecation Time-line
+Celery 弃用时间表
 ==============================
 
+Celery Deprecation Time-line
 
 
 .. _deprecations-v5.0:

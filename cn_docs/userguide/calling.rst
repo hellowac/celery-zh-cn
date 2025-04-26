@@ -1,16 +1,28 @@
 .. _guide-calling:
 
 ===============
- Calling Tasks
+调用任务
 ===============
+
+Calling Tasks
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 
 
 
 .. _calling-basics:
 
-Basics
+基础知识
 ======
+
+Basics
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 This document describes Celery's uniform "Calling API"
 used by task instances and the :ref:`canvas <guide-canvas>`.
@@ -55,8 +67,14 @@ The API defines a standard set of execution options, as well as three methods:
         expires in 2 days, set using :class:`~datetime.datetime`.
 
 
-Example
+示例
 -------
+
+Example
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The :meth:`~@Task.delay` method is convenient as it looks like calling a regular
 function:
@@ -104,8 +122,14 @@ called `add`, returning the sum of two arguments:
 
 .. _calling-links:
 
-Linking (callbacks/errbacks)
+链接（回调/错误回调）
 ============================
+
+Linking (callbacks/errbacks)
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Celery supports linking tasks together so that one task follows another.
 The callback task will be applied with the result of the parent task
@@ -170,8 +194,14 @@ See :ref:`chord error handling <chord-errors>` for more information.
 
 .. _calling-on-message:
 
-On message
+消息
 ==========
+
+On message
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Celery supports catching all states changes by setting on_message callback.
 
@@ -221,8 +251,14 @@ Will generate output like this:
 
 .. _calling-eta:
 
-ETA and Countdown
+预计到达时间和倒计时
 =================
+
+ETA and Countdown
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The ETA (estimated time of arrival) lets you set a specific date and time that
 is the earliest time at which your task will be executed. `countdown` is
@@ -298,8 +334,14 @@ and timezone information):
 
 .. _calling-expiration:
 
-Expiration
+到期时间
 ==========
+
+Expiration
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The `expires` argument defines an optional expiry time,
 either as seconds after task publish, or a specific date and time using
@@ -321,8 +363,14 @@ the task as :state:`REVOKED` (:exc:`~@TaskRevokedError`).
 
 .. _calling-retry:
 
-Message Sending Retry
+消息发送重试
 =====================
+
+Message Sending Retry
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Celery will automatically retry sending messages in the event of connection
 failure, and retry behavior can be configured -- like how often to retry, or a maximum
@@ -342,8 +390,14 @@ To disable retry you can set the ``retry`` execution option to :const:`False`:
         - :setting:`task_publish_retry`
         - :setting:`task_publish_retry_policy`
 
-Retry Policy
+重试策略
 ------------
+
+Retry Policy
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 A retry policy is a mapping that controls how retries behave,
 and can contain the following keys:
@@ -410,8 +464,14 @@ to retry, blocking other incoming requests.
 
 .. _calling-connection-errors:
 
-Connection Error Handling
+连接错误处理
 =========================
+
+Connection Error Handling
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 When you send a task and the message transport connection is lost, or
 the connection cannot be initiated, an :exc:`~kombu.exceptions.OperationalError`
@@ -458,8 +518,14 @@ You can handle this error too:
 
 .. _calling-serializers:
 
-Serializers
+序列化器
 ===========
+
+Serializers
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. sidebar::  Security
 
@@ -573,8 +639,14 @@ Example setting a custom serializer for a single task invocation:
 
 .. _calling-compression:
 
-Compression
+压缩
 ===========
+
+Compression
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Celery can compress messages using the following builtin schemes:
 
@@ -705,8 +777,14 @@ Example specifying the compression used when calling a task::
 
 .. _calling-connections:
 
-Connections
+连接
 ===========
+
+Connections
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. sidebar:: Automatic Pool Support
 
@@ -748,8 +826,14 @@ Though this particular example is much better expressed as a group:
 
 .. _calling-routing:
 
-Routing options
+路由选项
 ===============
+
+Routing options
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Celery can route tasks to different queues.
 
@@ -773,8 +857,14 @@ the workers :option:`-Q <celery worker -Q>` argument:
 
 .. _calling-results:
 
-Results options
+结果选项
 ===============
+
+Results options
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 You can enable or disable result storage using the :setting:`task_ignore_result`
 setting or by using the ``ignore_result`` option:
@@ -798,8 +888,14 @@ set the :setting:`result_extended` setting to ``True``.
 
    For more information on tasks, please see :ref:`guide-tasks`.
 
-Advanced Options
+高级选项
 ----------------
+
+Advanced Options
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 These options are for advanced users who want to take use of
 AMQP's full routing capabilities. Interested parties may read the

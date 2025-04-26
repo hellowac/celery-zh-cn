@@ -1,5 +1,12 @@
-Copyright
+版权
 =========
+
+Copyright
+
+.. tab:: 中文
+
+
+.. tab:: 英文
 
 *Celery User Manual*
 

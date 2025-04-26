@@ -1,8 +1,14 @@
 .. _broker-gcpubsub:
 
 =====================
- Using Google Pub/Sub
+使用 Google Pub/Sub
 =====================
+
+Using Google Pub/Sub
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 5.5
 
@@ -10,6 +16,12 @@
 
 Installation
 ============
+
+Installation
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 For the Google Pub/Sub support you have to install additional dependencies.
 You can install both Celery and these dependencies in one go using
@@ -23,6 +35,12 @@ the ``celery[gcpubsub]`` :ref:`bundle <bundles>`:
 
 Configuration
 =============
+
+Configuration
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 You have to specify gcpubsub and google project in the broker URL::
 
@@ -41,8 +59,20 @@ The login credentials will be your regular GCP credentials set in the environmen
 Options
 =======
 
+Options
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 Resource expiry
 ---------------
+
+Resource expiry
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The default settings are built to be as simple cost effective and intuitive as possible and to "just work".
 The pubsub messages and subscriptions are set to expire after 24 hours, and can be set
@@ -60,6 +90,12 @@ by configuring the :setting:`expiration_seconds` setting::
 
 Ack Deadline Seconds
 --------------------
+
+Ack Deadline Seconds
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The `ack_deadline_seconds` defines the number of seconds pub/sub infra shall wait
 for the worker to acknowledge the task before the message is redelivered
@@ -83,6 +119,12 @@ automatically extending all pending messages it has.
 Polling Interval
 ----------------
 
+Polling Interval
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 The polling interval decides the number of seconds to sleep between
 unsuccessful polls. This value can be either an int or a float.
 By default the value is *0.1 seconds*. However it doesn't mean
@@ -104,6 +146,12 @@ or `Redis <broker-redis>`.
 Queue Prefix
 ------------
 
+Queue Prefix
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 By default Celery will assign `kombu-` prefix to the queue names,
 If you have other services using Pub/Sub you can configure it do so
 using the :setting:`broker_transport_options` setting::
@@ -115,12 +163,24 @@ using the :setting:`broker_transport_options` setting::
 Results
 -------
 
+Results
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 Google Cloud Storage (GCS) could be a good candidate to store the results.
 See :ref:`gcs` for more information.
 
 
 Caveats
 =======
+
+Caveats
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 - When using celery flower, an --inspect-timeout=10 option is required to
   detect workers state correctly.

@@ -1,6 +1,8 @@
 =================
- Getting Started
+快速开始
 =================
+
+Getting Started
 
 :Release: |version|
 :Date: |today|

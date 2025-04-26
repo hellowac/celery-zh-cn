@@ -1,13 +1,25 @@
 .. _intro:
 
 ========================
- Introduction to Celery
+Celery 简介
 ========================
+
+Introduction to Celery
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 
 
 What's a Task Queue?
 ====================
+
+What's a Task Queue?
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Task queues are used as a mechanism to distribute work across threads or
 machines.
@@ -35,6 +47,12 @@ exposing an HTTP endpoint and having a task that requests it (webhooks).
 
 What do I need?
 ===============
+
+What do I need?
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. sidebar:: Version Requirements
     :subtitle: Celery version 5.3 runs on
@@ -71,6 +89,12 @@ across data centers.
 Get Started
 ===========
 
+Get Started
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 If this is the first time you're trying to use Celery, or if you haven't
 kept up with development in the 3.1 version and are coming from previous versions,
 then you should read our getting started tutorials:
@@ -80,6 +104,12 @@ then you should read our getting started tutorials:
 
 Celery is…
 ==========
+
+Celery is…
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. _`mailing-list`: https://groups.google.com/group/celery-users
 
@@ -161,6 +191,12 @@ Celery is…
 Features
 ========
 
+Features
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 .. topic:: \
 
     .. hlist::
@@ -222,6 +258,12 @@ Features
 Framework Integration
 =====================
 
+Framework Integration
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 Celery is easy to integrate with web frameworks, some of them even have
 integration packages:
 
@@ -257,6 +299,12 @@ database connections at :manpage:`fork(2)`.
 
 Quick Jump
 ==========
+
+Quick Jump
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. topic:: I want to ⟶
 

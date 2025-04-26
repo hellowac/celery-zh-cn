@@ -1,8 +1,10 @@
 .. _guide-debugging:
 
 ======================================
- Debugging
+调试
 ======================================
+
+Debugging
 
 .. _tut-remote_debug:
 

@@ -1,9 +1,10 @@
 .. _guide-monitoring:
 
 =================================
- Monitoring and Management Guide
+监控和管理指南
 =================================
 
+Monitoring and Management Guide
 
 
 Introduction

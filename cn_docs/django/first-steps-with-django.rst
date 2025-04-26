@@ -1,8 +1,10 @@
 .. _django-first-steps:
 
 =========================
- First steps with Django
+使用 Django 的第一步
 =========================
+
+First steps with Django
 
 Using Celery with Django
 ========================

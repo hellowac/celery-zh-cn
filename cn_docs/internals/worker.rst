@@ -1,9 +1,10 @@
 .. _internals-worker:
 
 =======================
- Internals: The worker
+内部的 worker
 =======================
 
+Internals: The worker
 
 
 Introduction

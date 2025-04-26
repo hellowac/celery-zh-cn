@@ -1,8 +1,14 @@
 .. _brokers:
 
 ======================
- Backends and Brokers
+Backends 和 Brokers
 ======================
+
+Backends and Brokers
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 :Release: |version|
 :Date: |today|
@@ -13,6 +19,12 @@ Celery supports several message transport alternatives.
 
 Broker Instructions
 ===================
+
+Broker Instructions
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. toctree::
     :maxdepth: 1
@@ -27,6 +39,12 @@ Broker Instructions
 
 Broker Overview
 ===============
+
+Broker Overview
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 This is comparison table of the different transports supports,
 more information can be found in the documentation for each
@@ -62,12 +80,24 @@ at runtime using the `celery inspect` and `celery control` commands
 Summaries
 =========
 
+Summaries
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 *Note: This section is not comprehensive of backends and brokers.*
 
 Celery has the ability to communicate and store with many different backends (Result Stores) and brokers (Message Transports).
 
 Redis
 -----
+
+Redis
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Redis can be both a backend and a broker.
 
@@ -79,6 +109,12 @@ Redis can be both a backend and a broker.
 
 RabbitMQ
 --------
+
+RabbitMQ
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 RabbitMQ is a broker.
 
@@ -93,6 +129,12 @@ RabbitMQ is a broker.
 SQS
 ---
 
+SQS
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 SQS is a broker.
 
 If you already integrate tightly with AWS, and are familiar with SQS, it presents a great option as a broker. It is extremely scalable and completely managed, and manages task delegation similarly to RabbitMQ. It does lack some of the features of the RabbitMQ broker such as ``worker remote control commands``.
@@ -102,6 +144,12 @@ If you already integrate tightly with AWS, and are familiar with SQS, it present
 SQLAlchemy
 ----------
 
+SQLAlchemy
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 SQLAlchemy is a backend.
 
 It allows Celery to interface with MySQL, PostgreSQL, SQlite, and more. It is an ORM, and is the way Celery can use a SQL DB as a result backend.
@@ -110,6 +158,12 @@ It allows Celery to interface with MySQL, PostgreSQL, SQlite, and more. It is an
 
 GCPubSub
 --------
+
+GCPubSub
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Google Cloud Pub/Sub is a broker.
 

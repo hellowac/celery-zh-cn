@@ -1,9 +1,11 @@
 .. _daemonizing:
 
 ======================================================================
-  Daemonization
+守护进程
 ======================================================================
 
+
+守护进程
 
 
 Most Linux distributions these days use systemd for managing the lifecycle of system

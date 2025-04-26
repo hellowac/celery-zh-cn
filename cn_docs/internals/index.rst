@@ -1,8 +1,10 @@
 .. _internals:
 
 ===========
- Internals
+内部
 ===========
+
+Internals
 
 :Release: |version|
 :Date: |today|

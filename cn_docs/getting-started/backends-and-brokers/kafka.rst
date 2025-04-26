@@ -1,13 +1,25 @@
 .. _broker-kafka:
 
 =============
- Using Kafka
+使用 Kafka
 =============
+
+Using Kafka
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. _broker-Kafka-installation:
 
 Configuration
 =============
+
+Configuration
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 For celeryconfig.py:
 
@@ -65,10 +77,22 @@ For tasks.py:
 Auth
 ====
 
+Auth
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 See above. The SASL username and password are passed in as environment variables.
 
 Further Info
 ============
+
+Further Info
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Celery queues get routed to Kafka topics. For example, if a queue is named "add_queue",
 then a topic named "add_queue" will be created/used in Kafka.
@@ -79,6 +103,12 @@ chain, group, and chord seem to work.
 
 Limitations
 ===========
+
+Limitations
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Currently, using Kafka as a broker means that only one worker can be used.
 See https://github.com/celery/kombu/issues/1785.

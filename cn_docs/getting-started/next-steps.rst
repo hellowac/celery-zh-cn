@@ -1,8 +1,14 @@
 .. _next-steps:
 
 ============
- Next Steps
+下一步
 ============
+
+Next Steps
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The :ref:`first-steps` guide is intentionally minimal. In this guide
 I'll demonstrate what Celery offers in more detail, including
@@ -17,10 +23,22 @@ best practices, so it's recommended that you also read the
 Using Celery in your Application
 ================================
 
+Using Celery in your Application
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 .. _project-layout:
 
 Our Project
 -----------
+
+Our Project
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Project layout::
 
@@ -31,6 +49,12 @@ Project layout::
 
 :file:`proj/celery.py`
 ~~~~~~~~~~~~~~~~~~~~~~
+
+:file:`proj/celery.py`
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. literalinclude:: ../../examples/next-steps/proj/celery.py
     :language: python
@@ -62,12 +86,24 @@ you simply import this instance.
 :file:`proj/tasks.py`
 ~~~~~~~~~~~~~~~~~~~~~
 
+:file:`proj/tasks.py`
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 .. literalinclude:: ../../examples/next-steps/proj/tasks.py
     :language: python
 
 
 Starting the worker
 -------------------
+
+Starting the worker
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The :program:`celery` program can be used to start the worker (you need to run the worker in the directory above
 `proj`, according to the example project layout the directory is `src`):
@@ -138,11 +174,23 @@ These options are described in more detailed in the :ref:`Workers Guide <guide-w
 Stopping the worker
 ~~~~~~~~~~~~~~~~~~~
 
+Stopping the worker
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 To stop the worker simply hit :kbd:`Control-c`. A list of signals supported
 by the worker is detailed in the :ref:`Workers Guide <guide-workers>`.
 
 In the background
 ~~~~~~~~~~~~~~~~~
+
+In the background
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 In production you'll want to run the worker in the background,
 described in detail in the :ref:`daemonization tutorial <daemonizing>`.
@@ -222,6 +270,12 @@ reference.
 About the :option:`--app <celery --app>` argument
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+About the :option:`--app <celery --app>` argument
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 The :option:`--app <celery --app>` argument specifies the Celery app instance
 to use, in the form of ``module.path:attribute``
 
@@ -251,6 +305,12 @@ for larger projects.
 
 Calling Tasks
 =============
+
+Calling Tasks
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 You can call a task using the :meth:`delay` method:
 
@@ -415,6 +475,12 @@ Calling tasks is described in detail in the
 *Canvas*: Designing Work-flows
 ==============================
 
+*Canvas*: Designing Work-flows
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 You just learned how to call a task using the tasks ``delay`` method,
 and this is often all you need. But sometimes you may want to pass the
 signature of a task invocation to another process or as an argument to another
@@ -441,6 +507,12 @@ There's also a shortcut using star arguments:
 
 And there's that calling API again…
 -----------------------------------
+
+And there's that calling API again…
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Signature instances also support the calling API, meaning they
 have ``delay`` and ``apply_async`` methods.
@@ -504,6 +576,12 @@ To get to that I must introduce the canvas primitives…
 The Primitives
 --------------
 
+The Primitives
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 .. topic:: \
 
     .. hlist::
@@ -530,6 +608,12 @@ Let's look at some examples:
 Groups
 ~~~~~~
 
+Groups
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 A :class:`~celery.group` calls a list of tasks in parallel,
 and it returns a special result instance that lets you inspect the results
 as a group, and retrieve the return values in order.
@@ -552,6 +636,12 @@ as a group, and retrieve the return values in order.
 
 Chains
 ~~~~~~
+
+Chains
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Tasks can be linked together so that after one task returns the other
 is called:
@@ -586,6 +676,12 @@ Chains can also be written like this:
 Chords
 ~~~~~~
 
+Chords
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 A chord is a group with a callback:
 
 .. code-block:: pycon
@@ -618,6 +714,12 @@ guide.
 
 Routing
 =======
+
+Routing
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Celery supports all of the routing facilities provided by AMQP,
 but it also supports simple routing where messages are sent to named queues.
@@ -665,6 +767,12 @@ power of AMQP routing, see the :ref:`Routing Guide <guide-routing>`.
 
 Remote Control
 ==============
+
+Remote Control
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 If you're using RabbitMQ (AMQP), Redis, or Qpid as the broker then
 you can control and inspect the worker at runtime.
@@ -744,6 +852,12 @@ in the :ref:`Monitoring Guide <guide-monitoring>`.
 Timezone
 ========
 
+Timezone
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 All times and dates, internally and in messages use the UTC timezone.
 
 When the worker receives a message, for example with a countdown set it
@@ -758,6 +872,12 @@ configure that using the :setting:`timezone` setting:
 Optimization
 ============
 
+Optimization
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 The default configuration isn't optimized for throughput. By default,
 it tries to walk the middle way between many short tasks and fewer long
 tasks, a compromise between throughput and fair scheduling.
@@ -768,6 +888,12 @@ for throughput then you should read the :ref:`Optimizing Guide
 
 What to do now?
 ===============
+
+What to do now?
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Now that you have read this document you should continue
 to the :ref:`User Guide <guide>`.

@@ -1,10 +1,10 @@
 .. _signals:
 
 =======
-Signals
+信号
 =======
 
-
+Signals
 
 Signals allow decoupled applications to receive notifications when
 certain actions occur elsewhere in the application.

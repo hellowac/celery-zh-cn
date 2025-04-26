@@ -1,9 +1,10 @@
 .. _faq:
 
 ============================
- Frequently Asked Questions
+常见问题
 ============================
 
+Frequently Asked Questions
 
 
 .. _faq-general:

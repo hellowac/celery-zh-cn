@@ -1,6 +1,8 @@
 =============================
- "The Big Instance" Refactor
+“大实例”重构
 =============================
+
+"The Big Instance" Refactor
 
 The `app` branch is a work-in-progress to remove
 the use of a global configuration in Celery.

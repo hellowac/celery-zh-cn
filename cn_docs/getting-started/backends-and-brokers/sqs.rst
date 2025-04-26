@@ -1,13 +1,25 @@
 .. _broker-sqs:
 
 ==================
- Using Amazon SQS
+使用 Amazon SQS
 ==================
+
+Using Amazon SQS
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. _broker-sqs-installation:
 
 Installation
 ============
+
+Installation
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 For the Amazon SQS support you have to install additional dependencies.
 You can install both Celery and these dependencies in one go using
@@ -21,6 +33,12 @@ the ``celery[sqs]`` :ref:`bundle <bundles>`:
 
 Configuration
 =============
+
+Configuration
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 You have to specify SQS in the broker URL::
 
@@ -68,8 +86,20 @@ metadata.
 Options
 =======
 
+Options
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 Region
 ------
+
+Region
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The default region is ``us-east-1`` but you can select another region
 by configuring the :setting:`broker_transport_options` setting::
@@ -87,6 +117,12 @@ by configuring the :setting:`broker_transport_options` setting::
 Visibility Timeout
 ------------------
 
+Visibility Timeout
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 The visibility timeout defines the number of seconds to wait
 for the worker to acknowledge the task before the message is redelivered
 to another worker. Also see caveats below.
@@ -102,6 +138,12 @@ using :ref:`predefined queues <predefined-queues>`.
 
 Polling Interval
 ----------------
+
+Polling Interval
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The polling interval decides the number of seconds to sleep between
 unsuccessful polls. This value can be either an int or a float.
@@ -124,6 +166,12 @@ or `Redis <broker-redis>`.
 Long Polling
 ------------
 
+Long Polling
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 `SQS Long Polling`_ is enabled by default and the ``WaitTimeSeconds`` parameter
 of `ReceiveMessage`_ operation is set to 10 seconds.
 
@@ -142,6 +190,12 @@ Wait Time" queue property.
 Queue Prefix
 ------------
 
+Queue Prefix
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 By default Celery won't assign any prefix to the queue names,
 If you have other services using SQS you can configure it do so
 using the :setting:`broker_transport_options` setting::
@@ -152,6 +206,12 @@ using the :setting:`broker_transport_options` setting::
 
 Predefined Queues
 -----------------
+
+Predefined Queues
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 If you want Celery to use a set of predefined queues in AWS, and to
 never attempt to list SQS queues, nor attempt to create or delete them,
@@ -174,6 +234,12 @@ option.
 
 Back-off policy
 ------------------------
+
+Back-off policy
+
+.. tab:: 中文
+
+.. tab:: 英文
 Back-off policy is using SQS visibility timeout mechanism altering the time difference between task retries.
 The mechanism changes message specific ``visibility timeout`` from queue ``Default visibility timeout`` to policy configured timeout.
 The number of retries is managed by SQS (specifically by the ``ApproximateReceiveCount`` message attribute) and no further action is required by the user.
@@ -217,6 +283,12 @@ The above policy:
 STS token authentication
 ----------------------------
 
+STS token authentication
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 https://docs.aws.amazon.com/cli/latest/reference/sts/assume-role.html
 
 AWS STS authentication is supported by using the ``sts_role_arn`` and ``sts_token_timeout`` broker transport options. ``sts_role_arn`` is the assumed IAM role ARN we use to authorize our access to SQS.
@@ -241,6 +313,12 @@ AWS STS authentication is supported by using the ``sts_role_arn`` and ``sts_toke
 
 Caveats
 =======
+
+Caveats
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 - If a task isn't acknowledged within the ``visibility_timeout``,
   the task will be redelivered to another worker and executed.
@@ -309,6 +387,12 @@ Caveats
 
 Results
 -------
+
+Results
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Multiple products in the Amazon Web Services family could be a good candidate
 to store or publish results with, but there's no such result backend included

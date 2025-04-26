@@ -1,13 +1,25 @@
 .. _broker-rabbitmq:
 
 ================
- Using RabbitMQ
+使用 RabbitMQ
 ================
+
+Using RabbitMQ
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 
 
 Installation & Configuration
 ============================
+
+Installation & Configuration
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 RabbitMQ is the default broker so it doesn't require any additional
 dependencies or initial configuration, other than the URL location of
@@ -27,6 +39,12 @@ username, password and vhost.
 Installing the RabbitMQ Server
 ==============================
 
+Installing the RabbitMQ Server
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 See `Downloading and Installing RabbitMQ`_ over at RabbitMQ's website. For macOS
 see `Installing RabbitMQ on macOS`_.
 
@@ -44,6 +62,12 @@ see `Installing RabbitMQ on macOS`_.
 
 Setting up RabbitMQ
 -------------------
+
+Setting up RabbitMQ
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 To use Celery we need to create a RabbitMQ user, a virtual host and
 allow that user access to that virtual host:
@@ -77,6 +101,12 @@ See the RabbitMQ `Admin Guide`_ for more information about `access control`_.
 Installing RabbitMQ on macOS
 ----------------------------
 
+Installing RabbitMQ on macOS
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 The easiest way to install RabbitMQ on macOS is using `Homebrew`_ the new and
 shiny package management system for macOS.
 
@@ -108,6 +138,12 @@ shell (e.g., :file:`.bash_profile` or :file:`.profile`).
 
 Configuring the system host name
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Configuring the system host name
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 If you're using a DHCP server that's giving you a random host name, you need
 to permanently configure the host name. This is because RabbitMQ uses the host name
@@ -150,6 +186,12 @@ case RabbitMQ will try to use `rabbit@23`: an illegal host name.
 Starting/Stopping the RabbitMQ server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Starting/Stopping the RabbitMQ server
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 To start the server:
 
 .. code-block:: console
@@ -176,6 +218,12 @@ When the server is running, you can continue reading `Setting up RabbitMQ`_.
 
 Using Quorum Queues
 ===================
+
+Using Quorum Queues
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 5.5
 
@@ -207,6 +255,12 @@ To migrate from classic mirrored queues to quorum queues, please refer to Rabbit
 Limitations
 -----------
 
+Limitations
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 Disabling global QoS means that the the per-channel QoS is now static.
 This means that some Celery features won't work when using Quorum Queues.
 
@@ -226,6 +280,12 @@ and in case they are, Celery automatically enables :ref:`Native Delayed Delivery
 
 Native Delayed Delivery
 -----------------------
+
+Native Delayed Delivery
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Since tasks with ETA/Countdown will block the worker until they are scheduled for execution,
 we need to use RabbitMQ's native capabilities to schedule the execution of tasks.

@@ -1,8 +1,14 @@
 .. _guide-app:
 
 =============
- Application
+应用程序
 =============
+
+Application
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 
 
@@ -27,8 +33,14 @@ including the name of the app class (``Celery``), the name of the
 current main module (``__main__``), and the memory address of the object
 (``0x100469fd0``).
 
-Main Name
+主名称
 =========
+
+Main Name
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Only one of these is important, and that's the main module name.
 Let's look at why that is.
@@ -109,8 +121,14 @@ You can specify another name for the main module:
 
 .. seealso:: :ref:`task-names`
 
-Configuration
+配置
 =============
+
+Configuration
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 There are several options you can set that'll change how
 Celery works. These options can be set directly on the app instance,
@@ -156,6 +174,12 @@ method.
 ``config_from_object``
 ----------------------
 
+``config_from_object``
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 The :meth:`@config_from_object` method loads configuration
 from a configuration object.
 
@@ -165,8 +189,14 @@ Note that any configuration that was previously set will be reset when
 :meth:`~@config_from_object` is called. If you want to set additional
 configuration you should do so after.
 
-Example 1: Using the name of a module
+示例 1：使用模块名称
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Example 1: Using the name of a module
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The :meth:`@config_from_object` method can take the fully qualified
 name of a Python module, or even the name of a Python attribute,
@@ -192,8 +222,14 @@ The ``celeryconfig`` module may then look like this:
 and the app will be able to use it as long as ``import celeryconfig`` is
 possible.
 
-Example 2: Passing an actual module object
+示例 2：传递实际模块对象
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Example 2: Passing an actual module object
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 You can also pass an already imported module object, but this
 isn't always recommended.
@@ -215,8 +251,14 @@ isn't always recommended.
     app.config_from_object(celeryconfig)
 
 
-Example 3:  Using a configuration class/object
+示例 3：使用配置类/对象
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Example 3:  Using a configuration class/object
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. code-block:: python
 
@@ -234,6 +276,12 @@ Example 3:  Using a configuration class/object
 
 ``config_from_envvar``
 ----------------------
+
+``config_from_envvar``
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The :meth:`@config_from_envvar` takes the configuration module name
 from an environment variable
@@ -260,8 +308,14 @@ You can then specify the configuration module to use via the environment:
 
 .. _app-censored-config:
 
-Censored configuration
+审查配置
 ----------------------
+
+Censored configuration
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 If you ever want to print out the configuration, as debugging information
 or similar, you may also want to filter out sensitive information like
@@ -295,8 +349,14 @@ these sub-strings:
 
 ``API``, ``TOKEN``, ``KEY``, ``SECRET``, ``PASS``, ``SIGNATURE``, ``DATABASE``
 
-Laziness
+惰性
 ========
+
+Laziness
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The application instance is lazy, meaning it won't be evaluated
 until it's actually needed.
@@ -376,8 +436,14 @@ Finalizing the object will:
         from celery import Task        # << NEW base class.
 
 
-Breaking the chain
+打破链条
 ==================
+
+Breaking the chain
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 While it's possible to depend on the current app
 being set, the best practice is to always pass the app instance
@@ -473,8 +539,14 @@ chain breaks:
         def hello(to):
             return 'hello {0}'.format(to)
 
-Abstract Tasks
+抽象任务
 ==============
+
+Abstract Tasks
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 All tasks created using the :meth:`@task` decorator
 will inherit from the application's base :attr:`~@Task` class.

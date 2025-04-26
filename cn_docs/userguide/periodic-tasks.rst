@@ -1,9 +1,10 @@
 .. _guide-beat:
 
 ================
- Periodic Tasks
+周期性任务
 ================
 
+Periodic Tasks
 
 
 Introduction

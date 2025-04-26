@@ -1,8 +1,10 @@
 .. _testing:
 
 ================================================================
- Testing with Celery
+使用 Celery 进行测试
 ================================================================
+
+Testing with Celery
 
 Testing with Celery is divided into two parts:
 

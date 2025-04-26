@@ -1,8 +1,10 @@
 .. _guide-optimizing:
 
 ============
- Optimizing
+优化
 ============
+
+Optimizing
 
 Introduction
 ============

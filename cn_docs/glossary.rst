@@ -1,7 +1,9 @@
 .. _glossary:
 
-Glossary
+术语
 ========
+
+Glossary
 
 .. glossary::
     :sorted:

@@ -1,13 +1,23 @@
 .. _broker-redis:
 
 =============
- Using Redis
+使用 Redis
 =============
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 
 .. _broker-redis-installation:
 
 Installation
 ============
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 
 For the Redis support you have to install additional dependencies.
 You can install both Celery and these dependencies in one go using
@@ -21,6 +31,11 @@ the ``celery[redis]`` :ref:`bundle <bundles>`:
 
 Configuration
 =============
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 
 Configuration is easy, just configure the location of
 your Redis database:
@@ -69,6 +84,11 @@ Additional options can be passed to the Sentinel client using ``sentinel_kwargs`
 Visibility Timeout
 ------------------
 
+.. tab:: 中文
+
+.. tab:: 英文
+
+
 The visibility timeout defines the number of seconds to wait
 for the worker to acknowledge the task before the message is redelivered
 to another worker. Be sure to see :ref:`redis-caveats` below.
@@ -85,6 +105,11 @@ The default visibility timeout for Redis is 1 hour.
 
 Results
 -------
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 
 If you also want to store the state and return values of tasks in Redis,
 you should configure these settings::
@@ -105,6 +130,11 @@ If you are using Sentinel, you should specify the master_name using the :setting
 Global keyprefix
 ^^^^^^^^^^^^^^^^
 
+.. tab:: 中文
+
+.. tab:: 英文
+
+
 The global key prefix will be prepended to all keys used for the result backend,
 which can be useful when a redis database is shared by different users.
 By default, no prefix is prepended.
@@ -122,6 +152,11 @@ To configure the global keyprefix for the Redis result backend, use the ``global
 
 Connection timeouts
 ^^^^^^^^^^^^^^^^^^^
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 
 To configure the connection timeouts for the Redis result backend, use the ``retry_policy`` key under :setting:`result_backend_transport_options`:
 
@@ -141,6 +176,11 @@ See :func:`~kombu.utils.functional.retry_over_time` for the possible retry polic
 Serverless
 ==========
 
+.. tab:: 中文
+
+.. tab:: 英文
+
+
 Celery supports utilizing a remote serverless Redis, which can significantly
 reduce the operational overhead and cost, making it a favorable choice in
 microservice architectures or environments where minimizing operational
@@ -150,6 +190,11 @@ aligning well with the principles of automation and scalability that Celery prom
 
 Upstash
 -------
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 
 `Upstash <http://upstash.com/?code=celery>`_ offers a serverless Redis database service,
 providing a seamless solution for Celery users looking to leverage
@@ -162,6 +207,11 @@ in an `example provided by Upstash <https://github.com/upstash/examples/tree/mai
 
 Dragonfly
 ---------
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 `Dragonfly <https://www.dragonflydb.io/>`_ is a drop-in Redis replacement that cuts costs and boosts performance.
 Designed to fully utilize the power of modern cloud hardware and deliver on the data demands of modern applications,
 Dragonfly frees developers from the limits of traditional in-memory data stores.
@@ -171,8 +221,18 @@ Dragonfly frees developers from the limits of traditional in-memory data stores.
 Caveats
 =======
 
+.. tab:: 中文
+
+.. tab:: 英文
+
+
 Visibility timeout
 ------------------
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 
 If a task isn't acknowledged within the :ref:`redis-visibility_timeout`
 the task will be redelivered to another worker and executed.
@@ -211,6 +271,11 @@ This include if the value is not set, and the default is sent
 Soft Shutdown
 -------------
 
+.. tab:: 中文
+
+.. tab:: 英文
+
+
 During :ref:`shutdown <worker-stopping>`, the worker will attempt to re-queue any unacknowledged messages
 with :setting:`task_acks_late` enabled. However, if the worker is terminated forcefully
 (:ref:`cold shutdown <worker-cold-shutdown>`), the worker might not be able to re-queue the tasks on time,
@@ -235,6 +300,11 @@ when it receives the :sig:`TERM` signal (*and* the :sig:`QUIT` signal).
 Key eviction
 ------------
 
+.. tab:: 中文
+
+.. tab:: 英文
+
+
 Redis may evict keys from the database in some situations
 
 If you experience an error like:
@@ -258,6 +328,11 @@ See Redis server documentation about Eviction Policies for details:
 
 Group result ordering
 ---------------------
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 
 Versions of Celery up to and including 4.4.6 used an unsorted list to store
 result objects for groups in the Redis backend. This can cause those results to

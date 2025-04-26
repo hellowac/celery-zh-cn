@@ -1,9 +1,10 @@
 .. _internals-guide:
 
 ================================
- Contributors Guide to the Code
+代码贡献指南
 ================================
 
+Contributors Guide to the Code
 
 
 Philosophy
