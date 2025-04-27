@@ -1,12 +1,22 @@
 .. _celery-installation:
 
-Installation
+安装
 ============
 
-You can install Celery either via the Python Package Index (PyPI)
-or from source.
+Installation
 
-To install using :command:`pip`:
+.. tab:: 中文
+
+    您可以通过 Python 包索引 (PyPI) 或从源代码安装 Celery。
+
+    使用 :command:`pip` 安装：
+
+.. tab:: 英文
+
+    You can install Celery either via the Python Package Index (PyPI)
+    or from source.
+
+    To install using :command:`pip`:
 
 
 .. code-block:: console
@@ -15,160 +25,328 @@ To install using :command:`pip`:
 
 .. _bundles:
 
-Bundles
+软件包
 -------
 
-Celery also defines a group of bundles that can be used
-to install Celery and the dependencies for a given feature.
+Bundles
 
-You can specify these in your requirements or on the :command:`pip`
-command-line by using brackets. Multiple bundles can be specified by
-separating them by commas.
+.. tab:: 中文
+
+    Celery 还定义了一组捆绑包（bundles），
+    可用于安装 Celery 及特定功能所需的依赖项。
+
+    你可以在 requirements 文件中指定这些捆绑包，
+    或在 :command:`pip` 命令行中通过使用中括号的方式指定。
+    若需指定多个捆绑包，可使用逗号分隔。
+
+    .. code-block:: console
+
+        $ pip install "celery[librabbitmq]"
+
+        $ pip install "celery[librabbitmq,redis,auth,msgpack]"
+
+    可用的捆绑包包括：
+
+.. tab:: 英文
+
+    Celery also defines a group of bundles that can be used
+    to install Celery and the dependencies for a given feature.
+
+    You can specify these in your requirements or on the :command:`pip`
+    command-line by using brackets. Multiple bundles can be specified by
+    separating them by commas.
 
 
-.. code-block:: console
+    .. code-block:: console
 
-    $ pip install "celery[librabbitmq]"
+        $ pip install "celery[librabbitmq]"
 
-    $ pip install "celery[librabbitmq,redis,auth,msgpack]"
+        $ pip install "celery[librabbitmq,redis,auth,msgpack]"
 
-The following bundles are available:
+    The following bundles are available:
+
+序列化器
+~~~~~~~~~~~
 
 Serializers
+
+.. tab:: 中文
+
+    :``celery[auth]``:
+        用于启用 ``auth`` 安全序列化器。
+
+    :``celery[msgpack]``:
+        用于启用 msgpack 序列化器。
+
+    :``celery[yaml]``:
+        用于启用 yaml 序列化器。
+
+.. tab:: 英文
+
+    :``celery[auth]``:
+        for using the ``auth`` security serializer.
+
+    :``celery[msgpack]``:
+        for using the msgpack serializer.
+
+    :``celery[yaml]``:
+        for using the yaml serializer.
+
+并发
 ~~~~~~~~~~~
-
-:``celery[auth]``:
-    for using the ``auth`` security serializer.
-
-:``celery[msgpack]``:
-    for using the msgpack serializer.
-
-:``celery[yaml]``:
-    for using the yaml serializer.
 
 Concurrency
-~~~~~~~~~~~
 
-:``celery[eventlet]``:
-    for using the :pypi:`eventlet` pool.
+.. tab:: 中文
 
-:``celery[gevent]``:
-    for using the :pypi:`gevent` pool.
+    :``celery[eventlet]``:
+        用于启用 :pypi:`eventlet` 池。
 
-Transports and Backends
+    :``celery[gevent]``:
+        用于启用 :pypi:`gevent` 池。
+
+.. tab:: 英文
+
+    :``celery[eventlet]``:
+        for using the :pypi:`eventlet` pool.
+
+    :``celery[gevent]``:
+        for using the :pypi:`gevent` pool.
+
+传输和后端
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-:``celery[librabbitmq]``:
-    for using the librabbitmq C library.
+Transports and Backends
 
-:``celery[redis]``:
-    for using Redis as a message transport or as a result backend.
+.. tab:: 中文
 
-:``celery[sqs]``:
-    for using Amazon SQS as a message transport (*experimental*).
+    :``celery[librabbitmq]``:
+        用于启用 librabbitmq C 语言库。
 
-:``celery[tblib]``:
-    for using the :setting:`task_remote_tracebacks` feature.
+    :``celery[redis]``:
+        用于将 Redis 用作消息传输或结果存储后端。
 
-:``celery[memcache]``:
-    for using Memcached as a result backend (using :pypi:`pylibmc`)
+    :``celery[sqs]``:
+        用于将 Amazon SQS 用作消息传输（*实验性*）。
 
-:``celery[pymemcache]``:
-    for using Memcached as a result backend (pure-Python implementation).
+    :``celery[tblib]``:
+        用于启用 :setting:`task_remote_tracebacks` 功能。
 
-:``celery[cassandra]``:
-    for using Apache Cassandra/Astra DB as a result backend with DataStax driver.
+    :``celery[memcache]``:
+        使用 Memcached 作为结果存储后端（基于 :pypi:`pylibmc`）。
 
-:``celery[couchbase]``:
-    for using Couchbase as a result backend.
+    :``celery[pymemcache]``:
+        使用 Memcached 作为结果存储后端（纯 Python 实现）。
 
-:``celery[arangodb]``:
-    for using ArangoDB as a result backend.
+    :``celery[cassandra]``:
+        使用 Apache Cassandra / Astra DB 作为结果存储后端，基于 DataStax 驱动。
 
-:``celery[elasticsearch]``:
-    for using Elasticsearch as a result backend.
+    :``celery[couchbase]``:
+        使用 Couchbase 作为结果存储后端。
 
-:``celery[riak]``:
-    for using Riak as a result backend.
+    :``celery[arangodb]``:
+        使用 ArangoDB 作为结果存储后端。
 
-:``celery[dynamodb]``:
-    for using AWS DynamoDB as a result backend.
+    :``celery[elasticsearch]``:
+        使用 Elasticsearch 作为结果存储后端。
 
-:``celery[zookeeper]``:
-    for using Zookeeper as a message transport.
+    :``celery[riak]``:
+        使用 Riak 作为结果存储后端。
 
-:``celery[sqlalchemy]``:
-    for using SQLAlchemy as a result backend (*supported*).
+    :``celery[dynamodb]``:
+        使用 AWS DynamoDB 作为结果存储后端。
 
-:``celery[pyro]``:
-    for using the Pyro4 message transport (*experimental*).
+    :``celery[zookeeper]``:
+        使用 Zookeeper 作为消息传输。
 
-:``celery[slmq]``:
-    for using the SoftLayer Message Queue transport (*experimental*).
+    :``celery[sqlalchemy]``:
+        使用 SQLAlchemy 作为结果存储后端（*官方支持*）。
 
-:``celery[consul]``:
-    for using the Consul.io Key/Value store as a message transport or result backend (*experimental*).
+    :``celery[pyro]``:
+        使用 Pyro4 作为消息传输（*实验性*）。
 
-:``celery[django]``:
-    specifies the lowest version possible for Django support.
+    :``celery[slmq]``:
+        使用 SoftLayer Message Queue 作为消息传输（*实验性*）。
 
-    You should probably not use this in your requirements, it's here
-    for informational purposes only.
+    :``celery[consul]``:
+        使用 Consul.io Key/Value 存储作为消息传输或结果存储后端（*实验性*）。
 
-:``celery[gcs]``:
-    for using the Google Cloud Storage as a result backend (*experimental*).
+    :``celery[django]``:
+        指定用于支持 Django 的最低版本。
 
-:``celery[gcpubsub]``:
-    for using the Google Cloud Pub/Sub as a message transport (*experimental*)..
+        通常不推荐在 requirements 中使用该选项，
+        这里仅作参考。
+
+    :``celery[gcs]``:
+        使用 Google Cloud Storage 作为结果存储后端（*实验性*）。
+
+    :``celery[gcpubsub]``:
+        使用 Google Cloud Pub/Sub 作为消息传输（*实验性*）。
+
+.. tab:: 英文
+
+    :``celery[librabbitmq]``:
+        for using the librabbitmq C library.
+
+    :``celery[redis]``:
+        for using Redis as a message transport or as a result backend.
+
+    :``celery[sqs]``:
+        for using Amazon SQS as a message transport (*experimental*).
+
+    :``celery[tblib]``:
+        for using the :setting:`task_remote_tracebacks` feature.
+
+    :``celery[memcache]``:
+        for using Memcached as a result backend (using :pypi:`pylibmc`)
+
+    :``celery[pymemcache]``:
+        for using Memcached as a result backend (pure-Python implementation).
+
+    :``celery[cassandra]``:
+        for using Apache Cassandra/Astra DB as a result backend with DataStax driver.
+
+    :``celery[couchbase]``:
+        for using Couchbase as a result backend.
+
+    :``celery[arangodb]``:
+        for using ArangoDB as a result backend.
+
+    :``celery[elasticsearch]``:
+        for using Elasticsearch as a result backend.
+
+    :``celery[riak]``:
+        for using Riak as a result backend.
+
+    :``celery[dynamodb]``:
+        for using AWS DynamoDB as a result backend.
+
+    :``celery[zookeeper]``:
+        for using Zookeeper as a message transport.
+
+    :``celery[sqlalchemy]``:
+        for using SQLAlchemy as a result backend (*supported*).
+
+    :``celery[pyro]``:
+        for using the Pyro4 message transport (*experimental*).
+
+    :``celery[slmq]``:
+        for using the SoftLayer Message Queue transport (*experimental*).
+
+    :``celery[consul]``:
+        for using the Consul.io Key/Value store as a message transport or result backend (*experimental*).
+
+    :``celery[django]``:
+        specifies the lowest version possible for Django support.
+
+        You should probably not use this in your requirements, it's here
+        for informational purposes only.
+
+    :``celery[gcs]``:
+        for using the Google Cloud Storage as a result backend (*experimental*).
+
+    :``celery[gcpubsub]``:
+        for using the Google Cloud Pub/Sub as a message transport (*experimental*)..
 
 
 
 .. _celery-installing-from-source:
 
-Downloading and installing from source
+从源代码下载并安装
 --------------------------------------
 
-Download the latest version of Celery from PyPI:
+Downloading and installing from source
 
-https://pypi.org/project/celery/
+.. tab:: 中文
 
-You can install it by doing the following,:
+    可以从 PyPI 下载 Celery 的最新版本：
+
+    https://pypi.org/project/celery/
+
+    你可以通过以下步骤进行安装：
+
+    .. code-block:: console
+
+        $ tar xvfz celery-0.0.0.tar.gz
+        $ cd celery-0.0.0
+        $ python setup.py build
+        # python setup.py install
+
+    如果你未在虚拟环境（virtualenv）中，
+    最后一条命令需要以特权用户身份执行。
+
+.. tab:: 英文
+
+    Download the latest version of Celery from PyPI:
+
+    https://pypi.org/project/celery/
+
+    You can install it by doing the following,:
 
 
-.. code-block:: console
+    .. code-block:: console
 
-    $ tar xvfz celery-0.0.0.tar.gz
-    $ cd celery-0.0.0
-    $ python setup.py build
-    # python setup.py install
+        $ tar xvfz celery-0.0.0.tar.gz
+        $ cd celery-0.0.0
+        $ python setup.py build
+        # python setup.py install
 
-The last command must be executed as a privileged user if
-you aren't currently using a virtualenv.
+    The last command must be executed as a privileged user if
+    you aren't currently using a virtualenv.
 
 .. _celery-installing-from-git:
 
-Using the development version
+使用开发版本
 -----------------------------
 
-With pip
+Using the development version
+
+使用 pip
 ~~~~~~~~
 
-The Celery development version also requires the development
-versions of :pypi:`kombu`, :pypi:`amqp`, :pypi:`billiard`, and :pypi:`vine`.
+With pip
 
-You can install the latest snapshot of these using the following
-pip commands:
+.. tab:: 中文
+
+    Celery 的开发版还需要依赖以下项目的开发版：
+    :pypi:`kombu` 、 :pypi:`amqp` 、 :pypi:`billiard` 和 :pypi:`vine` 。
+
+    可以使用以下 pip 命令安装它们的最新快照版：
+
+    .. code-block:: console
+
+        $ pip install https://github.com/celery/celery/zipball/main#egg=celery
+        $ pip install https://github.com/celery/billiard/zipball/main#egg=billiard
+        $ pip install https://github.com/celery/py-amqp/zipball/main#egg=amqp
+        $ pip install https://github.com/celery/kombu/zipball/main#egg=kombu
+        $ pip install https://github.com/celery/vine/zipball/main#egg=vine
+
+.. tab:: 英文
+
+    The Celery development version also requires the development
+    versions of :pypi:`kombu`, :pypi:`amqp`, :pypi:`billiard`, and :pypi:`vine`.
+
+    You can install the latest snapshot of these using the following
+    pip commands:
 
 
-.. code-block:: console
+    .. code-block:: console
 
-    $ pip install https://github.com/celery/celery/zipball/main#egg=celery
-    $ pip install https://github.com/celery/billiard/zipball/main#egg=billiard
-    $ pip install https://github.com/celery/py-amqp/zipball/main#egg=amqp
-    $ pip install https://github.com/celery/kombu/zipball/main#egg=kombu
-    $ pip install https://github.com/celery/vine/zipball/main#egg=vine
+        $ pip install https://github.com/celery/celery/zipball/main#egg=celery
+        $ pip install https://github.com/celery/billiard/zipball/main#egg=billiard
+        $ pip install https://github.com/celery/py-amqp/zipball/main#egg=amqp
+        $ pip install https://github.com/celery/kombu/zipball/main#egg=kombu
+        $ pip install https://github.com/celery/vine/zipball/main#egg=vine
+
+使用 git
+~~~~~~~~
 
 With git
-~~~~~~~~
 
-Please see the :ref:`Contributing <contributing>` section.
+.. tab:: 中文
+
+    详情请参考 :ref:`贡献指南 <contributing>`。
+
+.. tab:: 英文
+
+    Please see the :ref:`Contributing <contributing>` section.
