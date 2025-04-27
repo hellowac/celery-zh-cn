@@ -6,6 +6,10 @@
 
 Tasks
 
+.. tab:: 中文
+
+.. tab:: 英文
+
 Tasks are the building blocks of Celery applications.
 
 A task is a class that can be created out of any callable. It performs
@@ -88,8 +92,14 @@ and this is the **table of contents**:
 
 .. _task-basics:
 
-Basics
+基础知识
 ======
+
+Basics
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 You can easily create a task from any callable by using
 the :meth:`@task` decorator:
@@ -113,8 +123,14 @@ these can be specified as arguments to the decorator:
         User.objects.create(username=username, password=password)
 
 
-How do I import the task decorator?
+如何导入任务装饰器？
 -----------------------------------
+
+How do I import the task decorator?
+
+.. tab:: 中文
+
+.. tab:: 英文
 
     The task decorator is available on your :class:`@Celery` application instance,
     if you don't know what this is then please read :ref:`first-steps`.
@@ -130,8 +146,14 @@ How do I import the task decorator?
         def add(x, y):
             return x + y
 
-Multiple decorators
+多个装饰器
 -------------------
+
+Multiple decorators
+
+.. tab:: 中文
+
+.. tab:: 英文
 
     When using multiple decorators in combination with the task
     decorator you must make sure that the `task`
@@ -146,8 +168,14 @@ Multiple decorators
         def add(x, y):
             return x + y
 
-Bound tasks
+绑定任务
 -----------
+
+Bound tasks
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 A task being bound means the first argument to the task will always
 be the task instance (``self``), just like Python bound methods:
@@ -164,8 +192,14 @@ Bound tasks are needed for retries (using :meth:`Task.retry() <@Task.retry>`),
 for accessing information about the current task request, and for any
 additional functionality you add to custom task base classes.
 
-Task inheritance
+任务继承
 ----------------
+
+Task inheritance
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The ``base`` argument to the task decorator specifies the base class of the task:
 
@@ -184,8 +218,14 @@ The ``base`` argument to the task decorator specifies the base class of the task
 
 .. _task-names:
 
-Names
+名称
 =====
+
+Names
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Every task must have a unique name.
 
@@ -247,8 +287,14 @@ named :file:`tasks.py`:
 
 .. _task-name-generator-info:
 
-Changing the automatic naming behavior
+更改自动命名行为
 --------------------------------------
+
+Changing the automatic naming behavior
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 4.0
 
@@ -296,8 +342,14 @@ So each task will have a name like `moduleA.taskA`, `moduleA.taskB` and
 
 .. _task-request-info:
 
-Task Request
+任务请求
 ============
+
+Task Request
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 :attr:`Task.request <@Task.request>` contains information and state
 related to the currently executing task.
@@ -388,8 +440,14 @@ The request defines the following attributes:
 :replaced_task_nesting: How many times the task was replaced, if at all.
                         (may be :const:`0`)
 
-Example
+示例
 -------
+
+Example
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 An example task accessing information in the context is:
 
@@ -406,8 +464,14 @@ that you can access attributes and methods on the task type instance.
 
 .. _task-logging:
 
-Logging
+日志记录
 =======
+
+Logging
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The worker will automatically set up logging for you, or you can
 configure logging manually.
@@ -499,8 +563,14 @@ see :setting:`worker_redirect_stdouts`).
 
 .. _task-argument-checking:
 
-Argument checking
+参数检查
 -----------------
+
+Argument checking
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 4.0
 
@@ -542,8 +612,14 @@ You can disable the argument checking for any task by setting its
 
 .. _task-hiding-sensitive-information:
 
-Hiding sensitive information in arguments
+在参数中隐藏敏感信息
 -----------------------------------------
+
+Hiding sensitive information in arguments
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 4.0
 
@@ -573,8 +649,14 @@ arguments:
 
 .. _task-retry:
 
-Retrying
+重试
 ========
+
+Retrying
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 :meth:`Task.retry() <@Task.retry>` can be used to re-execute the task,
 for example in the event of recoverable errors.
@@ -640,8 +722,14 @@ but this won't happen if:
 
 .. _task-retry-custom-delay:
 
-Using a custom retry delay
+使用自定义重试延迟
 --------------------------
+
+Using a custom retry delay
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 When a task is to be retried, it can wait for a given amount of time
 before doing so, and the default delay is defined by the
@@ -664,8 +752,14 @@ override this default.
 
 .. _task-autoretry:
 
-Automatic retry for known exceptions
+已知异常的自动重试
 ------------------------------------
+
+Automatic retry for known exceptions
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 4.0
 
@@ -797,8 +891,14 @@ You can also set `autoretry_for`, `max_retries`, `retry_backoff`, `retry_backoff
 
 .. _task-pydantic:
 
-Argument validation with Pydantic
+使用 Pydantic 进行参数验证
 =================================
+
+Argument validation with Pydantic
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. versionadded:: 5.5.0
 
@@ -839,8 +939,14 @@ the returned model "dumped" (serialized using ``BaseModel.model_dump()``):
    >>> result.get(timeout=1)
    {'value': 'example: 1'}
 
-Union types, arguments to generics
+联合类型、泛型参数
 ----------------------------------
+
+Union types, arguments to generics
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Union types (e.g. ``Union[SomeModel, OtherModel]``) or arguments to generics (e.g.
 ``list[SomeModel]``) are **not** supported.
@@ -849,8 +955,14 @@ In case you want to support a list or similar types, it is recommended to use
 ``pydantic.RootModel``.
 
 
-Optional parameters/return values
+可选参数/返回值
 ---------------------------------
+
+Optional parameters/return values
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Optional parameters or return values are also handled properly. For example, given this task:
 
@@ -877,16 +989,28 @@ You'll get the following behavior:
    >>> result.get(timeout=1)
    {'value': 'example: 1'}
 
-Return value handling
+返回值处理
 ---------------------
+
+Return value handling
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Return values will only be serialized if the returned model matches the annotation. If you pass a
 model instance of a different type, it will *not* be serialized. ``mypy`` should already catch such
 errors and you should fix your typehints then.
 
 
-Pydantic parameters
+Pydantic 参数
 -------------------
+
+Pydantic parameters
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 There are a few more options influencing Pydantic behavior:
 
@@ -910,8 +1034,14 @@ There are a few more options influencing Pydantic behavior:
 
 .. _task-options:
 
-List of Options
+选项列表
 ===============
+
+List of Options
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The task decorator can take a number of options that change the way
 the task behaves, for example you can set the rate limit for a task
@@ -921,8 +1051,14 @@ Any keyword argument passed to the task decorator will actually be set
 as an attribute of the resulting task class, and this is a list
 of the built-in attributes.
 
-General
+常规
 -------
+
+General
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. _task-general-options:
 
@@ -1106,259 +1242,596 @@ General
 
 .. _task-states:
 
-States
+状态
 ======
 
-Celery can keep track of the tasks current state. The state also contains the
-result of a successful task, or the exception and traceback information of a
-failed task.
+States
 
-There are several *result backends* to choose from, and they all have
-different strengths and weaknesses (see :ref:`task-result-backends`).
+.. tab:: 中文
 
-During its lifetime a task will transition through several possible states,
-and each state may have arbitrary meta-data attached to it. When a task
-moves into a new state the previous state is
-forgotten about, but some transitions can be deduced, (e.g., a task now
-in the :state:`FAILED` state, is implied to have been in the
-:state:`STARTED` state at some point).
+    Celery 可以跟踪任务的当前状态。状态信息中还包含了
+    成功任务的返回结果，或者失败任务的异常与回溯（traceback）信息。
 
-There are also sets of states, like the set of
-:state:`FAILURE_STATES`, and the set of :state:`READY_STATES`.
+    Celery 提供了多种 *结果后端*（result backend）供选择，
+    每种后端都有其各自的优缺点（参见 :ref:`task-result-backends`）。
 
-The client uses the membership of these sets to decide whether
-the exception should be re-raised (:state:`PROPAGATE_STATES`), or whether
-the state can be cached (it can if the task is ready).
+    在任务的生命周期中，它将经历多个可能的状态变迁，
+    且每个状态都可以附加任意的元数据（meta-data）。
+    当任务进入一个新的状态时，之前的状态将被遗忘，
+    但某些状态变迁可以被推断出来（例如，
+    如果一个任务当前处于 :state:`FAILED` 状态，
+    可以推断出它之前曾处于 :state:`STARTED` 状态）。
 
-You can also define :ref:`custom-states`.
+    同时，Celery 还定义了一些状态集合，
+    比如 :state:`FAILURE_STATES` 集合和 :state:`READY_STATES` 集合。
+
+    客户端可以通过判断任务状态是否属于这些集合来决定后续行为，
+    例如，是否需要重新抛出异常（如果任务状态属于 :state:`PROPAGATE_STATES`），
+    或者是否可以缓存该任务状态（如果任务已准备就绪，则可以缓存）。
+
+    此外，你也可以定义 :ref:`custom-states` 来扩展状态管理。
+
+.. tab:: 英文
+
+    Celery can keep track of the tasks current state. The state also contains the
+    result of a successful task, or the exception and traceback information of a
+    failed task.
+
+    There are several *result backends* to choose from, and they all have
+    different strengths and weaknesses (see :ref:`task-result-backends`).
+
+    During its lifetime a task will transition through several possible states,
+    and each state may have arbitrary meta-data attached to it. When a task
+    moves into a new state the previous state is
+    forgotten about, but some transitions can be deduced, (e.g., a task now
+    in the :state:`FAILED` state, is implied to have been in the
+    :state:`STARTED` state at some point).
+
+    There are also sets of states, like the set of
+    :state:`FAILURE_STATES`, and the set of :state:`READY_STATES`.
+
+    The client uses the membership of these sets to decide whether
+    the exception should be re-raised (:state:`PROPAGATE_STATES`), or whether
+    the state can be cached (it can if the task is ready).
+
+    You can also define :ref:`custom-states`.
 
 .. _task-result-backends:
 
-Result Backends
+结果后端
 ---------------
 
-If you want to keep track of tasks or need the return values, then Celery
-must store or send the states somewhere so that they can be retrieved later.
-There are several built-in result backends to choose from: SQLAlchemy/Django ORM,
-Memcached, RabbitMQ/QPid (``rpc``), and Redis -- or you can define your own.
+Result Backends
 
-No backend works well for every use case.
-You should read about the strengths and weaknesses of each backend, and choose
-the most appropriate for your needs.
+.. tab:: 中文
 
-.. warning::
+    如果你希望跟踪任务或需要获取返回值，那么 Celery 必须将状态存储或发送到某个地方，以便之后能够检索。
+    Celery 提供了多种内置的结果后端供选择：SQLAlchemy/Django ORM、Memcached、RabbitMQ/QPid（``rpc``）和 Redis —— 当然你也可以自定义自己的后端。
 
-    Backends use resources to store and transmit results. To ensure
-    that resources are released, you must eventually call
-    :meth:`~@AsyncResult.get` or :meth:`~@AsyncResult.forget` on
-    EVERY :class:`~@AsyncResult` instance returned after calling
-    a task.
+    没有任何一个后端能在所有使用场景中都表现良好。
+    你应当了解每种后端的优缺点，并根据自己的需求选择最合适的方案。
 
-.. seealso::
+    .. warning::
 
-    :ref:`conf-result-backend`
+        后端在存储和传输结果时会占用资源。为了确保资源能够及时释放，
+        你必须在调用任务之后，对每一个返回的 :class:`~@AsyncResult` 实例，
+        最终调用一次 :meth:`~@AsyncResult.get` 或 :meth:`~@AsyncResult.forget` 方法。
 
-RPC Result Backend (RabbitMQ/QPid)
+    .. seealso::
+
+        :ref:`conf-result-backend`
+
+.. tab:: 英文
+
+    If you want to keep track of tasks or need the return values, then Celery
+    must store or send the states somewhere so that they can be retrieved later.
+    There are several built-in result backends to choose from: SQLAlchemy/Django ORM,
+    Memcached, RabbitMQ/QPid (``rpc``), and Redis -- or you can define your own.
+    
+    No backend works well for every use case.
+    You should read about the strengths and weaknesses of each backend, and choose
+    the most appropriate for your needs.
+    
+    .. warning::
+    
+        Backends use resources to store and transmit results. To ensure
+        that resources are released, you must eventually call
+        :meth:`~@AsyncResult.get` or :meth:`~@AsyncResult.forget` on
+        EVERY :class:`~@AsyncResult` instance returned after calling
+        a task.
+    
+    .. seealso::
+    
+        :ref:`conf-result-backend`
+
+RPC 结果后端 (RabbitMQ/QPid)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The RPC result backend (`rpc://`) is special as it doesn't actually *store*
-the states, but rather sends them as messages. This is an important difference as it
-means that a result *can only be retrieved once*, and *only by the client
-that initiated the task*. Two different processes can't wait for the same result.
+RPC Result Backend (RabbitMQ/QPid)
 
-Even with that limitation, it is an excellent choice if you need to receive
-state changes in real-time. Using messaging means the client doesn't have to
-poll for new states.
+.. tab:: 中文
 
-The messages are transient (non-persistent) by default, so the results will
-disappear if the broker restarts. You can configure the result backend to send
-persistent messages using the :setting:`result_persistent` setting.
+    RPC 结果后端（ ``rpc://`` ）比较特殊，因为它实际上并不 *存储* 状态，
+    而是将其作为消息发送出去。这一点非常重要，因为它意味着：
 
-Database Result Backend
+    - 一个结果 *只能被检索一次*。
+    - *只能由发起该任务的客户端* 进行检索。
+
+    两个不同的进程无法同时等待同一个结果。
+
+    尽管有这些限制，如果你需要实时接收状态变更信息，RPC 后端依然是一个非常优秀的选择。
+    使用消息传递机制意味着客户端无需轮询即可接收新状态。
+
+    默认情况下，消息是瞬时（非持久化）的，因此如果代理（broker）重启，结果将会丢失。
+    你可以通过设置 :setting:`result_persistent` 来配置后端发送持久化消息。
+
+.. tab:: 英文
+
+    The RPC result backend (`rpc://`) is special as it doesn't actually *store*
+    the states, but rather sends them as messages. This is an important difference as it
+    means that a result *can only be retrieved once*, and *only by the client
+    that initiated the task*. Two different processes can't wait for the same result.
+
+    Even with that limitation, it is an excellent choice if you need to receive
+    state changes in real-time. Using messaging means the client doesn't have to
+    poll for new states.
+
+    The messages are transient (non-persistent) by default, so the results will
+    disappear if the broker restarts. You can configure the result backend to send
+    persistent messages using the :setting:`result_persistent` setting.
+
+数据库结果后端
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Keeping state in the database can be convenient for many, especially for
-web applications with a database already in place, but it also comes with
-limitations.
+Database Result Backend
 
-* Polling the database for new states is expensive, and so you should
-  increase the polling intervals of operations, such as `result.get()`.
+.. tab:: 中文
 
-* Some databases use a default transaction isolation level that
-  isn't suitable for polling tables for changes.
+    将状态存储在数据库中对许多人来说非常方便，特别是当已有数据库基础设施（例如 Web 应用）时，
+    但这种方式也存在一些局限性：
+    
+    * 轮询数据库以获取新状态的代价很高，因此你应当增加操作的轮询间隔，比如在调用 `result.get()` 时。
+    
+    * 有些数据库的默认事务隔离级别并不适合用于轮询数据表以检测变化。
+    
+      以 MySQL 为例，其默认的事务隔离级别是 `REPEATABLE-READ`：
+      这意味着在当前事务提交之前，该事务无法看到其他事务所做的更改。
+    
+      因此，推荐将事务隔离级别修改为 `READ-COMMITTED`。
 
-  In MySQL the default transaction isolation level is `REPEATABLE-READ`:
-  meaning the transaction won't see changes made by other transactions until
-  the current transaction is committed.
 
-  Changing that to the `READ-COMMITTED` isolation level is recommended.
+.. tab:: 英文
+
+    Keeping state in the database can be convenient for many, especially for
+    web applications with a database already in place, but it also comes with
+    limitations.
+    
+    * Polling the database for new states is expensive, and so you should
+      increase the polling intervals of operations, such as `result.get()`.
+    
+    * Some databases use a default transaction isolation level that
+      isn't suitable for polling tables for changes.
+    
+      In MySQL the default transaction isolation level is `REPEATABLE-READ`:
+      meaning the transaction won't see changes made by other transactions until
+      the current transaction is committed.
+    
+      Changing that to the `READ-COMMITTED` isolation level is recommended.
 
 .. _task-builtin-states:
 
-Built-in States
+内置状态
 ---------------
+
+Built-in States
 
 .. state:: PENDING
 
 PENDING
 ~~~~~~~
 
-Task is waiting for execution or unknown.
-Any task id that's not known is implied to be in the pending state.
+.. tab:: 中文
+
+    任务正在等待执行或未知.
+    任何未知的任务 ID 都暗示处于待处理状态.
+
+.. tab:: 英文
+
+    Task is waiting for execution or unknown.
+    Any task id that's not known is implied to be in the pending state.
 
 .. state:: STARTED
 
 STARTED
 ~~~~~~~
 
-Task has been started.
-Not reported by default, to enable please see :attr:`@Task.track_started`.
+.. tab:: 中文
 
-:meta-data: `pid` and `hostname` of the worker process executing
-            the task.
+    任务已开始.
+    默认情况下不报告，要启用请参阅 :attr:`@Task.track_started` 。
+
+    :meta-data: 执行任务的工作进程的 `pid` 和 `hostname` 。
+
+.. tab:: 英文
+
+    Task has been started.
+    Not reported by default, to enable please see :attr:`@Task.track_started`.
+
+    :meta-data: `pid` and `hostname` of the worker process executing the task.
 
 .. state:: SUCCESS
 
 SUCCESS
 ~~~~~~~
 
-Task has been successfully executed.
+.. tab:: 中文
 
-:meta-data: `result` contains the return value of the task.
-:propagates: Yes
-:ready: Yes
+    任务已成功执行。
+
+    :meta-data: `result` 包含任务的返回值。
+    :propagates: Yes
+    :ready: Yes
+
+.. tab:: 英文
+
+    Task has been successfully executed.
+
+    :meta-data: `result` contains the return value of the task.
+    :propagates: Yes
+    :ready: Yes
 
 .. state:: FAILURE
 
 FAILURE
 ~~~~~~~
 
-Task execution resulted in failure.
+.. tab:: 中文
 
-:meta-data: `result` contains the exception occurred, and `traceback`
-            contains the backtrace of the stack at the point when the
-            exception was raised.
-:propagates: Yes
+    任务执行失败.
+
+    :meta-data: `result` 包含发生的异常， `traceback` 包含引发异常时堆栈的回溯。
+    :propagates: Yes
+
+.. tab:: 英文
+
+    Task execution resulted in failure.
+
+    :meta-data: `result` contains the exception occurred, and `traceback` contains the backtrace of the stack at the point when the exception was raised.
+    :propagates: Yes
 
 .. state:: RETRY
 
 RETRY
 ~~~~~
 
-Task is being retried.
+.. tab:: 中文
 
-:meta-data: `result` contains the exception that caused the retry,
-            and `traceback` contains the backtrace of the stack at the point
-            when the exceptions was raised.
-:propagates: No
+    任务正在重试.
+
+    :meta-data: `result` 包含导致重试的异常， `traceback` 包含引发异常时堆栈的回溯。
+    :propagates: No
+
+.. tab:: 英文
+
+    Task is being retried.
+
+    :meta-data: `result` contains the exception that caused the retry, and `traceback` contains the backtrace of the stack at the point when the exceptions was raised.
+    :propagates: No
 
 .. state:: REVOKED
 
 REVOKED
 ~~~~~~~
 
-Task has been revoked.
+.. tab:: 中文
 
-:propagates: Yes
+    任务已被撤销.
+
+    :propagates: Yes
+
+.. tab:: 英文
+
+    Task has been revoked.
+
+    :propagates: Yes
 
 .. _custom-states:
 
-Custom states
+自定义状态
 -------------
 
-You can easily define your own states, all you need is a unique name.
-The name of the state is usually an uppercase string. As an example
-you could have a look at the :mod:`abortable tasks <~celery.contrib.abortable>`
-which defines a custom :state:`ABORTED` state.
+Custom states
 
-Use :meth:`~@Task.update_state` to update a task's state:.
+.. tab:: 中文
 
-.. code-block:: python
+    你可以轻松地定义自己的任务状态，只需要一个唯一的名称即可。
+    状态名通常是一个大写字符串。例如，你可以参考 :mod:`可中止任务 <~celery.contrib.abortable>` ，
+    其中定义了一个自定义的 :state:`ABORTED` 状态。
 
-    @app.task(bind=True)
-    def upload_files(self, filenames):
-        for i, file in enumerate(filenames):
-            if not self.request.called_directly:
-                self.update_state(state='PROGRESS',
-                    meta={'current': i, 'total': len(filenames)})
+    使用 :meth:`~@Task.update_state` 方法可以更新任务的状态：
+
+    .. code-block:: python
+
+        @app.task(bind=True)
+        def upload_files(self, filenames):
+            for i, file in enumerate(filenames):
+                if not self.request.called_directly:
+                    self.update_state(state='PROGRESS',
+                        meta={'current': i, 'total': len(filenames)})
+
+    在上面的例子中，我创建了状态 `"PROGRESS"`，
+    用于告知了解此状态的应用程序当前任务正在进行中，
+    并通过 `current` 和 `total` 这两个计数值来表示任务的进度。
+    例如，可以基于这些元数据来创建进度条显示。
+
+.. tab:: 英文
+
+    You can easily define your own states, all you need is a unique name.
+    The name of the state is usually an uppercase string. As an example
+    you could have a look at the :mod:`abortable tasks <~celery.contrib.abortable>`
+    which defines a custom :state:`ABORTED` state.
+
+    Use :meth:`~@Task.update_state` to update a task's state:.
+
+    .. code-block:: python
+
+        @app.task(bind=True)
+        def upload_files(self, filenames):
+            for i, file in enumerate(filenames):
+                if not self.request.called_directly:
+                    self.update_state(state='PROGRESS',
+                        meta={'current': i, 'total': len(filenames)})
 
 
-Here I created the state `"PROGRESS"`, telling any application
-aware of this state that the task is currently in progress, and also where
-it is in the process by having `current` and `total` counts as part of the
-state meta-data. This can then be used to create progress bars for example.
+    Here I created the state `"PROGRESS"`, telling any application
+    aware of this state that the task is currently in progress, and also where
+    it is in the process by having `current` and `total` counts as part of the
+    state meta-data. This can then be used to create progress bars for example.
 
 .. _pickling_exceptions:
 
-Creating pickleable exceptions
+创建可 pickle 的异常
 ------------------------------
 
-A rarely known Python fact is that exceptions must conform to some
-simple rules to support being serialized by the pickle module.
+Creating pickleable exceptions
 
-Tasks that raise exceptions that aren't pickleable won't work
-properly when Pickle is used as the serializer.
+.. tab:: 中文
 
-To make sure that your exceptions are pickleable the exception
-*MUST* provide the original arguments it was instantiated
-with in its ``.args`` attribute. The simplest way
-to ensure this is to have the exception call ``Exception.__init__``.
+    一个鲜为人知的 Python 事实是：异常要能被 `pickle` 模块序列化，必须遵循一些简单的规则。
 
-Let's look at some examples that work, and one that doesn't:
+    如果任务抛出了无法被 pickle 序列化的异常，那么在使用 Pickle 作为序列化器时，任务将无法正常工作。
 
-.. code-block:: python
+    为了确保异常对象可以被 pickle 正确序列化，
+    异常类 *必须* 在其 ``.args`` 属性中保存创建实例时的原始参数。
+    最简单的方式就是在自定义异常的构造函数中调用 ``Exception.__init__`` 方法。
+
+    下面是一些可以正常工作的示例，以及一个错误示例：
+
+    .. code-block:: python
+
+        # 正确示例：
+        class HttpError(Exception):
+            pass
+
+        # 错误示例：
+        class HttpError(Exception):
+
+            def __init__(self, status_code):
+                self.status_code = status_code
+
+        # 正确示例：
+        class HttpError(Exception):
+
+            def __init__(self, status_code):
+                self.status_code = status_code
+                Exception.__init__(self, status_code)  # <-- 必须调用
+
+    因此，规则总结如下：
+    如果异常类支持自定义参数 ``*args``，
+    则必须在构造函数中调用 ``Exception.__init__(self, *args)``。
+
+    需要注意的是：
+    目前对于 *关键字参数（keyword arguments）* 并没有特别的支持，
+    因此如果希望在反序列化（unpickle）时保留关键字参数，
+    必须将它们作为普通的位置参数（args）传递：
+
+    .. code-block:: python
+
+        class HttpError(Exception):
+
+            def __init__(self, status_code, headers=None, body=None):
+                self.status_code = status_code
+                self.headers = headers
+                self.body = body
+
+                super(HttpError, self).__init__(status_code, headers, body)
 
 
-    # OK:
-    class HttpError(Exception):
-        pass
+.. tab:: 英文
 
-    # BAD:
-    class HttpError(Exception):
+    A rarely known Python fact is that exceptions must conform to some
+    simple rules to support being serialized by the pickle module.
 
-        def __init__(self, status_code):
-            self.status_code = status_code
+    Tasks that raise exceptions that aren't pickleable won't work
+    properly when Pickle is used as the serializer.
 
-    # OK:
-    class HttpError(Exception):
+    To make sure that your exceptions are pickleable the exception
+    *MUST* provide the original arguments it was instantiated
+    with in its ``.args`` attribute. The simplest way
+    to ensure this is to have the exception call ``Exception.__init__``.
 
-        def __init__(self, status_code):
-            self.status_code = status_code
-            Exception.__init__(self, status_code)  # <-- REQUIRED
+    Let's look at some examples that work, and one that doesn't:
+
+    .. code-block:: python
 
 
-So the rule is:
-For any exception that supports custom arguments ``*args``,
-``Exception.__init__(self, *args)`` must be used.
+        # OK:
+        class HttpError(Exception):
+            pass
 
-There's no special support for *keyword arguments*, so if you
-want to preserve keyword arguments when the exception is unpickled
-you have to pass them as regular args:
+        # BAD:
+        class HttpError(Exception):
 
-.. code-block:: python
+            def __init__(self, status_code):
+                self.status_code = status_code
 
-    class HttpError(Exception):
+        # OK:
+        class HttpError(Exception):
 
-        def __init__(self, status_code, headers=None, body=None):
-            self.status_code = status_code
-            self.headers = headers
-            self.body = body
+            def __init__(self, status_code):
+                self.status_code = status_code
+                Exception.__init__(self, status_code)  # <-- REQUIRED
 
-            super(HttpError, self).__init__(status_code, headers, body)
+
+    So the rule is:
+    For any exception that supports custom arguments ``*args``,
+    ``Exception.__init__(self, *args)`` must be used.
+
+    There's no special support for *keyword arguments*, so if you
+    want to preserve keyword arguments when the exception is unpickled
+    you have to pass them as regular args:
+
+    .. code-block:: python
+
+        class HttpError(Exception):
+
+            def __init__(self, status_code, headers=None, body=None):
+                self.status_code = status_code
+                self.headers = headers
+                self.body = body
+
+                super(HttpError, self).__init__(status_code, headers, body)
 
 .. _task-semipredicates:
 
-Semipredicates
+任务半谓词
 ==============
 
-The worker wraps the task in a tracing function that records the final
-state of the task. There are a number of exceptions that can be used to
-signal this function to change how it treats the return of the task.
+Semipredicates
+
+.. tab:: 中文
+
+    worker 将任务包装在一个跟踪函数中，用于记录任务的最终状态。可以使用多种异常来通知此函数，以改变其处理任务返回的方式。
+
+    .. admonition:: 译注: Semipredicates
+       :class: toggle
+
+       在 Celery 的上下文中，"task semipredicates" 是一个相对专业的术语，其翻译需要结合技术语义和中文表达习惯。以下是针对该术语的详细解析和推荐译法：
+
+       ----
+
+       1. **术语解析**
+
+       - **Semipredicate（半谓词）**：
+
+         - **计算机科学中的原意**：指既返回结果又返回状态（如成功/失败）的函数，例如 C 语言的 ``fopen()`` 在失败时返回 ``NULL`` 同时设置 ``errno``。
+
+         - **在 Celery 中的延伸**：可能指任务（task）在执行时既产生返回值，又隐含状态信息（如 ``SUCCESS``、``FAILURE`` 或重试状态）。
+
+       - **Task Semipredicates**：
+
+         - 指 Celery 任务设计中同时承载业务逻辑结果和自身执行状态的特性，例如：
+
+           .. code-block:: python
+    
+                @app.task(bind=True)
+                def my_task(self, x, y):
+                    try:
+                        return x / y  # 业务结果
+                    except ZeroDivisionError:
+                        self.retry(countdown=60)  # 状态控制
+
+       ----
+
+       2. **推荐翻译方案**
+
+       根据上下文可选择以下译法：
+
+       .. list-table::
+          
+          * - 英文术语
+            - 推荐中文翻译
+            - 适用场景
+          * - Task Semipredicates
+            - 任务半谓词
+            - 强调技术实现（学术/底层文档）
+          * - 
+            - 任务状态复合体
+            - 强调状态与结果的结合（设计文档）
+          * - 
+            - 双态任务
+            - 简洁表达（非正式场合）
+
+       ----
+
+       3. **使用示例**
+
+       **(1) 技术文档中的翻译**
+
+       原文：
+
+           Celery tasks act as semipredicates, returning both computed values and their own execution status.
+
+       译文：
+
+           Celery 任务作为任务半谓词，既返回计算结果，又携带自身执行状态。
+
+       **(2) 设计文档中的翻译**
+
+       原文：
+
+           The semipredicate nature of tasks allows for robust error handling.
+
+       译文：
+
+           任务的状态复合体特性使其支持健壮的错误处理。
+
+       ----
+
+       4. **注意事项**
+
+       - **一致性**：在同一个项目中保持术语翻译统一。
+
+       - **注释说明**：首次出现时可添加英文原词和简要解释，例如：
+
+       任务半谓词（Task Semipredicates，指同时返回结果和状态的任务）
+
+       - **受众适配**：面向开发者可直接用英文术语，面向非技术读者建议意译。
+
+       ----
+
+       5. **相关术语对照表**
+
+       .. list-table::
+          
+          * - 英文术语
+            - 中文翻译
+          * - Task
+            - 任务
+          * - Predicate Function
+            - 谓词函数
+          * - Stateful Task
+            - 有状态任务
+          * - Idempotent Task
+            - 幂等任务
+
+       通过以上方式，可以准确传达 "task semipredicates" 在 Celery 中的技术内涵。
+
+
+.. tab:: 英文
+
+    The worker wraps the task in a tracing function that records the final state of the task. There are a number of exceptions that can be used to signal this function to change how it treats the return of the task.
 
 .. _task-semipred-ignore:
 
-Ignore
+忽略
 ------
+
+Ignore
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The task may raise :exc:`~@Ignore` to force the worker to ignore the
 task. This means that no state will be recorded for the task, but the
@@ -1394,8 +1867,14 @@ Example that stores results manually:
 
 .. _task-semipred-reject:
 
-Reject
+拒绝
 ------
+
+Reject
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The task may raise :exc:`~@Reject` to reject the task message using
 AMQPs ``basic_reject`` method. This won't have any effect unless
@@ -1456,16 +1935,28 @@ method.
 
 .. _task-semipred-retry:
 
-Retry
+重试
 -----
+
+Retry
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The :exc:`~@Retry` exception is raised by the ``Task.retry`` method
 to tell the worker that the task is being retried.
 
 .. _task-custom-classes:
 
-Custom task classes
+自定义任务类
 ===================
+
+Custom task classes
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 All tasks inherit from the :class:`@Task` class.
 The :meth:`~@Task.run` method becomes the task body.
@@ -1490,8 +1981,14 @@ will do roughly this behind the scenes:
     add = app.tasks[_AddTask.name]
 
 
-Instantiation
+实例化
 -------------
+
+Instantiation
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 A task is **not** instantiated for every request, but is registered
 in the task registry as a global instance.
@@ -1536,8 +2033,14 @@ For example, a base Task class that caches a database connection:
                 self._db = Database.connect()
             return self._db
 
-Per task usage
+每个任务的使用
 ~~~~~~~~~~~~~~
+
+Per task usage
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The above can be added to each task like this:
 
@@ -1556,8 +2059,14 @@ always stay the same in each process.
 
 .. _custom-task-cls-app-wide:
 
-App-wide usage
+应用范围的使用
 ~~~~~~~~~~~~~~
+
+App-wide usage
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 You can also use your custom class in your whole Celery app by passing it as
 the ``task_cls`` argument when instantiating the app. This argument should be
@@ -1574,8 +2083,14 @@ app to use your ``DatabaseTask`` class and will all have a ``db`` attribute.
 
 The default value is the class provided by Celery: ``'celery.app.task:Task'``.
 
-Handlers
+处理程序
 --------
+
+Handlers
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. method:: before_start(self, task_id, args, kwargs)
 
@@ -1647,8 +2162,14 @@ Handlers
 
 .. _task-requests-and-custom-requests:
 
-Requests and custom requests
+请求和自定义请求
 ----------------------------
+
+Requests and custom requests
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Upon receiving a message to run a task, the `worker <guide-workers>`:ref:
 creates a `request <celery.worker.request.Request>`:class: to represent such
@@ -1711,8 +2232,14 @@ limits, and other failures.
 
 .. _task-how-they-work:
 
-How it works
+工作原理
 ============
+
+How it works
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Here come the technical details. This part isn't something you need to know,
 but you may be interested.
@@ -1751,13 +2278,25 @@ challenge that's yet to be solved.
 
 .. _task-best-practices:
 
-Tips and Best Practices
+技巧和最佳实践
 =======================
+
+Tips and Best Practices
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. _task-ignore_results:
 
-Ignore results you don't want
+忽略不需要的结果
 -----------------------------
+
+Ignore results you don't want
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 If you don't care about the results of a task, be sure to set the
 :attr:`~@Task.ignore_result` option, as storing results
@@ -1800,16 +2339,28 @@ The option precedence order is the following:
 2. :attr:`~@Task.ignore_result` option
 3. Task execution option ``ignore_result``
 
-More optimization tips
+更多优化技巧
 ----------------------
+
+More optimization tips
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 You find additional optimization tips in the
 :ref:`Optimizing Guide <guide-optimizing>`.
 
 .. _task-synchronous-subtasks:
 
-Avoid launching synchronous subtasks
+避免启动同步子任务
 ------------------------------------
+
+Avoid launching synchronous subtasks
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Having a task wait for the result of another task is really inefficient,
 and may even cause a deadlock if the worker pool is exhausted.
@@ -1894,13 +2445,25 @@ enabling subtasks to run synchronously is not recommended!
 
 .. _task-performance-and-strategies:
 
-Performance and Strategies
+性能和策略
 ==========================
+
+Performance and Strategies
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. _task-granularity:
 
-Granularity
+粒度
 -----------
+
+Granularity
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The task granularity is the amount of computation needed by each subtask.
 In general it is better to split the problem up into many small tasks rather
@@ -1925,8 +2488,14 @@ overhead added probably removes any benefit.
 
 .. _task-data-locality:
 
-Data locality
+数据本地性
 -------------
+
+Data locality
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The worker processing the task should be as close to the data as
 possible. The best would be to have a copy in memory, the worst would be a
@@ -1951,8 +2520,14 @@ system, like `memcached`_.
 
 .. _task-state:
 
-State
+状态
 -----
+
+State
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Since Celery is a distributed system, you can't know which process, or
 on what machine the task will be executed. You can't even know if the task will
@@ -2018,8 +2593,14 @@ messages may be expensive.
 
 .. _task-database-transactions:
 
-Database transactions
+数据库事务
 ---------------------
+
+Database transactions
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Let's have a look at another example:
 
@@ -2059,8 +2640,14 @@ This method was added in Celery 5.4. It's a shortcut that uses Django's
 ``on_commit`` callback to launch your Celery task once all transactions
 have been committed successfully.
 
-With Celery <5.4
+使用 Celery 5.4 及以下版本
 ~~~~~~~~~~~~~~~~
+
+With Celery <5.4
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 If you're using an older version of Celery, you can replicate this behaviour
 using the Django callback directly as follows:
@@ -2088,8 +2675,14 @@ using the Django callback directly as follows:
 
 .. _task-example:
 
-Example
+示例
 =======
+
+Example
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 Let's take a real world example: a blog where comments posted need to be
 filtered for spam. When the comment is created, the spam filter runs in the
