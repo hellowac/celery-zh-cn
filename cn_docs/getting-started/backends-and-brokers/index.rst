@@ -6,25 +6,19 @@ Backends 和 Brokers
 
 Backends and Brokers
 
-.. tab:: 中文
-
-.. tab:: 英文
-
 :Release: |version|
 :Date: |today|
+
+Celery支持好几种详细传输替代方案。
 
 Celery supports several message transport alternatives.
 
 .. _broker_toc:
 
-Broker Instructions
+Broker 指南
 ===================
 
 Broker Instructions
-
-.. tab:: 中文
-
-.. tab:: 英文
 
 .. toctree::
     :maxdepth: 1
@@ -37,7 +31,7 @@ Broker Instructions
 
 .. _broker-overview:
 
-Broker Overview
+Broker 概览
 ===============
 
 Broker Overview
@@ -77,7 +71,7 @@ Remote control means the ability to inspect and manage workers
 at runtime using the `celery inspect` and `celery control` commands
 (and other tools using the remote control API).
 
-Summaries
+摘要
 =========
 
 Summaries
