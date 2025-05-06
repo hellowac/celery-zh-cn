@@ -1,0 +1,102 @@
+.. _getting-help:
+
+获取帮助
+============
+
+Getting Help
+
+.. tab:: 中文
+
+    .. warning::
+
+        我们的 `Google Groups 账号 <https://groups.google.com/group/celery-users/>`_ 已被
+        `泄漏 <https://github.com/celery/celery/discussions/9525>`_.
+
+.. tab:: 英文
+
+    .. warning::
+
+        Our `Google Groups account <https://groups.google.com/group/celery-users/>`_ has been
+        `compromised <https://github.com/celery/celery/discussions/9525>`_.
+
+.. _social-media:
+
+社交媒体
+============
+
+Social Media
+
+.. tab:: 中文
+
+    在社交媒体上关注我们：
+
+    - `X <https://x.com/celeryorg>`_
+    - `LinkedIn <https://linkedin.com/company/celeryorg>`_
+
+    这些账号（大部分）会互相镜像，但我们建议您在所有平台上关注我们，以确保您不会错过任何重要更新。
+
+.. tab:: 英文
+
+    Follow us on social media:
+
+    - `X <https://x.com/celeryorg>`_
+    - `LinkedIn <https://linkedin.com/company/celeryorg>`_
+
+    These accounts will (mostly) mirror each other, but we encourage you to follow us on all platforms to ensure you don't miss any important updates.
+
+.. _bug-tracker:
+
+错误追踪器
+===========
+
+Bug tracker
+
+.. tab:: 中文
+
+    如果您有任何建议、错误报告或烦恼，请将其报告给我们的问题跟踪器：https://github.com/celery/celery/issues/
+
+.. tab:: 英文
+
+    If you have any suggestions, bug reports, or annoyances please report them to our issue tracker at https://github.com/celery/celery/issues/
+
+.. _contributing-short:
+
+贡献
+============
+
+Contributing
+
+.. tab:: 中文
+
+    `celery` 的开发在 GitHub 上进行：https://github.com/celery/celery
+
+    我们强烈建议您参与 `celery` 的开发。如果您不喜欢 GitHub（出于某种原因），欢迎您定期提交补丁。
+
+    请务必阅读文档中的 `为 Celery 做贡献 <https://docs.celeryq.dev/en/main/contributing.html>`_ 部分。
+
+.. tab:: 英文
+
+    Development of `celery` happens at GitHub: https://github.com/celery/celery
+
+    You're highly encouraged to participate in the development of `celery`. If you don't like GitHub (for some reason) you're welcome to send regular patches.
+
+    Be sure to also read the `Contributing to Celery`_ section in the documentation.
+
+.. _`Contributing to Celery`: https://docs.celeryq.dev/en/main/contributing.html
+
+.. _license:
+
+许可证
+=======
+
+License
+
+.. tab:: 中文
+
+    本软件采用 `新 BSD 许可证` 授权。请参阅发行版主目录中的 :file:`LICENSE` 文件以获取完整的许可证文本。
+
+.. tab:: 英文
+
+    This software is licensed under the `New BSD License`. See the :file:`LICENSE` file in the top distribution directory for the full license text.
+
+.. # vim: syntax=rst expandtab tabstop=4 shiftwidth=4 shiftround

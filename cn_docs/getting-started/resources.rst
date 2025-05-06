@@ -6,4 +6,4 @@
 
 Resources
 
-.. include:: ../includes/resources.txt
+.. include:: ../includes/cn_resources.txt
