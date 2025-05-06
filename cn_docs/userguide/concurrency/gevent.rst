@@ -8,8 +8,14 @@ Concurrency with gevent
 
 .. _gevent-introduction:
 
-Introduction
+简介
 ============
+
+Introduction
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The `gevent`_ homepage describes it a coroutine_ -based Python_ networking library that uses
 `greenlet <https://greenlet.readthedocs.io>`_ to provide a high-level synchronous API on top of the `libev`_
@@ -36,8 +42,14 @@ gevent`_ and check out the list of the `open source projects based on
 gevent`_.
 
 
-Enabling gevent
+启用 gevent
 =================
+
+Enabling gevent
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 You can enable the gevent pool by using the
 :option:`celery worker -P gevent` or  :option:`celery worker --pool=gevent`
@@ -49,14 +61,27 @@ worker option.
 
 .. _eventlet-examples:
 
-Examples
+示例
 ========
+
+Examples
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 See the `gevent examples`_ directory in the Celery distribution for
 some examples taking use of Eventlet support.
 
-Known issues
+已知问题
 ============
+
+Known issues
+
+.. tab:: 中文
+
+.. tab:: 英文
+
 There is a known issue using python 3.11 and gevent.
 The issue is documented `here`_ and addressed in a `gevent issue`_.
 Upgrading to greenlet 3.0 solves it.

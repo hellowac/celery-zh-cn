@@ -8,8 +8,14 @@ Concurrency with Eventlet
 
 .. _eventlet-introduction:
 
-Introduction
+简介
 ============
+
+Introduction
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 The `Eventlet`_ homepage describes it as
 a concurrent networking library for Python that allows you to
@@ -44,8 +50,14 @@ at (asynchronous HTTP requests). You may want a mix of both Eventlet and
 prefork workers, and route tasks according to compatibility or
 what works best.
 
-Enabling Eventlet
+启用 Eventlet
 =================
+
+Enabling Eventlet
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 You can enable the Eventlet pool by using the :option:`celery worker -P`
 worker option.
@@ -56,8 +68,14 @@ worker option.
 
 .. _eventlet-examples:
 
-Examples
+示例
 ========
+
+Examples
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 See the `Eventlet examples`_ directory in the Celery distribution for
 some examples taking use of Eventlet support.

@@ -9,6 +9,10 @@ Concurrency
 :Release: |version|
 :Date: |today|
 
+.. tab:: 中文
+
+.. tab:: 英文
+
 Concurrency in Celery enables the parallel execution of tasks. The default
 model, `prefork`, is well-suited for many scenarios and generally recommended
 for most users.  In fact, switching to another mode will silently disable
@@ -17,8 +21,14 @@ certain features like `soft_timeout` and `max_tasks_per_child`.
 This page gives a quick overview of the available options which you can pick
 between using the `--pool` option when starting the worker.
 
-Overview of Concurrency Options
+并发选项概述
 -------------------------------
+
+Overview of Concurrency Options
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 - `prefork`: The default option, ideal for CPU-bound tasks and most use cases.
   It is robust and recommended unless there's a specific need for another model.

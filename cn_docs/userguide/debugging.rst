@@ -8,11 +8,23 @@ Debugging
 
 .. _tut-remote_debug:
 
-Debugging Tasks Remotely (using pdb)
+远程调试任务（使用 pdb）
 ====================================
 
+Debugging Tasks Remotely (using pdb)
+
+.. tab:: 中文
+
+.. tab:: 英文
+
+基础知识
+------------
+
 Basics
-------
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 :mod:`celery.contrib.rdb` is an extended version of :mod:`pdb` that
 enables remote debugging of processes that doesn't have terminal
@@ -96,8 +108,14 @@ The result of our vandalism can be seen in the worker logs:
 .. _`Python Debugger Manual`: http://docs.python.org/library/pdb.html
 
 
-Tips
+技巧
 ----
+
+Tips
+
+.. tab:: 中文
+
+.. tab:: 英文
 
 .. _breakpoint_signal:
 
