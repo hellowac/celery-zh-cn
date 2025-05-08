@@ -9,72 +9,76 @@ Celery Deprecation Time-line
 
 .. _deprecations-v5.0:
 
-Removals for version 5.0
+5.0 版移除内容
 ========================
 
-Old Task API
+Removals for version 5.0
+
+旧版任务 API
 ------------
+
+Old Task API
 
 .. _deprecate-compat-task-modules:
 
-Compat Task Modules
+兼容任务模块
 ~~~~~~~~~~~~~~~~~~~
 
-- Module ``celery.decorators`` will be removed:
+Compat Task Modules
 
-    This means you need to change:
+.. tab:: 中文
 
-    .. code-block:: python
+    - 模块 ``celery.decorators`` 将被移除：  
+      这意味着你需要将如下代码：
 
-        from celery.decorators import task
+      .. code-block:: python
 
-    Into:
+          from celery.decorators import task
 
-    .. code-block:: python
+      修改为：
 
-        from celery import task
+      .. code-block:: python
 
-- Module ``celery.task`` will be removed
+          from celery import task
 
-    This means you should change:
+    - 模块 ``celery.task`` 将被移除  
+      这意味着你应该将如下代码：
 
-    .. code-block:: python
+      .. code-block:: python
 
-        from celery.task import task
+          from celery.task import task
 
-    into:
+      修改为：
 
-    .. code-block:: python
+      .. code-block:: python
 
-        from celery import shared_task
+          from celery import shared_task
 
-    -- and:
+      —— 以及：
 
-    .. code-block:: python
+      .. code-block:: python
 
-        from celery import task
+          from celery import task
 
-    into:
+      修改为：
 
-    .. code-block:: python
+      .. code-block:: python
 
-        from celery import shared_task
+          from celery import shared_task
 
-    -- and:
+      —— 还有：
 
-    .. code-block:: python
+      .. code-block:: python
 
-        from celery.task import Task
+          from celery.task import Task
 
-    into:
+      修改为：
 
-    .. code-block:: python
+      .. code-block:: python
 
-        from celery import Task
+          from celery import Task
 
-
-Note that the new :class:`~celery.Task` class no longer
-uses :func:`classmethod` for these methods:
+    请注意，新的 :class:`~celery.Task` 类不再使用 :func:`classmethod` 修饰以下方法：
 
     - delay
     - apply_async
@@ -83,73 +87,201 @@ uses :func:`classmethod` for these methods:
     - AsyncResult
     - subtask
 
-This also means that you can't call these methods directly
-on the class, but have to instantiate the task first:
+    这也意味着你不能再直接通过类调用这些方法，而是需要先实例化任务：
 
-.. code-block:: pycon
+    .. code-block:: pycon
 
-    >>> MyTask.delay()          # NO LONGER WORKS
+        >>> MyTask.delay()          # 不再可用
+
+        >>> MyTask().delay()        # 正确用法！
+
+.. tab:: 英文
+
+    - Module ``celery.decorators`` will be removed:
+        This means you need to change:
+
+        .. code-block:: python
+
+            from celery.decorators import task
+
+        Into:
+
+        .. code-block:: python
+
+            from celery import task
+
+    - Module ``celery.task`` will be removed
+        This means you should change:
+
+        .. code-block:: python
+
+            from celery.task import task
+
+        into:
+
+        .. code-block:: python
+
+            from celery import shared_task
+
+        -- and:
+
+        .. code-block:: python
+
+            from celery import task
+
+        into:
+
+        .. code-block:: python
+
+            from celery import shared_task
+
+        -- and:
+
+        .. code-block:: python
+
+            from celery.task import Task
+
+        into:
+
+        .. code-block:: python
+
+            from celery import Task
 
 
-    >>> MyTask().delay()        # WORKS!
+    Note that the new :class:`~celery.Task` class no longer
+    uses :func:`classmethod` for these methods:
+
+    - delay
+    - apply_async
+    - retry
+    - apply
+    - AsyncResult
+    - subtask
+
+    This also means that you can't call these methods directly
+    on the class, but have to instantiate the task first:
+
+    .. code-block:: pycon
+
+        >>> MyTask.delay()          # NO LONGER WORKS
 
 
-Task attributes
+        >>> MyTask().delay()        # WORKS!
+
+
+任务属性
 ---------------
 
-The task attributes:
+Task attributes
 
-- ``queue``
-- ``exchange``
-- ``exchange_type``
-- ``routing_key``
-- ``delivery_mode``
-- ``priority``
+.. tab:: 中文
+    
+    以下任务属性已弃用，必须通过 :setting:`task_routes` 来设置：
+    
+    - ``queue``
+    - ``exchange``
+    - ``exchange_type``
+    - ``routing_key``
+    - ``delivery_mode``
+    - ``priority``
 
-is deprecated and must be set by :setting:`task_routes` instead.
+.. tab:: 英文
+
+    The task attributes:
+
+    - ``queue``
+    - ``exchange``
+    - ``exchange_type``
+    - ``routing_key``
+    - ``delivery_mode``
+    - ``priority``
+
+    is deprecated and must be set by :setting:`task_routes` instead.
 
 
-Modules to Remove
+待移除模块
 -----------------
 
-- ``celery.execute``
+Modules to Remove
 
-  This module only contains ``send_task``: this must be replaced with
-  :attr:`@send_task` instead.
+.. tab:: 中文
+    
+    - ``celery.execute``  
+      
+      此模块仅包含 ``send_task``：应改为使用 :attr:`@send_task`。
+    
+    - ``celery.decorators``  
+      
+      参见 :ref:`deprecate-compat-task-modules`
+    
+    - ``celery.log``  
+      
+      改为使用 :attr:`@log`
+    
+    - ``celery.messaging``  
+      
+      改为使用 :attr:`@amqp`
+    
+    - ``celery.registry``  
+      
+      改为使用 :mod:`celery.app.registry`
+    
+    - ``celery.task.control``  
+      
+      改为使用 :attr:`@control`
+    
+    - ``celery.task.schedules``  
+      
+      改为使用 :mod:`celery.schedules`
+    
+    - ``celery.task.chords``  
+      
+      改为使用 :func:`celery.chord`
 
-- ``celery.decorators``
+.. tab:: 英文
 
-    See :ref:`deprecate-compat-task-modules`
+    - ``celery.execute``
 
-- ``celery.log``
+      This module only contains ``send_task``: this must be replaced with
+      :attr:`@send_task` instead.
 
-    Use :attr:`@log` instead.
+    - ``celery.decorators``
 
-- ``celery.messaging``
+      See :ref:`deprecate-compat-task-modules`
 
-    Use :attr:`@amqp` instead.
+    - ``celery.log``
 
-- ``celery.registry``
+      Use :attr:`@log` instead.
 
-    Use :mod:`celery.app.registry` instead.
+    - ``celery.messaging``
 
-- ``celery.task.control``
+      Use :attr:`@amqp` instead.
 
-    Use :attr:`@control` instead.
+    - ``celery.registry``
 
-- ``celery.task.schedules``
+      Use :mod:`celery.app.registry` instead.
 
-    Use :mod:`celery.schedules` instead.
+    - ``celery.task.control``
 
-- ``celery.task.chords``
+      Use :attr:`@control` instead.
 
-    Use :func:`celery.chord` instead.
+    - ``celery.task.schedules``
 
-Settings
+      Use :mod:`celery.schedules` instead.
+
+    - ``celery.task.chords``
+
+      Use :func:`celery.chord` instead.
+
+设置
 --------
 
-``BROKER`` Settings
+Settings
+
+``BROKER`` 设置
 ~~~~~~~~~~~~~~~~~~~
+
+``BROKER`` Settings
 
 =====================================  =====================================
 **Setting name**                       **Replace with**
@@ -161,8 +293,10 @@ Settings
 ``BROKER_VHOST``                       :setting:`broker_url`
 =====================================  =====================================
 
-``REDIS`` Result Backend Settings
+``REDIS`` 结果后端设置
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``REDIS`` Result Backend Settings
 
 =====================================  =====================================
 **Setting name**                       **Replace with**
@@ -178,30 +312,55 @@ Settings
 =====================================  =====================================
 
 
-Task_sent signal
+Task_sent 信号
 ----------------
 
-The :signal:`task_sent` signal will be removed in version 4.0.
-Please use the :signal:`before_task_publish` and :signal:`after_task_publish`
-signals instead.
+Task_sent signal
 
-Result
+.. tab:: 中文
+
+    :signal:`task_sent` 信号将在 4.0 版本中移除。  
+    请改用 :signal:`before_task_publish` 和 :signal:`after_task_publish` 信号。
+
+.. tab:: 英文
+
+    The :signal:`task_sent` signal will be removed in version 4.0.
+    Please use the :signal:`before_task_publish` and :signal:`after_task_publish`
+    signals instead.
+
+结果
 ------
 
-Apply to: :class:`~celery.result.AsyncResult`,
-:class:`~celery.result.EagerResult`:
+Result
 
-- ``Result.wait()`` -> ``Result.get()``
+.. tab:: 中文
 
-- ``Result.task_id()`` -> ``Result.id``
+    适用于：:class:`~celery.result.AsyncResult`,  
+    :class:`~celery.result.EagerResult`：
 
-- ``Result.status`` -> ``Result.state``.
+    - ``Result.wait()`` -> ``Result.get()``
+
+    - ``Result.task_id()`` -> ``Result.id``
+
+    - ``Result.status`` -> ``Result.state``
+
+.. tab:: 英文
+
+    Apply to: :class:`~celery.result.AsyncResult`, :class:`~celery.result.EagerResult`:
+
+    - ``Result.wait()`` -> ``Result.get()``
+
+    - ``Result.task_id()`` -> ``Result.id``
+
+    - ``Result.status`` -> ``Result.state``.
 
 .. _deprecations-v3.1:
 
 
-Settings
+设置
 ~~~~~~~~
+
+Settings
 
 =====================================  =====================================
 **Setting name**                       **Replace with**
@@ -213,26 +372,50 @@ Settings
 
 .. _deprecations-v2.0:
 
-Removals for version 2.0
+2.0 版移除内容
 ========================
 
-* The following settings will be removed:
+Removals for version 2.0
 
-=====================================  =====================================
-**Setting name**                       **Replace with**
-=====================================  =====================================
-`CELERY_AMQP_CONSUMER_QUEUES`          `task_queues`
-`CELERY_AMQP_CONSUMER_QUEUES`          `task_queues`
-`CELERY_AMQP_EXCHANGE`                 `task_default_exchange`
-`CELERY_AMQP_EXCHANGE_TYPE`            `task_default_exchange_type`
-`CELERY_AMQP_CONSUMER_ROUTING_KEY`     `task_queues`
-`CELERY_AMQP_PUBLISHER_ROUTING_KEY`    `task_default_routing_key`
-=====================================  =====================================
+.. tab:: 中文
 
-* :envvar:`CELERY_LOADER` definitions without class name.
+    * 以下配置项将被移除：
 
-    For example,, `celery.loaders.default`, needs to include the class name:
-    `celery.loaders.default.Loader`.
+    =====================================  =====================================
+    **配置项名称**                         **替代项**
+    =====================================  =====================================
+    `CELERY_AMQP_CONSUMER_QUEUES`          `task_queues`
+    `CELERY_AMQP_CONSUMER_QUEUES`          `task_queues`
+    `CELERY_AMQP_EXCHANGE`                 `task_default_exchange`
+    `CELERY_AMQP_EXCHANGE_TYPE`            `task_default_exchange_type`
+    `CELERY_AMQP_CONSUMER_ROUTING_KEY`     `task_queues`
+    `CELERY_AMQP_PUBLISHER_ROUTING_KEY`    `task_default_routing_key`
+    =====================================  =====================================
 
-* :meth:`TaskSet.run`. Use :meth:`celery.task.base.TaskSet.apply_async`
-    instead.
+    * 未包含类名的 :envvar:`CELERY_LOADER` 定义
+
+      例如：`celery.loaders.default`，必须包含类名： `celery.loaders.default.Loader`
+
+    * :meth:`TaskSet.run`。请改为使用 :meth:`celery.task.base.TaskSet.apply_async`。
+
+
+.. tab:: 英文
+
+    * The following settings will be removed:
+
+    =====================================  =====================================
+    **Setting name**                       **Replace with**
+    =====================================  =====================================
+    `CELERY_AMQP_CONSUMER_QUEUES`          `task_queues`
+    `CELERY_AMQP_CONSUMER_QUEUES`          `task_queues`
+    `CELERY_AMQP_EXCHANGE`                 `task_default_exchange`
+    `CELERY_AMQP_EXCHANGE_TYPE`            `task_default_exchange_type`
+    `CELERY_AMQP_CONSUMER_ROUTING_KEY`     `task_queues`
+    `CELERY_AMQP_PUBLISHER_ROUTING_KEY`    `task_default_routing_key`
+    =====================================  =====================================
+
+    * :envvar:`CELERY_LOADER` definitions without class name.
+
+      For example,, `celery.loaders.default`, needs to include the class name: `celery.loaders.default.Loader`.
+
+    * :meth:`TaskSet.run`. Use :meth:`celery.task.base.TaskSet.apply_async` instead.
