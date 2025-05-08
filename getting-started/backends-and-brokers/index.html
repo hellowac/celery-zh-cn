@@ -1,0 +1,848 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../../genindex.html" /><link rel="search" title="搜索" href="../../search.html" /><link rel="copyright" title="版权所有" href="../../copyright.html" /><link rel="next" title="使用 RabbitMQ" href="rabbitmq.html" /><link rel="prev" title="Celery 简介" href="../introduction.html" />
+
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/><!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>Backends 和 Brokers - Celery 5.5.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=3ee1c6c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/my.css?v=112ca36d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Celery 5.5.1 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/celery_512_1.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Celery 5.5.1 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">版权</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">快速开始</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 快速开始</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html">Celery 简介</a></li>
+<li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">Backends 和 Brokers</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Backends 和 Brokers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="rabbitmq.html">使用 RabbitMQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="redis.html">使用 Redis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sqs.html">使用 Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kafka.html">使用 Kafka</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gcpubsub.html">使用 Google Pub/Sub</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../first-steps-with-celery.html">使用 Celery 的第一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">下一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resources.html">资源</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../userguide/index.html">用户指南</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 用户指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/application.html">应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/tasks.html">任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/calling.html">调用任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/canvas.html">Canvas：设计工作流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/workers.html">Workers 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/daemonizing.html">守护进程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/periodic-tasks.html">周期性任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/routing.html">路由任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/monitoring.html">监控和管理指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/security.html">安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/optimizing.html">优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/debugging.html">调试</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../userguide/concurrency/index.html">并发</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 并发</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../userguide/concurrency/eventlet.html">Eventlet 并发</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../userguide/concurrency/gevent.html">gevent 并发</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/signals.html">信号</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/testing.html">使用 Celery 进行测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/extending.html">扩展 和 Bootsteps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/configuration.html">配置和默认值</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userguide/sphinx.html">使用 Sphinx 文档化任务</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../django/index.html">Django</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Django</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../django/first-steps-with-django.html">使用 Django 的第一步</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../community.html">社区资源</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/task-cookbook.html">Task Cookbook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">更改历史</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../reference/index.html">API 参考</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of API 参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/cli.html">命令行接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">celery</span></code> --- Distributed processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.html">Proxies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.task.html"><code class="docutils literal notranslate"><span class="pre">celery.app.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.amqp.html">AMQP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.amqp.html#queues">Queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.defaults.html"><code class="docutils literal notranslate"><span class="pre">celery.app.defaults</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.control.html"><code class="docutils literal notranslate"><span class="pre">celery.app.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.registry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.registry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.app.backends</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.builtins.html"><code class="docutils literal notranslate"><span class="pre">celery.app.builtins</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.events.html"><code class="docutils literal notranslate"><span class="pre">celery.app.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.log.html"><code class="docutils literal notranslate"><span class="pre">celery.app.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.app.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.app.autoretry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.autoretry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bootsteps.html"><code class="docutils literal notranslate"><span class="pre">celery.bootsteps</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.result.html"><code class="docutils literal notranslate"><span class="pre">celery.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.schedules.html"><code class="docutils literal notranslate"><span class="pre">celery.schedules</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.signals.html"><code class="docutils literal notranslate"><span class="pre">celery.signals</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.security.html"><code class="docutils literal notranslate"><span class="pre">celery.security</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.utils.debug.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.debug</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.exceptions.html"><code class="docutils literal notranslate"><span class="pre">celery.exceptions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.loaders.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.loaders.app.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.loaders.default.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.default</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.loaders.base.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.states.html">States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.states.html#sets">Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.states.html#misc">Misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.states.html#celery.states.FAILURE"><code class="docutils literal notranslate"><span class="pre">FAILURE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.states.html#celery.states.PENDING"><code class="docutils literal notranslate"><span class="pre">PENDING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.states.html#celery.states.RECEIVED"><code class="docutils literal notranslate"><span class="pre">RECEIVED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.states.html#celery.states.RETRY"><code class="docutils literal notranslate"><span class="pre">RETRY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.states.html#celery.states.REVOKED"><code class="docutils literal notranslate"><span class="pre">REVOKED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.states.html#celery.states.STARTED"><code class="docutils literal notranslate"><span class="pre">STARTED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.states.html#celery.states.SUCCESS"><code class="docutils literal notranslate"><span class="pre">SUCCESS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.states.html#celery.states.precedence"><code class="docutils literal notranslate"><span class="pre">precedence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.states.html#celery.states.state"><code class="docutils literal notranslate"><span class="pre">state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.contrib.abortable.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.abortable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.contrib.django.task.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.django.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.contrib.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.contrib.pytest.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.pytest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.contrib.sphinx.html">celery.contrib.sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.contrib.testing.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.contrib.testing.app.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.contrib.testing.manager.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.manager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.contrib.testing.mocks.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.mocks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.contrib.rdb.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.rdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.events.html"><code class="docutils literal notranslate"><span class="pre">celery.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.events.receiver.html"><code class="docutils literal notranslate"><span class="pre">celery.events.receiver</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.events.dispatcher.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.events.event.html"><code class="docutils literal notranslate"><span class="pre">celery.events.event</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.events.state.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.apps.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.apps.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.apps.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.request.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.request</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.state.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.strategy.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.strategy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.consumer.agent.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.agent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.consumer.connection.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.connection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.consumer.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.consumer.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.consumer.events.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.consumer.gossip.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.gossip</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.consumer.heart.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.heart</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.consumer.mingle.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.mingle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.consumer.tasks.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.tasks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.worker.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.base.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.celery.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.celery</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.events.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.logtool.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.logtool</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.amqp.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.amqp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.graph</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.call.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.call</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.control.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.list.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.list</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.purge.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.purge</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.result.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.shell.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.shell</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/celery.bin.upgrade.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.upgrade</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../internals/index.html">内部</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 内部</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/guide.html">代码贡献指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/deprecation.html">Celery 弃用时间表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/worker.html">内部的 worker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/protocol.html">消息协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/app-overview.html">“大实例”重构</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../internals/reference/index.html">内部模块参考</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 内部模块参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.worker.components.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.components</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.worker.loops.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.loops</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.worker.heartbeat.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.heartbeat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.worker.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.control</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.worker.pidbox.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.pidbox</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.worker.autoscale.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.autoscale</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.concurrency.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.concurrency.solo.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.solo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.concurrency.prefork.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.prefork</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.concurrency.eventlet.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.eventlet</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.concurrency.gevent.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.gevent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.concurrency.thread.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.thread</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.concurrency.base.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.backends</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.base.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.asynchronous.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.asynchronous</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.azureblockblob.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.azureblockblob</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.rpc.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.rpc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.database.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.cache.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.consul.html">celery.backends.consul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.couchdb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchdb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.mongodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.mongodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.elasticsearch.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.elasticsearch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.redis.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.redis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.cassandra.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cassandra</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.couchbase.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchbase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.arangodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.arangodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.dynamodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.dynamodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.filesystem.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.filesystem</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.cosmosdbsql.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cosmosdbsql</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.s3.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.s3</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.gcs.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.gcs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.app.trace.html"><code class="docutils literal notranslate"><span class="pre">celery.app.trace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.app.annotations.html"><code class="docutils literal notranslate"><span class="pre">celery.app.annotations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.app.routes.html"><code class="docutils literal notranslate"><span class="pre">celery.app.routes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.security.certificate.html"><code class="docutils literal notranslate"><span class="pre">celery.security.certificate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.security.key.html"><code class="docutils literal notranslate"><span class="pre">celery.security.key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.security.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.security.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.security.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.security.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.events.snapshot.html"><code class="docutils literal notranslate"><span class="pre">celery.events.snapshot</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.events.cursesmon.html"><code class="docutils literal notranslate"><span class="pre">celery.events.cursesmon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.events.dumper.html"><code class="docutils literal notranslate"><span class="pre">celery.events.dumper</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.database.models.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.models</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.backends.database.session.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.session</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.abstract.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.abstract</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.collections.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.collections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.nodenames.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.nodenames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.deprecated.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.deprecated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.functional.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.functional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.graph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.objects.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.term.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.term</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.time.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.time</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.iso8601.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.iso8601</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.saferepr.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.saferepr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.sysinfo.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.sysinfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.threads.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.threads</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.timer2.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.timer2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.imports.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.imports</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.log.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.log</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.text.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.dispatch.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.utils.dispatch.signal.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch.signal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery.platforms.html"><code class="docutils literal notranslate"><span class="pre">celery.platforms</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/reference/celery._state.html"><code class="docutils literal notranslate"><span class="pre">celery._state</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../history/index.html">历史</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 历史</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-5.5.html">What's new in Celery 5.5 (Immunity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-5.5.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-5.4.html">What's new in Celery 5.4 (Opalescent)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-5.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-5.3.html">What's new in Celery 5.3 (Emerald Rush)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-5.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-5.1.html">What's new in Celery 5.1 (Sun Harmonics)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-5.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-5.0.html">What's new in Celery 5.0 (singularity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-5.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-4.4.html">What's new in Celery 4.4 (Cliffs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-4.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-4.3.html">What's new in Celery 4.3 (rhubarb)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-4.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-4.2.html">What's new in Celery 4.2 (windowlicker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-4.2.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-4.1.html">What's new in Celery 4.1 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-4.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-4.0.html">What's new in Celery 4.0 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-4.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-3.1.html">What's new in Celery 3.1 (Cipater)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-3.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-3.0.html">What's new in Celery 3.0 (Chiastic Slide)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-3.0.html">Change history for Celery 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/whatsnew-2.5.html">What's new in Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-2.5.html">Change history for Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-2.4.html">Change history for Celery 2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-2.3.html">Change history for Celery 2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-2.2.html">Change history for Celery 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-2.1.html">Change history for Celery 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-2.0.html">Change history for Celery 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../history/changelog-1.0.html">Change history for Celery 1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">术语</a></li>
+</ul>
+
+</div>
+<!-- <iframe src="https://ghbtns.com/github-btn.html?user=celery&repo=celery&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe> -->
+<div id="donate">
+  <h5>捐赠</h5>
+  <p>请捐赠以支持这个社区项目</p>
+  <a href="https://opencollective.com/celery/donate" target="_blank">
+    <!-- <img src="https://opencollective.com/celery/donate/button@2x.png?color=blue" /> -->
+    <img src="https://opencollective.com/celery/donate/button.png?color=blue" />
+  </a>
+</div></div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/getting-started/backends-and-brokers/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="backends-brokers">
+<span id="brokers"></span><h1>Backends 和 Brokers<a class="headerlink" href="#backends-brokers" title="Link to this heading">¶</a></h1>
+<p>Backends and Brokers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Release<span class="colon">:</span></dt>
+<dd class="field-odd"><p>5.5</p>
+</dd>
+<dt class="field-even">Date<span class="colon">:</span></dt>
+<dd class="field-even"><p>2025 年 05 月 08 日</p>
+</dd>
+</dl>
+<p>Celery 支持多种消息传输替代方案。</p>
+<p>Celery supports several message transport alternatives.</p>
+<section id="broker">
+<span id="broker-toc"></span><h2>Broker 指南<a class="headerlink" href="#broker" title="Link to this heading">¶</a></h2>
+<p>Broker Instructions</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rabbitmq.html">使用 RabbitMQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="redis.html">使用 Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sqs.html">使用 Amazon SQS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kafka.html">使用 Kafka</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcpubsub.html">使用 Google Pub/Sub</a></li>
+</ul>
+</div>
+</section>
+<section id="broker-overview">
+<span id="id1"></span><h2>Broker 概览<a class="headerlink" href="#broker-overview" title="Link to this heading">¶</a></h2>
+<p>Broker Overview</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>这是各类传输方式的比较表，更多信息可参见每个传输方式的文档（见 <a class="reference internal" href="#broker-toc"><span class="std std-ref">Broker 指南</span></a>）。</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>名称</strong></p></td>
+<td><p><strong>状态</strong></p></td>
+<td><p><strong>监控</strong></p></td>
+<td><p><strong>远程控制</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><em>RabbitMQ</em></p></td>
+<td><p>Stable</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Redis</em></p></td>
+<td><p>Stable</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Amazon SQS</em></p></td>
+<td><p>Stable</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Zookeeper</em></p></td>
+<td><p>实验性</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Kafka</em></p></td>
+<td><p>实验性</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>GC PubSub</em></p></td>
+<td><p>实验性</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>实验性代理可能可以正常工作，但没有专门的维护者。</p>
+<p>缺乏监控支持意味着该传输方式不实现事件功能，因此 Flower、 <cite>celery events</cite>、 <cite>celerymon</cite> 以及其他基于事件的监控工具将无法使用。</p>
+<p>远程控制支持表示可通过 <cite>celery inspect</cite> 和 <cite>celery control</cite> 命令（以及其他使用远程控制 API 的工具）在运行时检查和管理 worker。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>This is comparison table of the different transports supports,
+more information can be found in the documentation for each
+individual transport (see <a class="reference internal" href="#broker-toc"><span class="std std-ref">Broker 指南</span></a>).</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>Name</strong></p></td>
+<td><p><strong>Status</strong></p></td>
+<td><p><strong>Monitoring</strong></p></td>
+<td><p><strong>Remote Control</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><em>RabbitMQ</em></p></td>
+<td><p>Stable</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Redis</em></p></td>
+<td><p>Stable</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Amazon SQS</em></p></td>
+<td><p>Stable</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Zookeeper</em></p></td>
+<td><p>Experimental</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Kafka</em></p></td>
+<td><p>Experimental</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>GC PubSub</em></p></td>
+<td><p>Experimental</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Experimental brokers may be functional but they don't have
+dedicated maintainers.</p>
+<p>Missing monitor support means that the transport doesn't
+implement events, and as such Flower, <cite>celery events</cite>, <cite>celerymon</cite>
+and other event-based monitoring tools won't work.</p>
+<p>Remote control means the ability to inspect and manage workers
+at runtime using the <cite>celery inspect</cite> and <cite>celery control</cite> commands
+(and other tools using the remote control API).</p>
+</div>
+</div>
+</section>
+<section id="id2">
+<h2>摘要<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<p>Summaries</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p><em>注意：本节并不全面覆盖所有后端与消息代理。</em></p>
+<p>Celery 能够使用多种后端（结果存储）与消息代理（消息传输）进行通信和数据存储。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p><em>Note: This section is not comprehensive of backends and brokers.</em></p>
+<p>Celery has the ability to communicate and store with many different backends (Result Stores) and brokers (Message Transports).</p>
+</div>
+</div>
+<section id="redis">
+<h3>Redis<a class="headerlink" href="#redis" title="Link to this heading">¶</a></h3>
+<p>Redis</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>Redis 可同时作为后端和消息代理使用。</p>
+<p><strong>作为 Broker：</strong> Redis 适用于小消息的快速传输。大消息可能会导致系统拥堵。</p>
+<p><a class="reference internal" href="redis.html#broker-redis"><span class="std std-ref">详见文档</span></a></p>
+<p><strong>作为 Backend：</strong> Redis 是一个超快速的键值存储系统，使得任务结果的获取非常高效。需要考虑的是 Redis 的内存限制和持久化策略。如果结果持久化很重要，建议考虑其他数据库作为后端。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>Redis can be both a backend and a broker.</p>
+<p><strong>As a Broker:</strong> Redis works well for rapid transport of small messages. Large messages can congest the system.</p>
+<p><a class="reference internal" href="redis.html#broker-redis"><span class="std std-ref">See documentation for details</span></a></p>
+<p><strong>As a Backend:</strong> Redis is a super fast K/V store, making it very efficient for fetching the results of a task call. As with the design of Redis, you do have to consider the limit memory available to store your data, and how you handle data persistence. If result persistence is important, consider using another DB for your backend.</p>
+</div>
+</div>
+</section>
+<section id="rabbitmq">
+<h3>RabbitMQ<a class="headerlink" href="#rabbitmq" title="Link to this heading">¶</a></h3>
+<p>RabbitMQ</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>RabbitMQ 是一个消息代理。</p>
+<p><strong>作为 Broker：</strong> RabbitMQ 对大消息的处理能力优于 Redis，但如果短时间内涌入大量消息，扩展能力可能成为问题。除非 RabbitMQ 运行在大规模部署环境下，否则可以考虑 Redis 或 SQS。</p>
+<p><a class="reference internal" href="rabbitmq.html#broker-rabbitmq"><span class="std std-ref">详见文档</span></a></p>
+<p><strong>作为 Backend：</strong> RabbitMQ 可通过 <code class="docutils literal notranslate"><span class="pre">rpc://</span></code> 后端存储结果，该后端会为每个客户端创建独立的临时队列。</p>
+<p><em>注：RabbitMQ（作为 broker）与 Redis（作为 backend）是非常常见的组合。如果需要更可靠的结果持久化存储，可考虑使用 PostgreSQL、MySQL（通过 SQLAlchemy）、Cassandra 或自定义后端。</em></p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>RabbitMQ is a broker.</p>
+<p><strong>As a Broker:</strong> RabbitMQ handles larger messages better than Redis, however if many messages are coming in very quickly, scaling can become a concern and Redis or SQS should be considered unless RabbitMQ is running at very large scale.</p>
+<p><a class="reference internal" href="rabbitmq.html#broker-rabbitmq"><span class="std std-ref">See documentation for details</span></a></p>
+<p><strong>As a Backend:</strong> RabbitMQ can store results via <code class="docutils literal notranslate"><span class="pre">rpc://</span></code> backend. This backend creates separate temporary queue for each client.</p>
+<p><em>Note: RabbitMQ (as the broker) and Redis (as the backend) are very commonly used together. If more guaranteed long-term persistence is needed from the result store, consider using PostgreSQL or MySQL (through SQLAlchemy), Cassandra, or a custom defined backend.</em></p>
+</div>
+</div>
+</section>
+<section id="sqs">
+<h3>SQS<a class="headerlink" href="#sqs" title="Link to this heading">¶</a></h3>
+<p>SQS</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>SQS 是一个消息代理。</p>
+<p>如果你已经深度集成 AWS 并熟悉 SQS，它是一个很好的 broker 选择。它具备极强的可扩展性并由 AWS 完全托管，任务调度机制类似于 RabbitMQ。但它缺乏某些功能，例如 <code class="docutils literal notranslate"><span class="pre">worker</span> <span class="pre">远程控制命令</span></code>。</p>
+<p><a class="reference internal" href="sqs.html#broker-sqs"><span class="std std-ref">详见文档</span></a></p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>SQS is a broker.</p>
+<p>If you already integrate tightly with AWS, and are familiar with SQS, it presents a great option as a broker. It is extremely scalable and completely managed, and manages task delegation similarly to RabbitMQ. It does lack some of the features of the RabbitMQ broker such as <code class="docutils literal notranslate"><span class="pre">worker</span> <span class="pre">remote</span> <span class="pre">control</span> <span class="pre">commands</span></code>.</p>
+<p><a class="reference internal" href="sqs.html#broker-sqs"><span class="std std-ref">See documentation for details</span></a></p>
+</div>
+</div>
+</section>
+<section id="sqlalchemy">
+<h3>SQLAlchemy<a class="headerlink" href="#sqlalchemy" title="Link to this heading">¶</a></h3>
+<p>SQLAlchemy</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>SQLAlchemy 是一个后端。</p>
+<p>它使 Celery 能够与 MySQL、PostgreSQL、SQLite 等数据库进行接口交互。作为 ORM，它是 Celery 使用 SQL 数据库存储结果的方式。</p>
+<p><a class="reference internal" href="../../userguide/configuration.html#conf-database-result-backend"><span class="std std-ref">详见文档</span></a></p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>SQLAlchemy is a backend.</p>
+<p>It allows Celery to interface with MySQL, PostgreSQL, SQlite, and more. It is an ORM, and is the way Celery can use a SQL DB as a result backend.</p>
+<p><a class="reference internal" href="../../userguide/configuration.html#conf-database-result-backend"><span class="std std-ref">See documentation for details</span></a></p>
+</div>
+</div>
+</section>
+<section id="gcpubsub">
+<h3>GCPubSub<a class="headerlink" href="#gcpubsub" title="Link to this heading">¶</a></h3>
+<p>GCPubSub</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>Google Cloud Pub/Sub 是一个消息代理。</p>
+<p>如果你已经深度集成 Google Cloud 并熟悉 Pub/Sub，它是一个很好的 broker 选择。它具备极强的可扩展性并由 Google 完全托管，任务调度机制类似于 RabbitMQ。</p>
+<p><a class="reference internal" href="gcpubsub.html#broker-gcpubsub"><span class="std std-ref">详见文档</span></a></p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>Google Cloud Pub/Sub is a broker.</p>
+<p>If you already integrate tightly with Google Cloud, and are familiar with Pub/Sub, it presents a great option as a broker. It is extremely scalable and completely managed, and manages task delegation similarly to RabbitMQ.</p>
+<p><a class="reference internal" href="gcpubsub.html#broker-gcpubsub"><span class="std std-ref">See documentation for details</span></a></p>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="rabbitmq.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">使用 RabbitMQ</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../introduction.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Celery 简介</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../../copyright.html">Copyright</a> &#169; 2009-2023, Ask Solem &amp; contributors
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Backends 和 Brokers</a><ul>
+<li><a class="reference internal" href="#broker">Broker 指南</a></li>
+<li><a class="reference internal" href="#broker-overview">Broker 概览</a></li>
+<li><a class="reference internal" href="#id2">摘要</a><ul>
+<li><a class="reference internal" href="#redis">Redis</a></li>
+<li><a class="reference internal" href="#rabbitmq">RabbitMQ</a></li>
+<li><a class="reference internal" href="#sqs">SQS</a></li>
+<li><a class="reference internal" href="#sqlalchemy">SQLAlchemy</a></li>
+<li><a class="reference internal" href="#gcpubsub">GCPubSub</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=8156d91f"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../_static/tabs.js?v=3ee01567"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=5eb1bb1e"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    </body>
+</html>

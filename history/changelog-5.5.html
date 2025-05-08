@@ -1,0 +1,2298 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="What&#39;s new in Celery 5.4 (Opalescent)" href="whatsnew-5.4.html" /><link rel="prev" title="What&#39;s new in Celery 5.5 (Immunity)" href="whatsnew-5.5.html" />
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>Change history - Celery 5.5.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=3ee1c6c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/my.css?v=112ca36d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Celery 5.5.1 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/celery_512_1.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Celery 5.5.1 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../copyright.html">版权</a></li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/index.html">快速开始</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 快速开始</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/introduction.html">Celery 简介</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting-started/backends-and-brokers/index.html">Backends 和 Brokers</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Backends 和 Brokers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/rabbitmq.html">使用 RabbitMQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/redis.html">使用 Redis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html">使用 Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/kafka.html">使用 Kafka</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/gcpubsub.html">使用 Google Pub/Sub</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/first-steps-with-celery.html">使用 Celery 的第一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/next-steps.html">下一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/resources.html">资源</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../userguide/index.html">用户指南</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 用户指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/application.html">应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/tasks.html">任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/calling.html">调用任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/canvas.html">Canvas：设计工作流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/workers.html">Workers 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/daemonizing.html">守护进程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/periodic-tasks.html">周期性任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/routing.html">路由任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/monitoring.html">监控和管理指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/security.html">安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/optimizing.html">优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/debugging.html">调试</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../userguide/concurrency/index.html">并发</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 并发</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../userguide/concurrency/eventlet.html">Eventlet 并发</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../userguide/concurrency/gevent.html">gevent 并发</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/signals.html">信号</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/testing.html">使用 Celery 进行测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/extending.html">扩展 和 Bootsteps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/configuration.html">配置和默认值</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/sphinx.html">使用 Sphinx 文档化任务</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../django/index.html">Django</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Django</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../django/first-steps-with-django.html">使用 Django 的第一步</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">社区资源</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/task-cookbook.html">Task Cookbook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">更改历史</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">API 参考</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of API 参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cli.html">命令行接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">celery</span></code> --- Distributed processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html">Proxies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.task.html"><code class="docutils literal notranslate"><span class="pre">celery.app.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html">AMQP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html#queues">Queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.defaults.html"><code class="docutils literal notranslate"><span class="pre">celery.app.defaults</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.control.html"><code class="docutils literal notranslate"><span class="pre">celery.app.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.registry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.registry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.app.backends</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.builtins.html"><code class="docutils literal notranslate"><span class="pre">celery.app.builtins</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.events.html"><code class="docutils literal notranslate"><span class="pre">celery.app.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.log.html"><code class="docutils literal notranslate"><span class="pre">celery.app.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.app.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.autoretry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.autoretry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bootsteps.html"><code class="docutils literal notranslate"><span class="pre">celery.bootsteps</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.result.html"><code class="docutils literal notranslate"><span class="pre">celery.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.schedules.html"><code class="docutils literal notranslate"><span class="pre">celery.schedules</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.signals.html"><code class="docutils literal notranslate"><span class="pre">celery.signals</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.security.html"><code class="docutils literal notranslate"><span class="pre">celery.security</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.utils.debug.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.debug</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.exceptions.html"><code class="docutils literal notranslate"><span class="pre">celery.exceptions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.app.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.default.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.default</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.base.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html">States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#sets">Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#misc">Misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.FAILURE"><code class="docutils literal notranslate"><span class="pre">FAILURE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.PENDING"><code class="docutils literal notranslate"><span class="pre">PENDING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RECEIVED"><code class="docutils literal notranslate"><span class="pre">RECEIVED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RETRY"><code class="docutils literal notranslate"><span class="pre">RETRY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.REVOKED"><code class="docutils literal notranslate"><span class="pre">REVOKED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.STARTED"><code class="docutils literal notranslate"><span class="pre">STARTED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.SUCCESS"><code class="docutils literal notranslate"><span class="pre">SUCCESS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.precedence"><code class="docutils literal notranslate"><span class="pre">precedence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.state"><code class="docutils literal notranslate"><span class="pre">state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.abortable.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.abortable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.django.task.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.django.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.pytest.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.pytest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.sphinx.html">celery.contrib.sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.app.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.manager.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.manager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.mocks.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.mocks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.rdb.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.rdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.html"><code class="docutils literal notranslate"><span class="pre">celery.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.receiver.html"><code class="docutils literal notranslate"><span class="pre">celery.events.receiver</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.dispatcher.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.event.html"><code class="docutils literal notranslate"><span class="pre">celery.events.event</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.state.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.request.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.request</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.state.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.strategy.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.strategy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.agent.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.agent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.connection.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.connection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.events.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.gossip.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.gossip</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.heart.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.heart</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.mingle.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.mingle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.tasks.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.tasks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.base.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.celery.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.celery</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.events.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.logtool.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.logtool</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.amqp.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.amqp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.graph</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.call.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.call</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.control.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.list.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.list</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.purge.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.purge</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.result.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.shell.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.shell</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.upgrade.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.upgrade</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">内部</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 内部</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../internals/guide.html">代码贡献指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/deprecation.html">Celery 弃用时间表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/worker.html">内部的 worker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/protocol.html">消息协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/app-overview.html">“大实例”重构</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/reference/index.html">内部模块参考</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 内部模块参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.components.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.components</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.loops.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.loops</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.heartbeat.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.heartbeat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.control</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.pidbox.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.pidbox</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.autoscale.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.autoscale</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.solo.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.solo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.prefork.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.prefork</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.eventlet.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.eventlet</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.gevent.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.gevent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.thread.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.thread</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.base.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.backends</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.base.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.asynchronous.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.asynchronous</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.azureblockblob.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.azureblockblob</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.rpc.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.rpc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cache.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.consul.html">celery.backends.consul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchdb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchdb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.mongodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.mongodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.elasticsearch.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.elasticsearch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.redis.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.redis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cassandra.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cassandra</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchbase.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchbase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.arangodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.arangodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.dynamodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.dynamodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.filesystem.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.filesystem</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cosmosdbsql.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cosmosdbsql</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.s3.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.s3</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.gcs.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.gcs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.trace.html"><code class="docutils literal notranslate"><span class="pre">celery.app.trace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.annotations.html"><code class="docutils literal notranslate"><span class="pre">celery.app.annotations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.routes.html"><code class="docutils literal notranslate"><span class="pre">celery.app.routes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.certificate.html"><code class="docutils literal notranslate"><span class="pre">celery.security.certificate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.key.html"><code class="docutils literal notranslate"><span class="pre">celery.security.key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.security.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.security.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.snapshot.html"><code class="docutils literal notranslate"><span class="pre">celery.events.snapshot</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.cursesmon.html"><code class="docutils literal notranslate"><span class="pre">celery.events.cursesmon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.dumper.html"><code class="docutils literal notranslate"><span class="pre">celery.events.dumper</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.models.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.models</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.session.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.session</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.abstract.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.abstract</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.collections.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.collections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.nodenames.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.nodenames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.deprecated.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.deprecated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.functional.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.functional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.graph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.objects.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.term.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.term</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.time.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.time</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.iso8601.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.iso8601</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.saferepr.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.saferepr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.sysinfo.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.sysinfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.threads.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.threads</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.timer2.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.timer2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.imports.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.imports</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.log.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.log</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.text.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.signal.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch.signal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.platforms.html"><code class="docutils literal notranslate"><span class="pre">celery.platforms</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery._state.html"><code class="docutils literal notranslate"><span class="pre">celery._state</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">历史</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 历史</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-5.5.html">What's new in Celery 5.5 (Immunity)</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-5.4.html">What's new in Celery 5.4 (Opalescent)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-5.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-5.3.html">What's new in Celery 5.3 (Emerald Rush)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-5.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-5.1.html">What's new in Celery 5.1 (Sun Harmonics)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-5.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-5.0.html">What's new in Celery 5.0 (singularity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-5.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-4.4.html">What's new in Celery 4.4 (Cliffs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-4.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-4.3.html">What's new in Celery 4.3 (rhubarb)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-4.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-4.2.html">What's new in Celery 4.2 (windowlicker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-4.2.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-4.1.html">What's new in Celery 4.1 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-4.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-4.0.html">What's new in Celery 4.0 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-4.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-3.1.html">What's new in Celery 3.1 (Cipater)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-3.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-3.0.html">What's new in Celery 3.0 (Chiastic Slide)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-3.0.html">Change history for Celery 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-2.5.html">What's new in Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-2.5.html">Change history for Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-2.4.html">Change history for Celery 2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-2.3.html">Change history for Celery 2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-2.2.html">Change history for Celery 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-2.1.html">Change history for Celery 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-2.0.html">Change history for Celery 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-1.0.html">Change history for Celery 1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+</ul>
+
+</div>
+<!-- <iframe src="https://ghbtns.com/github-btn.html?user=celery&repo=celery&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe> -->
+<div id="donate">
+  <h5>捐赠</h5>
+  <p>请捐赠以支持这个社区项目</p>
+  <a href="https://opencollective.com/celery/donate" target="_blank">
+    <!-- <img src="https://opencollective.com/celery/donate/button@2x.png?color=blue" /> -->
+    <img src="https://opencollective.com/celery/donate/button.png?color=blue" />
+  </a>
+</div></div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/history/changelog-5.5.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="change-history">
+<span id="changelog-5-5"></span><h1>Change history<a class="headerlink" href="#change-history" title="Link to this heading">¶</a></h1>
+<p>This document contains change notes for bugfix &amp; new features
+in the main branch &amp; 5.5.x series, please see <a class="reference internal" href="whatsnew-5.5.html#whatsnew-5-5"><span class="std std-ref">What's new in Celery 5.5 (Immunity)</span></a> for
+an overview of what's new in Celery 5.5.</p>
+<section id="version-5-5-1">
+<span id="id1"></span><h2>5.5.1<a class="headerlink" href="#version-5-5-1" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">release-date<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2025-04-08</p>
+</dd>
+<dt class="field-even">release-by<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tomer Nosrati</p>
+</dd>
+</dl>
+<section id="what-s-changed">
+<h3>What's Changed<a class="headerlink" href="#what-s-changed" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fixed &quot;AttributeError: list object has no attribute strip&quot; with quorum queues and failover brokers (#9657)</p></li>
+<li><p>Prepare for release: v5.5.1 (#9660)</p></li>
+</ul>
+</section>
+</section>
+<section id="version-5-5-0">
+<span id="id2"></span><h2>5.5.0<a class="headerlink" href="#version-5-5-0" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">release-date<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2025-03-31</p>
+</dd>
+<dt class="field-even">release-by<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tomer Nosrati</p>
+</dd>
+</dl>
+<p>Celery v5.5.0 is now available.</p>
+<section id="key-highlights">
+<h3>Key Highlights<a class="headerlink" href="#key-highlights" title="Link to this heading">¶</a></h3>
+<p>See <a class="reference internal" href="whatsnew-5.5.html#whatsnew-5-5"><span class="std std-ref">What's new in Celery 5.5 (Immunity)</span></a> for a complete overview or read the main highlights below.</p>
+<section id="redis-broker-stability-improvements">
+<h4>Redis Broker Stability Improvements<a class="headerlink" href="#redis-broker-stability-improvements" title="Link to this heading">¶</a></h4>
+<p>Long-standing disconnection issues with the Redis broker have been identified and
+resolved in Kombu 5.5.0, which is included with this release. These improvements
+significantly enhance stability when using Redis as a broker.</p>
+<p>Additionally, the Redis backend now has better exception handling with the new
+<code class="docutils literal notranslate"><span class="pre">exception_safe_to_retry</span></code> feature, which improves resilience during temporary
+Redis connection issues. See <a class="reference internal" href="../userguide/configuration.html#conf-redis-result-backend"><span class="std std-ref">Redis 后端设置</span></a> for complete
+documentation.</p>
+<p>Contributed by <a class="reference external" href="https://github.com/drienkop">&#64;drienkop</a> in
+<a class="reference external" href="https://github.com/celery/celery/pull/9614">#9614</a>.</p>
+</section>
+<section id="pycurl-replaced-with-urllib3">
+<h4><code class="docutils literal notranslate"><span class="pre">pycurl</span></code> replaced with <code class="docutils literal notranslate"><span class="pre">urllib3</span></code><a class="headerlink" href="#pycurl-replaced-with-urllib3" title="Link to this heading">¶</a></h4>
+<p>Replaced the <a class="extlink-pypi reference external" href="https://pypi.org/project/pycurl/">https://pypi.org/project/pycurl/</a> dependency with <a class="extlink-pypi reference external" href="https://pypi.org/project/urllib3/">https://pypi.org/project/urllib3/</a>.</p>
+<p>We're monitoring the performance impact of this change and welcome feedback from users
+who notice any significant differences in their environments.</p>
+<p>Contributed by <a class="reference external" href="https://github.com/spawn-guy">&#64;spawn-guy</a> in Kombu
+<a class="reference external" href="https://github.com/celery/kombu/pull/2134">#2134</a> and integrated in Celery via
+<a class="reference external" href="https://github.com/celery/celery/pull/9526">#9526</a>.</p>
+</section>
+<section id="rabbitmq-quorum-queues-support">
+<h4>RabbitMQ Quorum Queues Support<a class="headerlink" href="#rabbitmq-quorum-queues-support" title="Link to this heading">¶</a></h4>
+<p>Added support for RabbitMQ's new <a class="reference external" href="https://www.rabbitmq.com/docs/quorum-queues">Quorum Queues</a>
+feature, including compatibility with ETA tasks. This implementation has some limitations compared
+to classic queues, so please refer to the documentation for details.</p>
+<p><a class="reference external" href="https://docs.particular.net/transports/rabbitmq/delayed-delivery">Native Delayed Delivery</a>
+is automatically enabled when quorum queues are detected to implement the ETA mechanism.</p>
+<p>See <a class="reference internal" href="../getting-started/backends-and-brokers/rabbitmq.html#using-quorum-queues"><span class="std std-ref">使用 Quorum 队列</span></a> for complete documentation.</p>
+<p>Configuration options:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-broker_native_delayed_delivery_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">broker_native_delayed_delivery_queue_type</span></code></a>: Specifies the queue type for
+delayed delivery (default: <code class="docutils literal notranslate"><span class="pre">quorum</span></code>)</p></li>
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-task_default_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_queue_type</span></code></a>: Sets the default queue type for tasks
+(default: <code class="docutils literal notranslate"><span class="pre">classic</span></code>)</p></li>
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-worker_detect_quorum_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_detect_quorum_queues</span></code></a>: Controls automatic detection of quorum
+queues (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></li>
+</ul>
+<p>Contributed in <a class="reference external" href="https://github.com/celery/celery/pull/9207">#9207</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9121">#9121</a>, and
+<a class="reference external" href="https://github.com/celery/celery/pull/9599">#9599</a>.</p>
+<p>For details regarding the 404 errors, see
+<a class="reference external" href="https://github.com/celery/celery/discussions/9525">New Year's Security Incident</a>.</p>
+</section>
+<section id="soft-shutdown-mechanism">
+<h4>Soft Shutdown Mechanism<a class="headerlink" href="#soft-shutdown-mechanism" title="Link to this heading">¶</a></h4>
+<p>Soft shutdown is a time limited warm shutdown, initiated just before the cold shutdown.
+The worker will allow <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a> seconds for all currently
+executing tasks to finish before it terminates. If the time limit is reached, the worker
+will initiate a cold shutdown and cancel all currently executing tasks.</p>
+<p>This feature is particularly valuable when using brokers with visibility timeout
+mechanisms, such as Redis or SQS. It allows the worker enough time to re-queue
+tasks that were not completed before exiting, preventing task loss during worker
+shutdown.</p>
+<p>See <a class="reference internal" href="../userguide/workers.html#worker-stopping"><span class="std std-ref">停止 worker</span></a> for complete documentation on worker shutdown types.</p>
+<p>Configuration options:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a>: Sets the duration in seconds for the soft
+shutdown period (default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>, disabled)</p></li>
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a>: Controls whether soft shutdown
+should be enabled even when the worker is idle (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p></li>
+</ul>
+<p>Contributed by <a class="reference external" href="https://github.com/Nusnus">&#64;Nusnus</a> in
+<a class="reference external" href="https://github.com/celery/celery/pull/9213">#9213</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9231">#9231</a>, and
+<a class="reference external" href="https://github.com/celery/celery/pull/9238">#9238</a>.</p>
+</section>
+<section id="pydantic-support">
+<h4>Pydantic Support<a class="headerlink" href="#pydantic-support" title="Link to this heading">¶</a></h4>
+<p>New native support for Pydantic models in tasks. This integration
+allows you to leverage Pydantic's powerful data validation and serialization
+capabilities directly in your Celery tasks.</p>
+<p>Example usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">Celery</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s1">&#39;tasks&#39;</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ArgModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">int</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ReturnModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">pydantic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">x</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">ArgModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReturnModel</span><span class="p">:</span>
+    <span class="c1"># args/kwargs type hinted as Pydantic model will be converted</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">ArgModel</span><span class="p">)</span>
+
+    <span class="c1"># The returned model will be converted to a dict automatically</span>
+    <span class="k">return</span> <span class="n">ReturnModel</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;example: </span><span class="si">{</span><span class="n">arg</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="../userguide/tasks.html#task-pydantic"><span class="std std-ref">使用 Pydantic 进行参数验证</span></a> for complete documentation.</p>
+<p>Configuration options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pydantic=True</span></code>: Enables Pydantic integration for the task</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pydantic_strict=True/False</span></code>: Controls whether strict validation is enabled
+(default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pydantic_context={...}</span></code>: Provides additional context for validation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pydantic_dump_kwargs={...}</span></code>: Customizes serialization behavior</p></li>
+</ul>
+<p>Contributed by <a class="reference external" href="https://github.com/mathiasertl">&#64;mathiasertl</a> in
+<a class="reference external" href="https://github.com/celery/celery/pull/9023">#9023</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9319">#9319</a>, and
+<a class="reference external" href="https://github.com/celery/celery/pull/9393">#9393</a>.</p>
+</section>
+<section id="google-pub-sub-transport">
+<h4>Google Pub/Sub Transport<a class="headerlink" href="#google-pub-sub-transport" title="Link to this heading">¶</a></h4>
+<p>New support for Google Cloud Pub/Sub as a message transport, expanding
+Celery's cloud integration options.</p>
+<p>See <a class="reference internal" href="../getting-started/backends-and-brokers/gcpubsub.html#broker-gcpubsub"><span class="std std-ref">使用 Google Pub/Sub</span></a> for complete documentation.</p>
+<p>For the Google Pub/Sub support you have to install additional dependencies:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;celery[gcpubsub]&quot;</span>
+</pre></div>
+</div>
+<p>Then configure your Celery application to use the Google Pub/Sub transport:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">broker_url</span> <span class="o">=</span> <span class="s1">&#39;gcpubsub://projects/project-id&#39;</span>
+</pre></div>
+</div>
+<p>Contributed by <a class="reference external" href="https://github.com/haimjether">&#64;haimjether</a> in
+<a class="reference external" href="https://github.com/celery/celery/pull/9351">#9351</a>.</p>
+</section>
+<section id="python-3-13-support">
+<h4>Python 3.13 Support<a class="headerlink" href="#python-3-13-support" title="Link to this heading">¶</a></h4>
+<p>Official support for Python 3.13. All core dependencies have been
+updated to ensure compatibility, including Kombu and py-amqp.</p>
+<p>This release maintains compatibility with Python 3.8 through 3.13, as well as
+PyPy 3.10+.</p>
+<p>Contributed by <a class="reference external" href="https://github.com/Nusnus">&#64;Nusnus</a> in
+<a class="reference external" href="https://github.com/celery/celery/pull/9309">#9309</a> and
+<a class="reference external" href="https://github.com/celery/celery/pull/9350">#9350</a>.</p>
+</section>
+<section id="remap-sigterm-support">
+<h4>REMAP_SIGTERM Support<a class="headerlink" href="#remap-sigterm-support" title="Link to this heading">¶</a></h4>
+<p>The &quot;REMAP_SIGTERM&quot; feature, previously undocumented, has been tested, documented,
+and is now officially supported. This feature allows you to remap the SIGTERM
+signal to SIGQUIT, enabling you to initiate a soft or cold shutdown using TERM
+instead of QUIT.</p>
+<p>This is particularly useful in containerized environments where SIGTERM is the
+standard signal for graceful termination.</p>
+<p>See <a class="reference internal" href="../userguide/workers.html#worker-remap-sigterm"><span class="std std-ref">Cold Shutdown documentation</span></a> for more info.</p>
+<p>To enable this feature, set the environment variable:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">REMAP_SIGTERM</span><span class="o">=</span><span class="s2">&quot;SIGQUIT&quot;</span>
+</pre></div>
+</div>
+<p>Contributed by <a class="reference external" href="https://github.com/Nusnus">&#64;Nusnus</a> in
+<a class="reference external" href="https://github.com/celery/celery/pull/9461">#9461</a>.</p>
+</section>
+<section id="database-backend-improvements">
+<h4>Database Backend Improvements<a class="headerlink" href="#database-backend-improvements" title="Link to this heading">¶</a></h4>
+<p>New <code class="docutils literal notranslate"><span class="pre">create_tables_at_setup</span></code> option for the database
+backend. This option controls when database tables are created, allowing for
+non-lazy table creation.</p>
+<p>By default (<code class="docutils literal notranslate"><span class="pre">create_tables_at_setup=True</span></code>), tables are created during backend
+initialization. Setting this to <code class="docutils literal notranslate"><span class="pre">False</span></code> defers table creation until they are
+actually needed, which can be useful in certain deployment scenarios where you want
+more control over database schema management.</p>
+<p>See <a class="reference internal" href="../userguide/configuration.html#conf-database-result-backend"><span class="std std-ref">数据库后端设置</span></a> for complete documentation.</p>
+<p>Configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">result_backend</span> <span class="o">=</span> <span class="s1">&#39;db+sqlite:///results.db&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">database_create_tables_at_setup</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>Contributed by <a class="reference external" href="https://github.com/MarcBresson">&#64;MarcBresson</a> in
+<a class="reference external" href="https://github.com/celery/celery/pull/9228">#9228</a>.</p>
+</section>
+</section>
+<section id="id22">
+<h3>What's Changed<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>(docs): use correct version celery v.5.4.x (#8975)</p></li>
+<li><p>Update mypy to 1.10.0 (#8977)</p></li>
+<li><p>Limit pymongo&lt;4.7 when Python &lt;= 3.10 due to breaking changes in 4.7 (#8988)</p></li>
+<li><p>Bump pytest from 8.1.1 to 8.2.0 (#8987)</p></li>
+<li><p>Update README to Include FastAPI in Framework Integration Section (#8978)</p></li>
+<li><p>Clarify return values of ..._on_commit methods (#8984)</p></li>
+<li><p>add kafka broker docs (#8935)</p></li>
+<li><p>Limit pymongo&lt;4.7 regardless of Python version (#8999)</p></li>
+<li><p>Update pymongo[srv] requirement from &lt;4.7,&gt;=4.0.2 to &gt;=4.0.2,&lt;4.8 (#9000)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.13.0 to &lt;=8.13.1 (#9004)</p></li>
+<li><p>security: SecureSerializer: support generic low-level serializers (#8982)</p></li>
+<li><p>don't kill if pid same as file (#8997) (#8998)</p></li>
+<li><p>Update cryptography to 42.0.6 (#9005)</p></li>
+<li><p>Bump cryptography from 42.0.6 to 42.0.7 (#9009)</p></li>
+<li><p>don't kill if pid same as file (#8997) (#8998) (#9007)</p></li>
+<li><p>Added -vv to unit, integration and smoke tests (#9014)</p></li>
+<li><p>SecuritySerializer: ensure pack separator will not be conflicted with serialized fields (#9010)</p></li>
+<li><p>Update sphinx-click to 5.2.2 (#9025)</p></li>
+<li><p>Bump sphinx-click from 5.2.2 to 6.0.0 (#9029)</p></li>
+<li><p>Fix a typo to display the help message in first-steps-with-django (#9036)</p></li>
+<li><p>Pinned requests to v2.31.0 due to docker-py bug #3256 (#9039)</p></li>
+<li><p>Fix certificate validity check (#9037)</p></li>
+<li><p>Revert &quot;Pinned requests to v2.31.0 due to docker-py bug #3256&quot; (#9043)</p></li>
+<li><p>Bump pytest from 8.2.0 to 8.2.1 (#9035)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.13.1 to &lt;=8.13.2 (#9045)</p></li>
+<li><p>Fix detection of custom task set as class attribute with Django (#9038)</p></li>
+<li><p>Update elastic-transport requirement from &lt;=8.13.0 to &lt;=8.13.1 (#9050)</p></li>
+<li><p>Bump pycouchdb from 1.14.2 to 1.16.0 (#9052)</p></li>
+<li><p>Update pytest to 8.2.2 (#9060)</p></li>
+<li><p>Bump cryptography from 42.0.7 to 42.0.8 (#9061)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.13.2 to &lt;=8.14.0 (#9069)</p></li>
+<li><p>[enhance feature] Crontab schedule: allow using month names (#9068)</p></li>
+<li><p>Enhance tox environment: [testenv:clean] (#9072)</p></li>
+<li><p>Clarify docs about Reserve one task at a time (#9073)</p></li>
+<li><p>GCS docs fixes (#9075)</p></li>
+<li><p>Use hub.remove_writer instead of hub.remove for write fds (#4185) (#9055)</p></li>
+<li><p>Class method to process crontab string (#9079)</p></li>
+<li><p>Fixed smoke tests env bug when using integration tasks that rely on Redis (#9090)</p></li>
+<li><p>Bugfix - a task will run multiple times when chaining chains with groups (#9021)</p></li>
+<li><p>Bump mypy from 1.10.0 to 1.10.1 (#9096)</p></li>
+<li><p>Don't add a separator to global_keyprefix if it already has one (#9080)</p></li>
+<li><p>Update pymongo[srv] requirement from &lt;4.8,&gt;=4.0.2 to &gt;=4.0.2,&lt;4.9 (#9111)</p></li>
+<li><p>Added missing import in examples for Django (#9099)</p></li>
+<li><p>Bump Kombu to v5.4.0rc1 (#9117)</p></li>
+<li><p>Removed skipping Redis in t/smoke/tests/test_consumer.py tests (#9118)</p></li>
+<li><p>Update pytest-subtests to 0.13.0 (#9120)</p></li>
+<li><p>Increased smoke tests CI timeout (#9122)</p></li>
+<li><p>Bump Kombu to v5.4.0rc2 (#9127)</p></li>
+<li><p>Update zstandard to 0.23.0 (#9129)</p></li>
+<li><p>Update pytest-subtests to 0.13.1 (#9130)</p></li>
+<li><p>Changed retry to tenacity in smoke tests (#9133)</p></li>
+<li><p>Bump mypy from 1.10.1 to 1.11.0 (#9135)</p></li>
+<li><p>Update cryptography to 43.0.0 (#9138)</p></li>
+<li><p>Update pytest to 8.3.1 (#9137)</p></li>
+<li><p>Added support for Quorum Queues (#9121)</p></li>
+<li><p>Bump Kombu to v5.4.0rc3 (#9139)</p></li>
+<li><p>Cleanup in Changelog.rst (#9141)</p></li>
+<li><p>Update Django docs for CELERY_CACHE_BACKEND (#9143)</p></li>
+<li><p>Added missing docs to previous releases (#9144)</p></li>
+<li><p>Fixed a few documentation build warnings (#9145)</p></li>
+<li><p>docs(README): link invalid (#9148)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0b1 (#9146)</p></li>
+<li><p>Bump pytest from 8.3.1 to 8.3.2 (#9153)</p></li>
+<li><p>Remove setuptools deprecated test command from setup.py (#9159)</p></li>
+<li><p>Pin pre-commit to latest version 3.8.0 from Python 3.9 (#9156)</p></li>
+<li><p>Bump mypy from 1.11.0 to 1.11.1 (#9164)</p></li>
+<li><p>Change &quot;docker-compose&quot; to &quot;docker compose&quot; in Makefile (#9169)</p></li>
+<li><p>update python versions and docker compose (#9171)</p></li>
+<li><p>Add support for Pydantic model validation/serialization (fixes #8751) (#9023)</p></li>
+<li><p>Allow local dynamodb to be installed on another host than localhost (#8965)</p></li>
+<li><p>Terminate job implementation for gevent concurrency backend (#9083)</p></li>
+<li><p>Bump Kombu to v5.4.0 (#9177)</p></li>
+<li><p>Add check for soft_time_limit and time_limit values (#9173)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0b2 (#9178)</p></li>
+<li><p>Added SQS (localstack) broker to canvas smoke tests (#9179)</p></li>
+<li><p>Pin elastic-transport to &lt;= latest version 8.15.0 (#9182)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.14.0 to &lt;=8.15.0 (#9186)</p></li>
+<li><p>improve formatting (#9188)</p></li>
+<li><p>Add basic helm chart for celery (#9181)</p></li>
+<li><p>Update kafka.rst (#9194)</p></li>
+<li><p>Update pytest-order to 1.3.0 (#9198)</p></li>
+<li><p>Update mypy to 1.11.2 (#9206)</p></li>
+<li><p>all added to routes (#9204)</p></li>
+<li><p>Fix typos discovered by codespell (#9212)</p></li>
+<li><p>Use tzdata extras with zoneinfo backports (#8286)</p></li>
+<li><p>Use <cite>docker compose</cite> in Contributing's doc build section (#9219)</p></li>
+<li><p>Failing test for <span class="xref issue">issue #9119</span> (#9215)</p></li>
+<li><p>Fix date_done timezone issue (#8385)</p></li>
+<li><p>CI Fixes to smoke tests (#9223)</p></li>
+<li><p>fix: passes current request context when pushing to request_stack (#9208)</p></li>
+<li><p>Fix broken link in the Using RabbitMQ docs page (#9226)</p></li>
+<li><p>Added Soft Shutdown Mechanism (#9213)</p></li>
+<li><p>Added worker_enable_soft_shutdown_on_idle (#9231)</p></li>
+<li><p>Bump cryptography from 43.0.0 to 43.0.1 (#9233)</p></li>
+<li><p>Added docs regarding the relevancy of soft shutdown and ETA tasks (#9238)</p></li>
+<li><p>Show broker_connection_retry_on_startup warning only if it evaluates as False (#9227)</p></li>
+<li><p>Fixed docker-docs CI failure (#9240)</p></li>
+<li><p>Added docker cleanup auto-fixture to improve smoke tests stability (#9243)</p></li>
+<li><p>print is not thread-safe, so should not be used in signal handler (#9222)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0b3 (#9244)</p></li>
+<li><p>Correct the error description in exception message when validate soft_time_limit (#9246)</p></li>
+<li><p>Update msgpack to 1.1.0 (#9249)</p></li>
+<li><p>chore(utils/time.py): rename <cite>_is_ambigious</cite> -&gt; <cite>_is_ambiguous</cite> (#9248)</p></li>
+<li><p>Reduced Smoke Tests to min/max supported python (3.8/3.12) (#9252)</p></li>
+<li><p>Update pytest to 8.3.3 (#9253)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.15.0 to &lt;=8.15.1 (#9255)</p></li>
+<li><p>update mongodb without deprecated <cite>[srv]</cite> extra requirement (#9258)</p></li>
+<li><p>blacksmith.sh: Migrate workflows to Blacksmith (#9261)</p></li>
+<li><p>Fixes #9119: inject dispatch_uid for retry-wrapped receivers (#9247)</p></li>
+<li><p>Run all smoke tests CI jobs together (#9263)</p></li>
+<li><p>Improve documentation on visibility timeout (#9264)</p></li>
+<li><p>Bump pytest-celery to 1.1.2 (#9267)</p></li>
+<li><p>Added missing &quot;app.conf.visibility_timeout&quot; in smoke tests (#9266)</p></li>
+<li><p>Improved stability with t/smoke/tests/test_consumer.py (#9268)</p></li>
+<li><p>Improved Redis container stability in the smoke tests (#9271)</p></li>
+<li><p>Disabled EXHAUST_MEMORY tests in Smoke-tasks (#9272)</p></li>
+<li><p>Marked xfail for test_reducing_prefetch_count with Redis - flaky test (#9273)</p></li>
+<li><p>Fixed pypy unit tests random failures in the CI (#9275)</p></li>
+<li><p>Fixed more pypy unit tests random failures in the CI (#9278)</p></li>
+<li><p>Fix Redis container from aborting randomly (#9276)</p></li>
+<li><p>Run Integration &amp; Smoke CI tests together after unit tests passes (#9280)</p></li>
+<li><p>Added &quot;loglevel verbose&quot; to Redis containers in smoke tests (#9282)</p></li>
+<li><p>Fixed Redis error in the smoke tests: &quot;Possible SECURITY ATTACK detected&quot; (#9284)</p></li>
+<li><p>Refactored the smoke tests github workflow (#9285)</p></li>
+<li><p>Increased --reruns 3-&gt;4 in smoke tests (#9286)</p></li>
+<li><p>Improve stability of smoke tests (CI and Local) (#9287)</p></li>
+<li><p>Fixed Smoke tests CI &quot;test-case&quot; lables (specific instead of general) (#9288)</p></li>
+<li><p>Use assert_log_exists instead of wait_for_log in worker smoke tests (#9290)</p></li>
+<li><p>Optimized t/smoke/tests/test_worker.py (#9291)</p></li>
+<li><p>Enable smoke tests dockers check before each test starts (#9292)</p></li>
+<li><p>Relaxed smoke tests flaky tests mechanism (#9293)</p></li>
+<li><p>Updated quorum queue detection to handle multiple broker instances (#9294)</p></li>
+<li><p>Non-lazy table creation for database backend (#9228)</p></li>
+<li><p>Pin pymongo to latest version 4.9 (#9297)</p></li>
+<li><p>Bump pymongo from 4.9 to 4.9.1 (#9298)</p></li>
+<li><p>Bump Kombu to v5.4.2 (#9304)</p></li>
+<li><p>Use rabbitmq:3 in stamping smoke tests (#9307)</p></li>
+<li><p>Bump pytest-celery to 1.1.3 (#9308)</p></li>
+<li><p>Added Python 3.13 Support (#9309)</p></li>
+<li><p>Add log when global qos is disabled (#9296)</p></li>
+<li><p>Added official release docs (whatsnew) for v5.5 (#9312)</p></li>
+<li><p>Enable Codespell autofix (#9313)</p></li>
+<li><p>Pydantic typehints: Fix optional, allow generics (#9319)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0b4 (#9322)</p></li>
+<li><p>Added Blacksmith.sh to the Sponsors section in the README (#9323)</p></li>
+<li><p>Revert &quot;Added Blacksmith.sh to the Sponsors section in the README&quot; (#9324)</p></li>
+<li><p>Added Blacksmith.sh to the Sponsors section in the README (#9325)</p></li>
+<li><p>Added missing &quot; <a href="#id196"><span class="problematic" id="id197">|oc-sponsor-3|</span></a>” in README (#9326)</p></li>
+<li><p>Use Blacksmith SVG logo (#9327)</p></li>
+<li><p>Updated Blacksmith SVG logo (#9328)</p></li>
+<li><p>Revert &quot;Updated Blacksmith SVG logo&quot; (#9329)</p></li>
+<li><p>Update pymongo to 4.10.0 (#9330)</p></li>
+<li><p>Update pymongo to 4.10.1 (#9332)</p></li>
+<li><p>Update user guide to recommend delay_on_commit (#9333)</p></li>
+<li><p>Pin pre-commit to latest version 4.0.0 (Python 3.9+) (#9334)</p></li>
+<li><p>Update ephem to 4.1.6 (#9336)</p></li>
+<li><p>Updated Blacksmith SVG logo (#9337)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0rc1 (#9341)</p></li>
+<li><p>Fix: Treat dbm.error as a corrupted schedule file (#9331)</p></li>
+<li><p>Pin pre-commit to latest version 4.0.1 (#9343)</p></li>
+<li><p>Added Python 3.13 to Dockerfiles (#9350)</p></li>
+<li><p>Skip test_pool_restart_import_modules on PyPy due to test issue (#9352)</p></li>
+<li><p>Update elastic-transport requirement from &lt;=8.15.0 to &lt;=8.15.1 (#9347)</p></li>
+<li><p>added dragonfly logo (#9353)</p></li>
+<li><p>Update README.rst (#9354)</p></li>
+<li><p>Update README.rst (#9355)</p></li>
+<li><p>Update mypy to 1.12.0 (#9356)</p></li>
+<li><p>Bump Kombu to v5.5.0rc1 (#9357)</p></li>
+<li><p>Fix <cite>celery --loader</cite> option parsing (#9361)</p></li>
+<li><p>Add support for Google Pub/Sub transport (#9351)</p></li>
+<li><p>Add native incr support for GCSBackend (#9302)</p></li>
+<li><p>fix(perform_pending_operations): prevent task duplication on shutdown… (#9348)</p></li>
+<li><p>Update grpcio to 1.67.0 (#9365)</p></li>
+<li><p>Update google-cloud-firestore to 2.19.0 (#9364)</p></li>
+<li><p>Annotate celery/utils/timer2.py (#9362)</p></li>
+<li><p>Update cryptography to 43.0.3 (#9366)</p></li>
+<li><p>Update mypy to 1.12.1 (#9368)</p></li>
+<li><p>Bump mypy from 1.12.1 to 1.13.0 (#9373)</p></li>
+<li><p>Pass timeout and confirm_timeout to producer.publish() (#9374)</p></li>
+<li><p>Bump Kombu to v5.5.0rc2 (#9382)</p></li>
+<li><p>Bump pytest-cov from 5.0.0 to 6.0.0 (#9388)</p></li>
+<li><p>default strict to False for pydantic tasks (#9393)</p></li>
+<li><p>Only log that global QoS is disabled if using amqp (#9395)</p></li>
+<li><p>chore: update sponsorship logo (#9398)</p></li>
+<li><p>Allow custom hostname for celery_worker in celery.contrib.pytest / celery.contrib.testing.worker (#9405)</p></li>
+<li><p>Removed docker-docs from CI (optional job, malfunctioning) (#9406)</p></li>
+<li><p>Added a utility to format changelogs from the auto-generated GitHub release notes (#9408)</p></li>
+<li><p>Bump codecov/codecov-action from 4 to 5 (#9412)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.15.1 to &lt;=8.16.0 (#9410)</p></li>
+<li><p>Native Delayed Delivery in RabbitMQ (#9207)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0rc2 (#9416)</p></li>
+<li><p>Document usage of broker_native_delayed_delivery_queue_type (#9419)</p></li>
+<li><p>Adjust section in what's new document regarding quorum queues support (#9420)</p></li>
+<li><p>Update pytest-rerunfailures to 15.0 (#9422)</p></li>
+<li><p>Document group unrolling (#9421)</p></li>
+<li><p>fix small typo acces -&gt; access (#9434)</p></li>
+<li><p>Update cryptography to 44.0.0 (#9437)</p></li>
+<li><p>Added pypy to Dockerfile (#9438)</p></li>
+<li><p>Skipped flaky tests on pypy (all pass after ~10 reruns) (#9439)</p></li>
+<li><p>Allowing managed credentials for azureblockblob (#9430)</p></li>
+<li><p>Allow passing Celery objects to the Click entry point (#9426)</p></li>
+<li><p>support Request termination for gevent (#9440)</p></li>
+<li><p>Prevent event_mask from being overwritten. (#9432)</p></li>
+<li><p>Update pytest to 8.3.4 (#9444)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0rc3 (#9450)</p></li>
+<li><p>Bugfix: SIGQUIT not initiating cold shutdown when <cite>task_acks_late=False</cite> (#9461)</p></li>
+<li><p>Fixed pycurl dep with Python 3.8 (#9471)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.16.0 to &lt;=8.17.0 (#9469)</p></li>
+<li><p>Bump pytest-subtests from 0.13.1 to 0.14.1 (#9459)</p></li>
+<li><p>documentation: Added a type annotation to the periodic task example (#9473)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0rc4 (#9474)</p></li>
+<li><p>Bump mypy from 1.13.0 to 1.14.0 (#9476)</p></li>
+<li><p>Fix cassandra backend port settings not working (#9465)</p></li>
+<li><p>Unroll group when a group with a single item is chained using the | operator (#9456)</p></li>
+<li><p>fix(django): catch the right error when trying to close db connection (#9392)</p></li>
+<li><p>Replacing a task with a chain which contains a group now returns a result instead of hanging (#9484)</p></li>
+<li><p>Avoid using a group of one as it is now unrolled into a chain (#9510)</p></li>
+<li><p>Link to the correct IRC network (#9509)</p></li>
+<li><p>Bump pytest-github-actions-annotate-failures from 0.2.0 to 0.3.0 (#9504)</p></li>
+<li><p>Update canvas.rst to fix output result from chain object (#9502)</p></li>
+<li><p>Unauthorized Changes Cleanup (#9528)</p></li>
+<li><p>[RE-APPROVED] fix(django): catch the right error when trying to close db connection (#9529)</p></li>
+<li><p>[RE-APPROVED] Link to the correct IRC network (#9531)</p></li>
+<li><p>[RE-APPROVED] Update canvas.rst to fix output result from chain object (#9532)</p></li>
+<li><p>Update test-ci-base.txt (#9539)</p></li>
+<li><p>Update install-pyenv.sh (#9540)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.17.0 to &lt;=8.17.1 (#9518)</p></li>
+<li><p>Bump google-cloud-firestore from 2.19.0 to 2.20.0 (#9493)</p></li>
+<li><p>Bump mypy from 1.14.0 to 1.14.1 (#9483)</p></li>
+<li><p>Update elastic-transport requirement from &lt;=8.15.1 to &lt;=8.17.0 (#9490)</p></li>
+<li><p>Update Dockerfile by adding missing Python version 3.13 (#9549)</p></li>
+<li><p>Fix typo for default of sig (#9495)</p></li>
+<li><p>fix(crontab): resolve constructor type conflicts (#9551)</p></li>
+<li><p>worker_max_memory_per_child: kilobyte is 1024 bytes (#9553)</p></li>
+<li><p>Fix formatting in quorum queue docs (#9555)</p></li>
+<li><p>Bump cryptography from 44.0.0 to 44.0.1 (#9556)</p></li>
+<li><p>Fix the send_task method when detecting if the native delayed delivery approach is available (#9552)</p></li>
+<li><p>Reverted PR #7814 &amp; minor code improvement (#9494)</p></li>
+<li><p>Improved donation and sponsorship visibility (#9558)</p></li>
+<li><p>Updated the Getting Help section, replacing deprecated with new resources (#9559)</p></li>
+<li><p>Fixed django example (#9562)</p></li>
+<li><p>Bump Kombu to v5.5.0rc3 (#9564)</p></li>
+<li><p>Bump ephem from 4.1.6 to 4.2 (#9565)</p></li>
+<li><p>Bump pytest-celery to v1.2.0 (#9568)</p></li>
+<li><p>Remove dependency on <cite>pycurl</cite> (#9526)</p></li>
+<li><p>Set TestWorkController.__test__ (#9574)</p></li>
+<li><p>Fixed bug when revoking by stamped headers a stamp that does not exist (#9575)</p></li>
+<li><p>Canvas Stamping Doc Fixes (#9578)</p></li>
+<li><p>Bugfix: Chord with a chord in header doesn't invoke error callback on inner chord header failure (default config) (#9580)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0rc5 (#9582)</p></li>
+<li><p>Bump google-cloud-firestore from 2.20.0 to 2.20.1 (#9584)</p></li>
+<li><p>Fix tests with Click 8.2 (#9590)</p></li>
+<li><p>Bump cryptography from 44.0.1 to 44.0.2 (#9591)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.17.1 to &lt;=8.17.2 (#9594)</p></li>
+<li><p>Bump pytest from 8.3.4 to 8.3.5 (#9598)</p></li>
+<li><p>Refactored and Enhanced DelayedDelivery bootstep (#9599)</p></li>
+<li><p>Improve docs about acks_on_failure_or_timeout (#9577)</p></li>
+<li><p>Update SECURITY.md (#9609)</p></li>
+<li><p>remove flake8plus as not needed anymore (#9610)</p></li>
+<li><p>remove [bdist_wheel] universal = 0  from setup.cfg as not needed (#9611)</p></li>
+<li><p>remove importlib-metadata as not needed in python3.8 anymore (#9612)</p></li>
+<li><p>feat: define exception_safe_to_retry for redisbackend (#9614)</p></li>
+<li><p>Bump Kombu to v5.5.0 (#9615)</p></li>
+<li><p>Update elastic-transport requirement from &lt;=8.17.0 to &lt;=8.17.1 (#9616)</p></li>
+<li><p>[docs] fix first-steps (#9618)</p></li>
+<li><p>Revert &quot;Improve docs about acks_on_failure_or_timeout&quot; (#9606)</p></li>
+<li><p>Improve CI stability and performance (#9624)</p></li>
+<li><p>Improved explanation for Database transactions at user guide for tasks (#9617)</p></li>
+<li><p>update tests to use python 3.8 codes only (#9627)</p></li>
+<li><p>#9597: Ensure surpassing Hard Timeout limit when task_acks_on_failure_or_timeout is False rejects the task (#9626)</p></li>
+<li><p>Lock Kombu to v5.5.x (using urllib3 instead of pycurl) (#9632)</p></li>
+<li><p>Lock pytest-celery to v1.2.x (using urllib3 instead of pycurl) (#9633)</p></li>
+<li><p>Add Codecov Test Analytics (#9635)</p></li>
+<li><p>Bump Kombu to v5.5.2 (#9643)</p></li>
+<li><p>Prepare for release: v5.5.0 (#9644)</p></li>
+</ul>
+</section>
+</section>
+<section id="rc5">
+<span id="version-5-5-0rc5"></span><h2>5.5.0rc5<a class="headerlink" href="#rc5" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">release-date<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2025-02-25</p>
+</dd>
+<dt class="field-even">release-by<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tomer Nosrati</p>
+</dd>
+</dl>
+<p>Celery v5.5.0 Release Candidate 5 is now available for testing.
+Please help us test this version and report any issues.</p>
+<section id="id23">
+<h3>Key Highlights<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h3>
+<p>See <a class="reference internal" href="whatsnew-5.5.html#whatsnew-5-5"><span class="std std-ref">What's new in Celery 5.5 (Immunity)</span></a> or read the main highlights below.</p>
+<section id="using-kombu-5-5-0rc3">
+<h4>Using Kombu 5.5.0rc3<a class="headerlink" href="#using-kombu-5-5-0rc3" title="Link to this heading">¶</a></h4>
+<p>The minimum required Kombu version has been bumped to 5.5.0.
+Kombu is currently at 5.5.0rc3.</p>
+</section>
+<section id="complete-quorum-queues-support">
+<h4>Complete Quorum Queues Support<a class="headerlink" href="#complete-quorum-queues-support" title="Link to this heading">¶</a></h4>
+<p>A completely new ETA mechanism was developed to allow full support with RabbitMQ Quorum Queues.</p>
+<p>After upgrading to this version, please share your feedback on the quorum queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/9207">#9207</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a></p>
+<ul class="simple">
+<li><p>New <a class="reference internal" href="../getting-started/backends-and-brokers/rabbitmq.html#using-quorum-queues"><span class="std std-ref">documentation</span></a>.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-broker_native_delayed_delivery_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">broker_native_delayed_delivery_queue_type</span></code></a> configuration option.</p></li>
+</ul>
+</section>
+<section id="new-support-for-google-pub-sub-transport">
+<h4>New support for Google Pub/Sub transport<a class="headerlink" href="#new-support-for-google-pub-sub-transport" title="Link to this heading">¶</a></h4>
+<p>After upgrading to this version, please share your feedback on the Google Pub/Sub transport support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/pull/9351">#9351</a></p>
+</section>
+<section id="python-3-13-improved-support">
+<h4>Python 3.13 Improved Support<a class="headerlink" href="#python-3-13-improved-support" title="Link to this heading">¶</a></h4>
+<p>Additional dependencies have been migrated successfully to Python 3.13, including Kombu and py-amqp.</p>
+</section>
+<section id="soft-shutdown">
+<h4>Soft Shutdown<a class="headerlink" href="#soft-shutdown" title="Link to this heading">¶</a></h4>
+<p>The soft shutdown is a new mechanism in Celery that sits between the warm shutdown and the cold shutdown.
+It sets a time limited &quot;warm shutdown&quot; period, during which the worker will continue to process tasks that are already running.
+After the soft shutdown ends, the worker will initiate a graceful cold shutdown, stopping all tasks and exiting.</p>
+<p>The soft shutdown is disabled by default, and can be enabled by setting the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a>.
+If a worker is not running any task when the soft shutdown initiates, it will skip the warm shutdown period and proceed directly to the cold shutdown
+unless the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> is set to True. This is useful for workers
+that are idle, waiting on ETA tasks to be executed that still want to enable the soft shutdown anyways.</p>
+<p>The soft shutdown can replace the cold shutdown when using a broker with a visibility timeout mechanism, like <a class="reference internal" href="../getting-started/backends-and-brokers/redis.html#broker-redis"><span class="std std-ref">Redis</span></a>
+or <a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html#broker-sqs"><span class="std std-ref">SQS</span></a>, to enable a more graceful cold shutdown procedure, allowing the worker enough time to re-queue tasks that were not
+completed (e.g., <code class="docutils literal notranslate"><span class="pre">Restoring</span> <span class="pre">1</span> <span class="pre">unacknowledged</span> <span class="pre">message(s)</span></code>) by resetting the visibility timeout of the unacknowledged messages just before
+the worker exits completely.</p>
+<p>After upgrading to this version, please share your feedback on the new Soft Shutdown mechanism.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/pull/9213">#9213</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9231">#9231</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9238">#9238</a></p>
+<ul class="simple">
+<li><p>New <a class="reference internal" href="../userguide/workers.html#worker-stopping"><span class="std std-ref">documentation</span></a> for each shutdown type.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a> configuration option.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> configuration option.</p></li>
+</ul>
+</section>
+<section id="remap-sigterm">
+<h4>REMAP_SIGTERM<a class="headerlink" href="#remap-sigterm" title="Link to this heading">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">REMAP_SIGTERM</span></code> &quot;hidden feature&quot; has been tested, <a class="reference internal" href="../userguide/workers.html#worker-remap-sigterm"><span class="std std-ref">documented</span></a> and is now officially supported.
+This feature allows users to remap the SIGTERM signal to SIGQUIT, to initiate a soft or a cold shutdown using <code class="xref std std-sig docutils literal notranslate"><span class="pre">TERM</span></code>
+instead of <code class="xref std std-sig docutils literal notranslate"><span class="pre">QUIT</span></code>.</p>
+</section>
+<section id="id30">
+<h4>Pydantic Support<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
+<p>This release introduces support for Pydantic models in Celery tasks.
+For more info, see the new pydantic example and PR <a class="reference external" href="https://github.com/celery/celery/pull/9023">#9023</a> by &#64;mathiasertl.</p>
+<p>After upgrading to this version, please share your feedback on the new Pydantic support.</p>
+</section>
+<section id="id32">
+<h4>Redis Broker Stability Improvements<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
+<p>The root cause of the Redis broker instability issue has been <a class="reference external" href="https://github.com/celery/kombu/pull/2007">identified and resolved</a>
+in the v5.4.0 release of Kombu, which should resolve the disconnections bug and offer additional improvements.</p>
+<p>After upgrading to this version, please share your feedback on the Redis broker stability.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/7276">#7276</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8091">#8091</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8030">#8030</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8384">#8384</a></p>
+</section>
+<section id="quorum-queues-initial-support">
+<h4>Quorum Queues Initial Support<a class="headerlink" href="#quorum-queues-initial-support" title="Link to this heading">¶</a></h4>
+<p>This release introduces the initial support for Quorum Queues with Celery.</p>
+<p>See new configuration options for more details:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-task_default_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_queue_type</span></code></a></p></li>
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-worker_detect_quorum_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_detect_quorum_queues</span></code></a></p></li>
+</ul>
+<p>After upgrading to this version, please share your feedback on the Quorum Queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/9121">#9121</a></p>
+</section>
+</section>
+<section id="id39">
+<h3>What's Changed<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Bump mypy from 1.13.0 to 1.14.0 (#9476)</p></li>
+<li><p>Fix cassandra backend port settings not working (#9465)</p></li>
+<li><p>Unroll group when a group with a single item is chained using the | operator (#9456)</p></li>
+<li><p>fix(django): catch the right error when trying to close db connection (#9392)</p></li>
+<li><p>Replacing a task with a chain which contains a group now returns a result instead of hanging (#9484)</p></li>
+<li><p>Avoid using a group of one as it is now unrolled into a chain (#9510)</p></li>
+<li><p>Link to the correct IRC network (#9509)</p></li>
+<li><p>Bump pytest-github-actions-annotate-failures from 0.2.0 to 0.3.0 (#9504)</p></li>
+<li><p>Update canvas.rst to fix output result from chain object (#9502)</p></li>
+<li><p>Unauthorized Changes Cleanup (#9528)</p></li>
+<li><p>[RE-APPROVED] fix(django): catch the right error when trying to close db connection (#9529)</p></li>
+<li><p>[RE-APPROVED] Link to the correct IRC network (#9531)</p></li>
+<li><p>[RE-APPROVED] Update canvas.rst to fix output result from chain object (#9532)</p></li>
+<li><p>Update test-ci-base.txt (#9539)</p></li>
+<li><p>Update install-pyenv.sh (#9540)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.17.0 to &lt;=8.17.1 (#9518)</p></li>
+<li><p>Bump google-cloud-firestore from 2.19.0 to 2.20.0 (#9493)</p></li>
+<li><p>Bump mypy from 1.14.0 to 1.14.1 (#9483)</p></li>
+<li><p>Update elastic-transport requirement from &lt;=8.15.1 to &lt;=8.17.0 (#9490)</p></li>
+<li><p>Update Dockerfile by adding missing Python version 3.13 (#9549)</p></li>
+<li><p>Fix typo for default of sig (#9495)</p></li>
+<li><p>fix(crontab): resolve constructor type conflicts (#9551)</p></li>
+<li><p>worker_max_memory_per_child: kilobyte is 1024 bytes (#9553)</p></li>
+<li><p>Fix formatting in quorum queue docs (#9555)</p></li>
+<li><p>Bump cryptography from 44.0.0 to 44.0.1 (#9556)</p></li>
+<li><p>Fix the send_task method when detecting if the native delayed delivery approach is available (#9552)</p></li>
+<li><p>Reverted PR #7814 &amp; minor code improvement (#9494)</p></li>
+<li><p>Improved donation and sponsorship visibility (#9558)</p></li>
+<li><p>Updated the Getting Help section, replacing deprecated with new resources (#9559)</p></li>
+<li><p>Fixed django example (#9562)</p></li>
+<li><p>Bump Kombu to v5.5.0rc3 (#9564)</p></li>
+<li><p>Bump ephem from 4.1.6 to 4.2 (#9565)</p></li>
+<li><p>Bump pytest-celery to v1.2.0 (#9568)</p></li>
+<li><p>Remove dependency on <cite>pycurl</cite> (#9526)</p></li>
+<li><p>Set TestWorkController.__test__ (#9574)</p></li>
+<li><p>Fixed bug when revoking by stamped headers a stamp that does not exist (#9575)</p></li>
+<li><p>Canvas Stamping Doc Fixes (#9578)</p></li>
+<li><p>Bugfix: Chord with a chord in header doesn't invoke error callback on inner chord header failure (default config) (#9580)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0rc5 (#9582)</p></li>
+</ul>
+</section>
+</section>
+<section id="rc4">
+<span id="version-5-5-0rc4"></span><h2>5.5.0rc4<a class="headerlink" href="#rc4" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">release-date<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2024-12-19</p>
+</dd>
+<dt class="field-even">release-by<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tomer Nosrati</p>
+</dd>
+</dl>
+<p>Celery v5.5.0 Release Candidate 4 is now available for testing.
+Please help us test this version and report any issues.</p>
+<section id="id40">
+<h3>Key Highlights<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h3>
+<p>See <a class="reference internal" href="whatsnew-5.5.html#whatsnew-5-5"><span class="std std-ref">What's new in Celery 5.5 (Immunity)</span></a> or read the main highlights below.</p>
+<section id="using-kombu-5-5-0rc2">
+<h4>Using Kombu 5.5.0rc2<a class="headerlink" href="#using-kombu-5-5-0rc2" title="Link to this heading">¶</a></h4>
+<p>The minimum required Kombu version has been bumped to 5.5.0.
+Kombu is current at 5.5.0rc2.</p>
+</section>
+<section id="id41">
+<h4>Complete Quorum Queues Support<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<p>A completely new ETA mechanism was developed to allow full support with RabbitMQ Quorum Queues.</p>
+<p>After upgrading to this version, please share your feedback on the quorum queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/9207">#9207</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a></p>
+<ul class="simple">
+<li><p>New <a class="reference internal" href="../getting-started/backends-and-brokers/rabbitmq.html#using-quorum-queues"><span class="std std-ref">documentation</span></a>.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-broker_native_delayed_delivery_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">broker_native_delayed_delivery_queue_type</span></code></a> configuration option.</p></li>
+</ul>
+</section>
+<section id="id44">
+<h4>New support for Google Pub/Sub transport<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
+<p>After upgrading to this version, please share your feedback on the Google Pub/Sub transport support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/pull/9351">#9351</a></p>
+</section>
+<section id="id46">
+<h4>Python 3.13 Improved Support<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
+<p>Additional dependencies have been migrated successfully to Python 3.13, including Kombu and py-amqp.</p>
+</section>
+<section id="id47">
+<h4>Soft Shutdown<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
+<p>The soft shutdown is a new mechanism in Celery that sits between the warm shutdown and the cold shutdown.
+It sets a time limited &quot;warm shutdown&quot; period, during which the worker will continue to process tasks that are already running.
+After the soft shutdown ends, the worker will initiate a graceful cold shutdown, stopping all tasks and exiting.</p>
+<p>The soft shutdown is disabled by default, and can be enabled by setting the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a>.
+If a worker is not running any task when the soft shutdown initiates, it will skip the warm shutdown period and proceed directly to the cold shutdown
+unless the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> is set to True. This is useful for workers
+that are idle, waiting on ETA tasks to be executed that still want to enable the soft shutdown anyways.</p>
+<p>The soft shutdown can replace the cold shutdown when using a broker with a visibility timeout mechanism, like <a class="reference internal" href="../getting-started/backends-and-brokers/redis.html#broker-redis"><span class="std std-ref">Redis</span></a>
+or <a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html#broker-sqs"><span class="std std-ref">SQS</span></a>, to enable a more graceful cold shutdown procedure, allowing the worker enough time to re-queue tasks that were not
+completed (e.g., <code class="docutils literal notranslate"><span class="pre">Restoring</span> <span class="pre">1</span> <span class="pre">unacknowledged</span> <span class="pre">message(s)</span></code>) by resetting the visibility timeout of the unacknowledged messages just before
+the worker exits completely.</p>
+<p>After upgrading to this version, please share your feedback on the new Soft Shutdown mechanism.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/pull/9213">#9213</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9231">#9231</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9238">#9238</a></p>
+<ul class="simple">
+<li><p>New <a class="reference internal" href="../userguide/workers.html#worker-stopping"><span class="std std-ref">documentation</span></a> for each shutdown type.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a> configuration option.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> configuration option.</p></li>
+</ul>
+</section>
+<section id="id51">
+<h4>REMAP_SIGTERM<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">REMAP_SIGTERM</span></code> &quot;hidden feature&quot; has been tested, <a class="reference internal" href="../userguide/workers.html#worker-remap-sigterm"><span class="std std-ref">documented</span></a> and is now officially supported.
+This feature allows users to remap the SIGTERM signal to SIGQUIT, to initiate a soft or a cold shutdown using <code class="xref std std-sig docutils literal notranslate"><span class="pre">TERM</span></code>
+instead of <code class="xref std std-sig docutils literal notranslate"><span class="pre">QUIT</span></code>.</p>
+</section>
+<section id="id52">
+<h4>Pydantic Support<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
+<p>This release introduces support for Pydantic models in Celery tasks.
+For more info, see the new pydantic example and PR <a class="reference external" href="https://github.com/celery/celery/pull/9023">#9023</a> by &#64;mathiasertl.</p>
+<p>After upgrading to this version, please share your feedback on the new Pydantic support.</p>
+</section>
+<section id="id54">
+<h4>Redis Broker Stability Improvements<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
+<p>The root cause of the Redis broker instability issue has been <a class="reference external" href="https://github.com/celery/kombu/pull/2007">identified and resolved</a>
+in the v5.4.0 release of Kombu, which should resolve the disconnections bug and offer additional improvements.</p>
+<p>After upgrading to this version, please share your feedback on the Redis broker stability.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/7276">#7276</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8091">#8091</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8030">#8030</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8384">#8384</a></p>
+</section>
+<section id="id60">
+<h4>Quorum Queues Initial Support<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h4>
+<p>This release introduces the initial support for Quorum Queues with Celery.</p>
+<p>See new configuration options for more details:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-task_default_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_queue_type</span></code></a></p></li>
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-worker_detect_quorum_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_detect_quorum_queues</span></code></a></p></li>
+</ul>
+<p>After upgrading to this version, please share your feedback on the Quorum Queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/9121">#9121</a></p>
+</section>
+</section>
+<section id="id63">
+<h3>What's Changed<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Bugfix: SIGQUIT not initiating cold shutdown when <cite>task_acks_late=False</cite> (#9461)</p></li>
+<li><p>Fixed pycurl dep with Python 3.8 (#9471)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.16.0 to &lt;=8.17.0 (#9469)</p></li>
+<li><p>Bump pytest-subtests from 0.13.1 to 0.14.1 (#9459)</p></li>
+<li><p>documentation: Added a type annotation to the periodic task example (#9473)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0rc4 (#9474)</p></li>
+</ul>
+</section>
+</section>
+<section id="rc3">
+<span id="version-5-5-0rc3"></span><h2>5.5.0rc3<a class="headerlink" href="#rc3" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">release-date<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2024-12-03</p>
+</dd>
+<dt class="field-even">release-by<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tomer Nosrati</p>
+</dd>
+</dl>
+<p>Celery v5.5.0 Release Candidate 3 is now available for testing.
+Please help us test this version and report any issues.</p>
+<section id="id64">
+<h3>Key Highlights<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h3>
+<p>See <a class="reference internal" href="whatsnew-5.5.html#whatsnew-5-5"><span class="std std-ref">What's new in Celery 5.5 (Immunity)</span></a> or read the main highlights below.</p>
+<section id="id65">
+<h4>Using Kombu 5.5.0rc2<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h4>
+<p>The minimum required Kombu version has been bumped to 5.5.0.
+Kombu is current at 5.5.0rc2.</p>
+</section>
+<section id="id66">
+<h4>Complete Quorum Queues Support<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h4>
+<p>A completely new ETA mechanism was developed to allow full support with RabbitMQ Quorum Queues.</p>
+<p>After upgrading to this version, please share your feedback on the quorum queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/9207">#9207</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a></p>
+<ul class="simple">
+<li><p>New <a class="reference internal" href="../getting-started/backends-and-brokers/rabbitmq.html#using-quorum-queues"><span class="std std-ref">documentation</span></a>.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-broker_native_delayed_delivery_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">broker_native_delayed_delivery_queue_type</span></code></a> configuration option.</p></li>
+</ul>
+</section>
+<section id="id69">
+<h4>New support for Google Pub/Sub transport<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h4>
+<p>After upgrading to this version, please share your feedback on the Google Pub/Sub transport support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/pull/9351">#9351</a></p>
+</section>
+<section id="id71">
+<h4>Python 3.13 Improved Support<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h4>
+<p>Additional dependencies have been migrated successfully to Python 3.13, including Kombu and py-amqp.</p>
+</section>
+<section id="id72">
+<h4>Soft Shutdown<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
+<p>The soft shutdown is a new mechanism in Celery that sits between the warm shutdown and the cold shutdown.
+It sets a time limited &quot;warm shutdown&quot; period, during which the worker will continue to process tasks that are already running.
+After the soft shutdown ends, the worker will initiate a graceful cold shutdown, stopping all tasks and exiting.</p>
+<p>The soft shutdown is disabled by default, and can be enabled by setting the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a>.
+If a worker is not running any task when the soft shutdown initiates, it will skip the warm shutdown period and proceed directly to the cold shutdown
+unless the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> is set to True. This is useful for workers
+that are idle, waiting on ETA tasks to be executed that still want to enable the soft shutdown anyways.</p>
+<p>The soft shutdown can replace the cold shutdown when using a broker with a visibility timeout mechanism, like <a class="reference internal" href="../getting-started/backends-and-brokers/redis.html#broker-redis"><span class="std std-ref">Redis</span></a>
+or <a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html#broker-sqs"><span class="std std-ref">SQS</span></a>, to enable a more graceful cold shutdown procedure, allowing the worker enough time to re-queue tasks that were not
+completed (e.g., <code class="docutils literal notranslate"><span class="pre">Restoring</span> <span class="pre">1</span> <span class="pre">unacknowledged</span> <span class="pre">message(s)</span></code>) by resetting the visibility timeout of the unacknowledged messages just before
+the worker exits completely.</p>
+<p>After upgrading to this version, please share your feedback on the new Soft Shutdown mechanism.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/pull/9213">#9213</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9231">#9231</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9238">#9238</a></p>
+<ul class="simple">
+<li><p>New <a class="reference internal" href="../userguide/workers.html#worker-stopping"><span class="std std-ref">documentation</span></a> for each shutdown type.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a> configuration option.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> configuration option.</p></li>
+</ul>
+</section>
+<section id="id76">
+<h4>REMAP_SIGTERM<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">REMAP_SIGTERM</span></code> &quot;hidden feature&quot; has been tested, <a class="reference internal" href="../userguide/workers.html#worker-remap-sigterm"><span class="std std-ref">documented</span></a> and is now officially supported.
+This feature allows users to remap the SIGTERM signal to SIGQUIT, to initiate a soft or a cold shutdown using <code class="xref std std-sig docutils literal notranslate"><span class="pre">TERM</span></code>
+instead of <code class="xref std std-sig docutils literal notranslate"><span class="pre">QUIT</span></code>.</p>
+</section>
+<section id="id77">
+<h4>Pydantic Support<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h4>
+<p>This release introduces support for Pydantic models in Celery tasks.
+For more info, see the new pydantic example and PR <a class="reference external" href="https://github.com/celery/celery/pull/9023">#9023</a> by &#64;mathiasertl.</p>
+<p>After upgrading to this version, please share your feedback on the new Pydantic support.</p>
+</section>
+<section id="id79">
+<h4>Redis Broker Stability Improvements<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h4>
+<p>The root cause of the Redis broker instability issue has been <a class="reference external" href="https://github.com/celery/kombu/pull/2007">identified and resolved</a>
+in the v5.4.0 release of Kombu, which should resolve the disconnections bug and offer additional improvements.</p>
+<p>After upgrading to this version, please share your feedback on the Redis broker stability.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/7276">#7276</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8091">#8091</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8030">#8030</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8384">#8384</a></p>
+</section>
+<section id="id85">
+<h4>Quorum Queues Initial Support<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h4>
+<p>This release introduces the initial support for Quorum Queues with Celery.</p>
+<p>See new configuration options for more details:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-task_default_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_queue_type</span></code></a></p></li>
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-worker_detect_quorum_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_detect_quorum_queues</span></code></a></p></li>
+</ul>
+<p>After upgrading to this version, please share your feedback on the Quorum Queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/9121">#9121</a></p>
+</section>
+</section>
+<section id="id88">
+<h3>What's Changed<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Document usage of broker_native_delayed_delivery_queue_type (#9419)</p></li>
+<li><p>Adjust section in what's new document regarding quorum queues support (#9420)</p></li>
+<li><p>Update pytest-rerunfailures to 15.0 (#9422)</p></li>
+<li><p>Document group unrolling (#9421)</p></li>
+<li><p>fix small typo acces -&gt; access (#9434)</p></li>
+<li><p>Update cryptography to 44.0.0 (#9437)</p></li>
+<li><p>Added pypy to Dockerfile (#9438)</p></li>
+<li><p>Skipped flaky tests on pypy (all pass after ~10 reruns) (#9439)</p></li>
+<li><p>Allowing managed credentials for azureblockblob (#9430)</p></li>
+<li><p>Allow passing Celery objects to the Click entry point (#9426)</p></li>
+<li><p>support Request termination for gevent (#9440)</p></li>
+<li><p>Prevent event_mask from being overwritten. (#9432)</p></li>
+<li><p>Update pytest to 8.3.4 (#9444)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0rc3 (#9450)</p></li>
+</ul>
+</section>
+</section>
+<section id="rc2">
+<span id="version-5-5-0rc2"></span><h2>5.5.0rc2<a class="headerlink" href="#rc2" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">release-date<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2024-11-18</p>
+</dd>
+<dt class="field-even">release-by<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tomer Nosrati</p>
+</dd>
+</dl>
+<p>Celery v5.5.0 Release Candidate 2 is now available for testing.
+Please help us test this version and report any issues.</p>
+<section id="id89">
+<h3>Key Highlights<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h3>
+<p>See <a class="reference internal" href="whatsnew-5.5.html#whatsnew-5-5"><span class="std std-ref">What's new in Celery 5.5 (Immunity)</span></a> or read the main highlights below.</p>
+<section id="id90">
+<h4>Using Kombu 5.5.0rc2<a class="headerlink" href="#id90" title="Link to this heading">¶</a></h4>
+<p>The minimum required Kombu version has been bumped to 5.5.0.
+Kombu is current at 5.5.0rc2.</p>
+</section>
+<section id="id91">
+<h4>Complete Quorum Queues Support<a class="headerlink" href="#id91" title="Link to this heading">¶</a></h4>
+<p>A completely new ETA mechanism was developed to allow full support with RabbitMQ Quorum Queues.</p>
+<p>After upgrading to this version, please share your feedback on the quorum queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/9207">#9207</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a></p>
+<ul class="simple">
+<li><p>New <a class="reference internal" href="../getting-started/backends-and-brokers/rabbitmq.html#using-quorum-queues"><span class="std std-ref">documentation</span></a>.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-broker_native_delayed_delivery_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">broker_native_delayed_delivery_queue_type</span></code></a> configuration option.</p></li>
+</ul>
+</section>
+<section id="id94">
+<h4>New support for Google Pub/Sub transport<a class="headerlink" href="#id94" title="Link to this heading">¶</a></h4>
+<p>After upgrading to this version, please share your feedback on the Google Pub/Sub transport support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/pull/9351">#9351</a></p>
+</section>
+<section id="id96">
+<h4>Python 3.13 Improved Support<a class="headerlink" href="#id96" title="Link to this heading">¶</a></h4>
+<p>Additional dependencies have been migrated successfully to Python 3.13, including Kombu and py-amqp.</p>
+</section>
+</section>
+<section id="previous-pre-release-highlights">
+<h3>Previous Pre-release Highlights<a class="headerlink" href="#previous-pre-release-highlights" title="Link to this heading">¶</a></h3>
+<section id="python-3-13-initial-support">
+<h4>Python 3.13 Initial Support<a class="headerlink" href="#python-3-13-initial-support" title="Link to this heading">¶</a></h4>
+<p>This release introduces the initial support for Python 3.13 with Celery.</p>
+<p>After upgrading to this version, please share your feedback on the Python 3.13 support.</p>
+</section>
+<section id="id97">
+<h4>Soft Shutdown<a class="headerlink" href="#id97" title="Link to this heading">¶</a></h4>
+<p>The soft shutdown is a new mechanism in Celery that sits between the warm shutdown and the cold shutdown.
+It sets a time limited &quot;warm shutdown&quot; period, during which the worker will continue to process tasks that are already running.
+After the soft shutdown ends, the worker will initiate a graceful cold shutdown, stopping all tasks and exiting.</p>
+<p>The soft shutdown is disabled by default, and can be enabled by setting the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a>.
+If a worker is not running any task when the soft shutdown initiates, it will skip the warm shutdown period and proceed directly to the cold shutdown
+unless the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> is set to True. This is useful for workers
+that are idle, waiting on ETA tasks to be executed that still want to enable the soft shutdown anyways.</p>
+<p>The soft shutdown can replace the cold shutdown when using a broker with a visibility timeout mechanism, like <a class="reference internal" href="../getting-started/backends-and-brokers/redis.html#broker-redis"><span class="std std-ref">Redis</span></a>
+or <a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html#broker-sqs"><span class="std std-ref">SQS</span></a>, to enable a more graceful cold shutdown procedure, allowing the worker enough time to re-queue tasks that were not
+completed (e.g., <code class="docutils literal notranslate"><span class="pre">Restoring</span> <span class="pre">1</span> <span class="pre">unacknowledged</span> <span class="pre">message(s)</span></code>) by resetting the visibility timeout of the unacknowledged messages just before
+the worker exits completely.</p>
+<p>After upgrading to this version, please share your feedback on the new Soft Shutdown mechanism.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/pull/9213">#9213</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9231">#9231</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9238">#9238</a></p>
+<ul class="simple">
+<li><p>New <a class="reference internal" href="../userguide/workers.html#worker-stopping"><span class="std std-ref">documentation</span></a> for each shutdown type.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a> configuration option.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> configuration option.</p></li>
+</ul>
+</section>
+<section id="id101">
+<h4>REMAP_SIGTERM<a class="headerlink" href="#id101" title="Link to this heading">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">REMAP_SIGTERM</span></code> &quot;hidden feature&quot; has been tested, <a class="reference internal" href="../userguide/workers.html#worker-remap-sigterm"><span class="std std-ref">documented</span></a> and is now officially supported.
+This feature allows users to remap the SIGTERM signal to SIGQUIT, to initiate a soft or a cold shutdown using <code class="xref std std-sig docutils literal notranslate"><span class="pre">TERM</span></code>
+instead of <code class="xref std std-sig docutils literal notranslate"><span class="pre">QUIT</span></code>.</p>
+</section>
+<section id="id102">
+<h4>Pydantic Support<a class="headerlink" href="#id102" title="Link to this heading">¶</a></h4>
+<p>This release introduces support for Pydantic models in Celery tasks.
+For more info, see the new pydantic example and PR <a class="reference external" href="https://github.com/celery/celery/pull/9023">#9023</a> by &#64;mathiasertl.</p>
+<p>After upgrading to this version, please share your feedback on the new Pydantic support.</p>
+</section>
+<section id="id104">
+<h4>Redis Broker Stability Improvements<a class="headerlink" href="#id104" title="Link to this heading">¶</a></h4>
+<p>The root cause of the Redis broker instability issue has been <a class="reference external" href="https://github.com/celery/kombu/pull/2007">identified and resolved</a>
+in the v5.4.0 release of Kombu, which should resolve the disconnections bug and offer additional improvements.</p>
+<p>After upgrading to this version, please share your feedback on the Redis broker stability.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/7276">#7276</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8091">#8091</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8030">#8030</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8384">#8384</a></p>
+</section>
+<section id="id110">
+<h4>Quorum Queues Initial Support<a class="headerlink" href="#id110" title="Link to this heading">¶</a></h4>
+<p>This release introduces the initial support for Quorum Queues with Celery.</p>
+<p>See new configuration options for more details:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-task_default_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_queue_type</span></code></a></p></li>
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-worker_detect_quorum_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_detect_quorum_queues</span></code></a></p></li>
+</ul>
+<p>After upgrading to this version, please share your feedback on the Quorum Queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/9121">#9121</a></p>
+</section>
+</section>
+<section id="id113">
+<h3>What's Changed<a class="headerlink" href="#id113" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix: Treat dbm.error as a corrupted schedule file (#9331)</p></li>
+<li><p>Pin pre-commit to latest version 4.0.1 (#9343)</p></li>
+<li><p>Added Python 3.13 to Dockerfiles (#9350)</p></li>
+<li><p>Skip test_pool_restart_import_modules on PyPy due to test issue (#9352)</p></li>
+<li><p>Update elastic-transport requirement from &lt;=8.15.0 to &lt;=8.15.1 (#9347)</p></li>
+<li><p>added dragonfly logo (#9353)</p></li>
+<li><p>Update README.rst (#9354)</p></li>
+<li><p>Update README.rst (#9355)</p></li>
+<li><p>Update mypy to 1.12.0 (#9356)</p></li>
+<li><p>Bump Kombu to v5.5.0rc1 (#9357)</p></li>
+<li><p>Fix <cite>celery --loader</cite> option parsing (#9361)</p></li>
+<li><p>Add support for Google Pub/Sub transport (#9351)</p></li>
+<li><p>Add native incr support for GCSBackend (#9302)</p></li>
+<li><p>fix(perform_pending_operations): prevent task duplication on shutdown… (#9348)</p></li>
+<li><p>Update grpcio to 1.67.0 (#9365)</p></li>
+<li><p>Update google-cloud-firestore to 2.19.0 (#9364)</p></li>
+<li><p>Annotate celery/utils/timer2.py (#9362)</p></li>
+<li><p>Update cryptography to 43.0.3 (#9366)</p></li>
+<li><p>Update mypy to 1.12.1 (#9368)</p></li>
+<li><p>Bump mypy from 1.12.1 to 1.13.0 (#9373)</p></li>
+<li><p>Pass timeout and confirm_timeout to producer.publish() (#9374)</p></li>
+<li><p>Bump Kombu to v5.5.0rc2 (#9382)</p></li>
+<li><p>Bump pytest-cov from 5.0.0 to 6.0.0 (#9388)</p></li>
+<li><p>default strict to False for pydantic tasks (#9393)</p></li>
+<li><p>Only log that global QoS is disabled if using amqp (#9395)</p></li>
+<li><p>chore: update sponsorship logo (#9398)</p></li>
+<li><p>Allow custom hostname for celery_worker in celery.contrib.pytest / celery.contrib.testing.worker (#9405)</p></li>
+<li><p>Removed docker-docs from CI (optional job, malfunctioning) (#9406)</p></li>
+<li><p>Added a utility to format changelogs from the auto-generated GitHub release notes (#9408)</p></li>
+<li><p>Bump codecov/codecov-action from 4 to 5 (#9412)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.15.1 to &lt;=8.16.0 (#9410)</p></li>
+<li><p>Native Delayed Delivery in RabbitMQ (#9207)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0rc2 (#9416)</p></li>
+</ul>
+</section>
+</section>
+<section id="rc1">
+<span id="version-5-5-0rc1"></span><h2>5.5.0rc1<a class="headerlink" href="#rc1" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">release-date<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2024-10-08</p>
+</dd>
+<dt class="field-even">release-by<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tomer Nosrati</p>
+</dd>
+</dl>
+<p>Celery v5.5.0 Release Candidate 1 is now available for testing.
+Please help us test this version and report any issues.</p>
+<section id="id114">
+<h3>Key Highlights<a class="headerlink" href="#id114" title="Link to this heading">¶</a></h3>
+<p>See <a class="reference internal" href="whatsnew-5.5.html#whatsnew-5-5"><span class="std std-ref">What's new in Celery 5.5 (Immunity)</span></a> or read main highlights below.</p>
+<section id="id115">
+<h4>Python 3.13 Initial Support<a class="headerlink" href="#id115" title="Link to this heading">¶</a></h4>
+<p>This release introduces the initial support for Python 3.13 with Celery.</p>
+<p>After upgrading to this version, please share your feedback on the Python 3.13 support.</p>
+</section>
+<section id="id116">
+<h4>Soft Shutdown<a class="headerlink" href="#id116" title="Link to this heading">¶</a></h4>
+<p>The soft shutdown is a new mechanism in Celery that sits between the warm shutdown and the cold shutdown.
+It sets a time limited &quot;warm shutdown&quot; period, during which the worker will continue to process tasks that are already running.
+After the soft shutdown ends, the worker will initiate a graceful cold shutdown, stopping all tasks and exiting.</p>
+<p>The soft shutdown is disabled by default, and can be enabled by setting the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a>.
+If a worker is not running any task when the soft shutdown initiates, it will skip the warm shutdown period and proceed directly to the cold shutdown
+unless the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> is set to True. This is useful for workers
+that are idle, waiting on ETA tasks to be executed that still want to enable the soft shutdown anyways.</p>
+<p>The soft shutdown can replace the cold shutdown when using a broker with a visibility timeout mechanism, like <a class="reference internal" href="../getting-started/backends-and-brokers/redis.html#broker-redis"><span class="std std-ref">Redis</span></a>
+or <a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html#broker-sqs"><span class="std std-ref">SQS</span></a>, to enable a more graceful cold shutdown procedure, allowing the worker enough time to re-queue tasks that were not
+completed (e.g., <code class="docutils literal notranslate"><span class="pre">Restoring</span> <span class="pre">1</span> <span class="pre">unacknowledged</span> <span class="pre">message(s)</span></code>) by resetting the visibility timeout of the unacknowledged messages just before
+the worker exits completely.</p>
+<p>After upgrading to this version, please share your feedback on the new Soft Shutdown mechanism.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/pull/9213">#9213</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9231">#9231</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9238">#9238</a></p>
+<ul class="simple">
+<li><p>New <a class="reference internal" href="../userguide/workers.html#worker-stopping"><span class="std std-ref">documentation</span></a> for each shutdown type.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a> configuration option.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> configuration option.</p></li>
+</ul>
+</section>
+<section id="id120">
+<h4>REMAP_SIGTERM<a class="headerlink" href="#id120" title="Link to this heading">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">REMAP_SIGTERM</span></code> &quot;hidden feature&quot; has been tested, <a class="reference internal" href="../userguide/workers.html#worker-remap-sigterm"><span class="std std-ref">documented</span></a> and is now officially supported.
+This feature allows users to remap the SIGTERM signal to SIGQUIT, to initiate a soft or a cold shutdown using <code class="xref std std-sig docutils literal notranslate"><span class="pre">TERM</span></code>
+instead of <code class="xref std std-sig docutils literal notranslate"><span class="pre">QUIT</span></code>.</p>
+</section>
+<section id="id121">
+<h4>Pydantic Support<a class="headerlink" href="#id121" title="Link to this heading">¶</a></h4>
+<p>This release introduces support for Pydantic models in Celery tasks.
+For more info, see the new pydantic example and PR <a class="reference external" href="https://github.com/celery/celery/pull/9023">#9023</a> by &#64;mathiasertl.</p>
+<p>After upgrading to this version, please share your feedback on the new Pydantic support.</p>
+</section>
+<section id="id123">
+<h4>Redis Broker Stability Improvements<a class="headerlink" href="#id123" title="Link to this heading">¶</a></h4>
+<p>The root cause of the Redis broker instability issue has been <a class="reference external" href="https://github.com/celery/kombu/pull/2007">identified and resolved</a>
+in the v5.4.0 release of Kombu, which should resolve the disconnections bug and offer additional improvements.</p>
+<p>After upgrading to this version, please share your feedback on the Redis broker stability.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/7276">#7276</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8091">#8091</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8030">#8030</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8384">#8384</a></p>
+</section>
+<section id="id129">
+<h4>Quorum Queues Initial Support<a class="headerlink" href="#id129" title="Link to this heading">¶</a></h4>
+<p>This release introduces the initial support for Quorum Queues with Celery.</p>
+<p>See new configuration options for more details:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-task_default_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_queue_type</span></code></a></p></li>
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-worker_detect_quorum_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_detect_quorum_queues</span></code></a></p></li>
+</ul>
+<p>After upgrading to this version, please share your feedback on the Quorum Queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/9121">#9121</a></p>
+</section>
+</section>
+<section id="id132">
+<h3>What's Changed<a class="headerlink" href="#id132" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Added Blacksmith.sh to the Sponsors section in the README (#9323)</p></li>
+<li><p>Revert &quot;Added Blacksmith.sh to the Sponsors section in the README&quot; (#9324)</p></li>
+<li><p>Added Blacksmith.sh to the Sponsors section in the README (#9325)</p></li>
+<li><p>Added missing &quot; <a href="#id198"><span class="problematic" id="id199">|oc-sponsor-3|</span></a>” in README (#9326)</p></li>
+<li><p>Use Blacksmith SVG logo (#9327)</p></li>
+<li><p>Updated Blacksmith SVG logo (#9328)</p></li>
+<li><p>Revert &quot;Updated Blacksmith SVG logo&quot; (#9329)</p></li>
+<li><p>Update pymongo to 4.10.0 (#9330)</p></li>
+<li><p>Update pymongo to 4.10.1 (#9332)</p></li>
+<li><p>Update user guide to recommend delay_on_commit (#9333)</p></li>
+<li><p>Pin pre-commit to latest version 4.0.0 (Python 3.9+) (#9334)</p></li>
+<li><p>Update ephem to 4.1.6 (#9336)</p></li>
+<li><p>Updated Blacksmith SVG logo (#9337)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0rc1 (#9341)</p></li>
+</ul>
+</section>
+</section>
+<section id="b4">
+<span id="version-5-5-0b4"></span><h2>5.5.0b4<a class="headerlink" href="#b4" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">release-date<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2024-09-30</p>
+</dd>
+<dt class="field-even">release-by<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tomer Nosrati</p>
+</dd>
+</dl>
+<p>Celery v5.5.0 Beta 4 is now available for testing.
+Please help us test this version and report any issues.</p>
+<section id="id133">
+<h3>Key Highlights<a class="headerlink" href="#id133" title="Link to this heading">¶</a></h3>
+<section id="id134">
+<h4>Python 3.13 Initial Support<a class="headerlink" href="#id134" title="Link to this heading">¶</a></h4>
+<p>This release introduces the initial support for Python 3.13 with Celery.</p>
+<p>After upgrading to this version, please share your feedback on the Python 3.13 support.</p>
+</section>
+</section>
+<section id="id135">
+<h3>Previous Pre-release Highlights<a class="headerlink" href="#id135" title="Link to this heading">¶</a></h3>
+<section id="id136">
+<h4>Soft Shutdown<a class="headerlink" href="#id136" title="Link to this heading">¶</a></h4>
+<p>The soft shutdown is a new mechanism in Celery that sits between the warm shutdown and the cold shutdown.
+It sets a time limited &quot;warm shutdown&quot; period, during which the worker will continue to process tasks that are already running.
+After the soft shutdown ends, the worker will initiate a graceful cold shutdown, stopping all tasks and exiting.</p>
+<p>The soft shutdown is disabled by default, and can be enabled by setting the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a>.
+If a worker is not running any task when the soft shutdown initiates, it will skip the warm shutdown period and proceed directly to the cold shutdown
+unless the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> is set to True. This is useful for workers
+that are idle, waiting on ETA tasks to be executed that still want to enable the soft shutdown anyways.</p>
+<p>The soft shutdown can replace the cold shutdown when using a broker with a visibility timeout mechanism, like <a class="reference internal" href="../getting-started/backends-and-brokers/redis.html#broker-redis"><span class="std std-ref">Redis</span></a>
+or <a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html#broker-sqs"><span class="std std-ref">SQS</span></a>, to enable a more graceful cold shutdown procedure, allowing the worker enough time to re-queue tasks that were not
+completed (e.g., <code class="docutils literal notranslate"><span class="pre">Restoring</span> <span class="pre">1</span> <span class="pre">unacknowledged</span> <span class="pre">message(s)</span></code>) by resetting the visibility timeout of the unacknowledged messages just before
+the worker exits completely.</p>
+<p>After upgrading to this version, please share your feedback on the new Soft Shutdown mechanism.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/pull/9213">#9213</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9231">#9231</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9238">#9238</a></p>
+<ul class="simple">
+<li><p>New <a class="reference internal" href="../userguide/workers.html#worker-stopping"><span class="std std-ref">documentation</span></a> for each shutdown type.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a> configuration option.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> configuration option.</p></li>
+</ul>
+</section>
+<section id="id140">
+<h4>REMAP_SIGTERM<a class="headerlink" href="#id140" title="Link to this heading">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">REMAP_SIGTERM</span></code> &quot;hidden feature&quot; has been tested, <a class="reference internal" href="../userguide/workers.html#worker-remap-sigterm"><span class="std std-ref">documented</span></a> and is now officially supported.
+This feature allows users to remap the SIGTERM signal to SIGQUIT, to initiate a soft or a cold shutdown using <code class="xref std std-sig docutils literal notranslate"><span class="pre">TERM</span></code>
+instead of <code class="xref std std-sig docutils literal notranslate"><span class="pre">QUIT</span></code>.</p>
+</section>
+<section id="id141">
+<h4>Pydantic Support<a class="headerlink" href="#id141" title="Link to this heading">¶</a></h4>
+<p>This release introduces support for Pydantic models in Celery tasks.
+For more info, see the new pydantic example and PR <a class="reference external" href="https://github.com/celery/celery/pull/9023">#9023</a> by &#64;mathiasertl.</p>
+<p>After upgrading to this version, please share your feedback on the new Pydantic support.</p>
+</section>
+<section id="id143">
+<h4>Redis Broker Stability Improvements<a class="headerlink" href="#id143" title="Link to this heading">¶</a></h4>
+<p>The root cause of the Redis broker instability issue has been <a class="reference external" href="https://github.com/celery/kombu/pull/2007">identified and resolved</a>
+in the v5.4.0 release of Kombu, which should resolve the disconnections bug and offer additional improvements.</p>
+<p>After upgrading to this version, please share your feedback on the Redis broker stability.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/7276">#7276</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8091">#8091</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8030">#8030</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8384">#8384</a></p>
+</section>
+<section id="id149">
+<h4>Quorum Queues Initial Support<a class="headerlink" href="#id149" title="Link to this heading">¶</a></h4>
+<p>This release introduces the initial support for Quorum Queues with Celery.</p>
+<p>See new configuration options for more details:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-task_default_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_queue_type</span></code></a></p></li>
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-worker_detect_quorum_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_detect_quorum_queues</span></code></a></p></li>
+</ul>
+<p>After upgrading to this version, please share your feedback on the Quorum Queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/9121">#9121</a></p>
+</section>
+</section>
+<section id="id152">
+<h3>What's Changed<a class="headerlink" href="#id152" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Correct the error description in exception message when validate soft_time_limit (#9246)</p></li>
+<li><p>Update msgpack to 1.1.0 (#9249)</p></li>
+<li><p>chore(utils/time.py): rename <cite>_is_ambigious</cite> -&gt; <cite>_is_ambiguous</cite> (#9248)</p></li>
+<li><p>Reduced Smoke Tests to min/max supported python (3.8/3.12) (#9252)</p></li>
+<li><p>Update pytest to 8.3.3 (#9253)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.15.0 to &lt;=8.15.1 (#9255)</p></li>
+<li><p>Update mongodb without deprecated <cite>[srv]</cite> extra requirement (#9258)</p></li>
+<li><p>blacksmith.sh: Migrate workflows to Blacksmith (#9261)</p></li>
+<li><p>Fixes #9119: inject dispatch_uid for retry-wrapped receivers (#9247)</p></li>
+<li><p>Run all smoke tests CI jobs together (#9263)</p></li>
+<li><p>Improve documentation on visibility timeout (#9264)</p></li>
+<li><p>Bump pytest-celery to 1.1.2 (#9267)</p></li>
+<li><p>Added missing &quot;app.conf.visibility_timeout&quot; in smoke tests (#9266)</p></li>
+<li><p>Improved stability with t/smoke/tests/test_consumer.py (#9268)</p></li>
+<li><p>Improved Redis container stability in the smoke tests (#9271)</p></li>
+<li><p>Disabled EXHAUST_MEMORY tests in Smoke-tasks (#9272)</p></li>
+<li><p>Marked xfail for test_reducing_prefetch_count with Redis - flaky test (#9273)</p></li>
+<li><p>Fixed pypy unit tests random failures in the CI (#9275)</p></li>
+<li><p>Fixed more pypy unit tests random failures in the CI (#9278)</p></li>
+<li><p>Fix Redis container from aborting randomly (#9276)</p></li>
+<li><p>Run Integration &amp; Smoke CI tests together after unit tests pass (#9280)</p></li>
+<li><p>Added &quot;loglevel verbose&quot; to Redis containers in smoke tests (#9282)</p></li>
+<li><p>Fixed Redis error in the smoke tests: &quot;Possible SECURITY ATTACK detected&quot; (#9284)</p></li>
+<li><p>Refactored the smoke tests github workflow (#9285)</p></li>
+<li><p>Increased --reruns 3-&gt;4 in smoke tests (#9286)</p></li>
+<li><p>Improve stability of smoke tests (CI and Local) (#9287)</p></li>
+<li><p>Fixed Smoke tests CI &quot;test-case&quot; labels (specific instead of general) (#9288)</p></li>
+<li><p>Use assert_log_exists instead of wait_for_log in worker smoke tests (#9290)</p></li>
+<li><p>Optimized t/smoke/tests/test_worker.py (#9291)</p></li>
+<li><p>Enable smoke tests dockers check before each test starts (#9292)</p></li>
+<li><p>Relaxed smoke tests flaky tests mechanism (#9293)</p></li>
+<li><p>Updated quorum queue detection to handle multiple broker instances (#9294)</p></li>
+<li><p>Non-lazy table creation for database backend (#9228)</p></li>
+<li><p>Pin pymongo to latest version 4.9 (#9297)</p></li>
+<li><p>Bump pymongo from 4.9 to 4.9.1 (#9298)</p></li>
+<li><p>Bump Kombu to v5.4.2 (#9304)</p></li>
+<li><p>Use rabbitmq:3 in stamping smoke tests (#9307)</p></li>
+<li><p>Bump pytest-celery to 1.1.3 (#9308)</p></li>
+<li><p>Added Python 3.13 Support (#9309)</p></li>
+<li><p>Add log when global qos is disabled (#9296)</p></li>
+<li><p>Added official release docs (whatsnew) for v5.5 (#9312)</p></li>
+<li><p>Enable Codespell autofix (#9313)</p></li>
+<li><p>Pydantic typehints: Fix optional, allow generics (#9319)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0b4 (#9322)</p></li>
+</ul>
+</section>
+</section>
+<section id="b3">
+<span id="version-5-5-0b3"></span><h2>5.5.0b3<a class="headerlink" href="#b3" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">release-date<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2024-09-08</p>
+</dd>
+<dt class="field-even">release-by<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tomer Nosrati</p>
+</dd>
+</dl>
+<p>Celery v5.5.0 Beta 3 is now available for testing.
+Please help us test this version and report any issues.</p>
+<section id="id153">
+<h3>Key Highlights<a class="headerlink" href="#id153" title="Link to this heading">¶</a></h3>
+<section id="id154">
+<h4>Soft Shutdown<a class="headerlink" href="#id154" title="Link to this heading">¶</a></h4>
+<p>The soft shutdown is a new mechanism in Celery that sits between the warm shutdown and the cold shutdown.
+It sets a time limited &quot;warm shutdown&quot; period, during which the worker will continue to process tasks that are already running.
+After the soft shutdown ends, the worker will initiate a graceful cold shutdown, stopping all tasks and exiting.</p>
+<p>The soft shutdown is disabled by default, and can be enabled by setting the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a>.
+If a worker is not running any task when the soft shutdown initiates, it will skip the warm shutdown period and proceed directly to the cold shutdown
+unless the new configuration option <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> is set to True. This is useful for workers
+that are idle, waiting on ETA tasks to be executed that still want to enable the soft shutdown anyways.</p>
+<p>The soft shutdown can replace the cold shutdown when using a broker with a visibility timeout mechanism, like <a class="reference internal" href="../getting-started/backends-and-brokers/redis.html#broker-redis"><span class="std std-ref">Redis</span></a>
+or <a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html#broker-sqs"><span class="std std-ref">SQS</span></a>, to enable a more graceful cold shutdown procedure, allowing the worker enough time to re-queue tasks that were not
+completed (e.g., <code class="docutils literal notranslate"><span class="pre">Restoring</span> <span class="pre">1</span> <span class="pre">unacknowledged</span> <span class="pre">message(s)</span></code>) by resetting the visibility timeout of the unacknowledged messages just before
+the worker exits completely.</p>
+<p>After upgrading to this version, please share your feedback on the new Soft Shutdown mechanism.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/pull/9213">#9213</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9231">#9231</a>,
+<a class="reference external" href="https://github.com/celery/celery/pull/9238">#9238</a></p>
+<ul class="simple">
+<li><p>New <a class="reference internal" href="../userguide/workers.html#worker-stopping"><span class="std std-ref">documentation</span></a> for each shutdown type.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_soft_shutdown_timeout"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_soft_shutdown_timeout</span></code></a> configuration option.</p></li>
+<li><p>New <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_enable_soft_shutdown_on_idle"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_enable_soft_shutdown_on_idle</span></code></a> configuration option.</p></li>
+</ul>
+</section>
+<section id="id158">
+<h4>REMAP_SIGTERM<a class="headerlink" href="#id158" title="Link to this heading">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">REMAP_SIGTERM</span></code> &quot;hidden feature&quot; has been tested, <a class="reference internal" href="../userguide/workers.html#worker-remap-sigterm"><span class="std std-ref">documented</span></a> and is now officially supported.
+This feature allows users to remap the SIGTERM signal to SIGQUIT, to initiate a soft or a cold shutdown using <code class="xref std std-sig docutils literal notranslate"><span class="pre">TERM</span></code>
+instead of <code class="xref std std-sig docutils literal notranslate"><span class="pre">QUIT</span></code>.</p>
+</section>
+</section>
+<section id="id159">
+<h3>Previous Pre-release Highlights<a class="headerlink" href="#id159" title="Link to this heading">¶</a></h3>
+<section id="id160">
+<h4>Pydantic Support<a class="headerlink" href="#id160" title="Link to this heading">¶</a></h4>
+<p>This release introduces support for Pydantic models in Celery tasks.
+For more info, see the new pydantic example and PR <a class="reference external" href="https://github.com/celery/celery/pull/9023">#9023</a> by &#64;mathiasertl.</p>
+<p>After upgrading to this version, please share your feedback on the new Pydantic support.</p>
+</section>
+<section id="id162">
+<h4>Redis Broker Stability Improvements<a class="headerlink" href="#id162" title="Link to this heading">¶</a></h4>
+<p>The root cause of the Redis broker instability issue has been <a class="reference external" href="https://github.com/celery/kombu/pull/2007">identified and resolved</a>
+in the v5.4.0 release of Kombu, which should resolve the disconnections bug and offer additional improvements.</p>
+<p>After upgrading to this version, please share your feedback on the Redis broker stability.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/7276">#7276</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8091">#8091</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8030">#8030</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8384">#8384</a></p>
+</section>
+<section id="id168">
+<h4>Quorum Queues Initial Support<a class="headerlink" href="#id168" title="Link to this heading">¶</a></h4>
+<p>This release introduces the initial support for Quorum Queues with Celery.</p>
+<p>See new configuration options for more details:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-task_default_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_queue_type</span></code></a></p></li>
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-worker_detect_quorum_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_detect_quorum_queues</span></code></a></p></li>
+</ul>
+<p>After upgrading to this version, please share your feedback on the Quorum Queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/9121">#9121</a></p>
+</section>
+</section>
+<section id="id171">
+<h3>What's Changed<a class="headerlink" href="#id171" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Added SQS (localstack) broker to canvas smoke tests (#9179)</p></li>
+<li><p>Pin elastic-transport to &lt;= latest version 8.15.0 (#9182)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.14.0 to &lt;=8.15.0 (#9186)</p></li>
+<li><p>Improve formatting (#9188)</p></li>
+<li><p>Add basic helm chart for celery (#9181)</p></li>
+<li><p>Update kafka.rst (#9194)</p></li>
+<li><p>Update pytest-order to 1.3.0 (#9198)</p></li>
+<li><p>Update mypy to 1.11.2 (#9206)</p></li>
+<li><p>All added to routes (#9204)</p></li>
+<li><p>Fix typos discovered by codespell (#9212)</p></li>
+<li><p>Use tzdata extras with zoneinfo backports (#8286)</p></li>
+<li><p>Use <cite>docker compose</cite> in Contributing's doc build section (#9219)</p></li>
+<li><p>Failing test for <span class="xref issue">issue #9119</span> (#9215)</p></li>
+<li><p>Fix date_done timezone issue (#8385)</p></li>
+<li><p>CI Fixes to smoke tests (#9223)</p></li>
+<li><p>Fix: passes current request context when pushing to request_stack (#9208)</p></li>
+<li><p>Fix broken link in the Using RabbitMQ docs page (#9226)</p></li>
+<li><p>Added Soft Shutdown Mechanism (#9213)</p></li>
+<li><p>Added worker_enable_soft_shutdown_on_idle (#9231)</p></li>
+<li><p>Bump cryptography from 43.0.0 to 43.0.1 (#9233)</p></li>
+<li><p>Added docs regarding the relevancy of soft shutdown and ETA tasks (#9238)</p></li>
+<li><p>Show broker_connection_retry_on_startup warning only if it evaluates as False (#9227)</p></li>
+<li><p>Fixed docker-docs CI failure (#9240)</p></li>
+<li><p>Added docker cleanup auto-fixture to improve smoke tests stability (#9243)</p></li>
+<li><p>print is not thread-safe, so should not be used in signal handler (#9222)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0b3 (#9244)</p></li>
+</ul>
+</section>
+</section>
+<section id="b2">
+<span id="version-5-5-0b2"></span><h2>5.5.0b2<a class="headerlink" href="#b2" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">release-date<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2024-08-06</p>
+</dd>
+<dt class="field-even">release-by<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tomer Nosrati</p>
+</dd>
+</dl>
+<p>Celery v5.5.0 Beta 2 is now available for testing.
+Please help us test this version and report any issues.</p>
+<section id="id172">
+<h3>Key Highlights<a class="headerlink" href="#id172" title="Link to this heading">¶</a></h3>
+<section id="id173">
+<h4>Pydantic Support<a class="headerlink" href="#id173" title="Link to this heading">¶</a></h4>
+<p>This release introduces support for Pydantic models in Celery tasks.
+For more info, see the new pydantic example and PR <a class="reference external" href="https://github.com/celery/celery/pull/9023">#9023</a> by &#64;mathiasertl.</p>
+<p>After upgrading to this version, please share your feedback on the new Pydantic support.</p>
+</section>
+</section>
+<section id="previous-beta-highlights">
+<h3>Previous Beta Highlights<a class="headerlink" href="#previous-beta-highlights" title="Link to this heading">¶</a></h3>
+<section id="id175">
+<h4>Redis Broker Stability Improvements<a class="headerlink" href="#id175" title="Link to this heading">¶</a></h4>
+<p>The root cause of the Redis broker instability issue has been <a class="reference external" href="https://github.com/celery/kombu/pull/2007">identified and resolved</a>
+in the v5.4.0 release of Kombu, which should resolve the disconnections bug and offer additional improvements.</p>
+<p>After upgrading to this version, please share your feedback on the Redis broker stability.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/7276">#7276</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8091">#8091</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8030">#8030</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8384">#8384</a></p>
+</section>
+<section id="id181">
+<h4>Quorum Queues Initial Support<a class="headerlink" href="#id181" title="Link to this heading">¶</a></h4>
+<p>This release introduces the initial support for Quorum Queues with Celery.</p>
+<p>See new configuration options for more details:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-task_default_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_queue_type</span></code></a></p></li>
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-worker_detect_quorum_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_detect_quorum_queues</span></code></a></p></li>
+</ul>
+<p>After upgrading to this version, please share your feedback on the Quorum Queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/9121">#9121</a></p>
+</section>
+</section>
+<section id="id184">
+<h3>What's Changed<a class="headerlink" href="#id184" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Bump pytest from 8.3.1 to 8.3.2 (#9153)</p></li>
+<li><p>Remove setuptools deprecated test command from setup.py (#9159)</p></li>
+<li><p>Pin pre-commit to latest version 3.8.0 from Python 3.9 (#9156)</p></li>
+<li><p>Bump mypy from 1.11.0 to 1.11.1 (#9164)</p></li>
+<li><p>Change &quot;docker-compose&quot; to &quot;docker compose&quot; in Makefile (#9169)</p></li>
+<li><p>update python versions and docker compose (#9171)</p></li>
+<li><p>Add support for Pydantic model validation/serialization (fixes #8751) (#9023)</p></li>
+<li><p>Allow local dynamodb to be installed on another host than localhost (#8965)</p></li>
+<li><p>Terminate job implementation for gevent concurrency backend (#9083)</p></li>
+<li><p>Bump Kombu to v5.4.0 (#9177)</p></li>
+<li><p>Add check for soft_time_limit and time_limit values (#9173)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0b2 (#9178)</p></li>
+</ul>
+</section>
+</section>
+<section id="b1">
+<span id="version-5-5-0b1"></span><h2>5.5.0b1<a class="headerlink" href="#b1" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">release-date<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2024-07-24</p>
+</dd>
+<dt class="field-even">release-by<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tomer Nosrati</p>
+</dd>
+</dl>
+<p>Celery v5.5.0 Beta 1 is now available for testing.
+Please help us test this version and report any issues.</p>
+<section id="id185">
+<h3>Key Highlights<a class="headerlink" href="#id185" title="Link to this heading">¶</a></h3>
+<section id="id186">
+<h4>Redis Broker Stability Improvements<a class="headerlink" href="#id186" title="Link to this heading">¶</a></h4>
+<p>The root cause of the Redis broker instability issue has been <a class="reference external" href="https://github.com/celery/kombu/pull/2007">identified and resolved</a>
+in the release-candidate for Kombu v5.4.0. This beta release has been upgraded to use the new
+Kombu RC version, which should resolve the disconnections bug and offer additional improvements.</p>
+<p>After upgrading to this version, please share your feedback on the Redis broker stability.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/7276">#7276</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8091">#8091</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8030">#8030</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/8384">#8384</a></p>
+</section>
+<section id="id192">
+<h4>Quorum Queues Initial Support<a class="headerlink" href="#id192" title="Link to this heading">¶</a></h4>
+<p>This release introduces the initial support for Quorum Queues with Celery.</p>
+<p>See new configuration options for more details:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-task_default_queue_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_queue_type</span></code></a></p></li>
+<li><p><a class="reference internal" href="../userguide/configuration.html#std-setting-worker_detect_quorum_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_detect_quorum_queues</span></code></a></p></li>
+</ul>
+<p>After upgrading to this version, please share your feedback on the Quorum Queues support.</p>
+<p>Relevant Issues:
+<a class="reference external" href="https://github.com/celery/celery/discussions/6067">#6067</a>,
+<a class="reference external" href="https://github.com/celery/celery/discussions/9121">#9121</a></p>
+</section>
+</section>
+<section id="id195">
+<h3>What's Changed<a class="headerlink" href="#id195" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>(docs): use correct version celery v.5.4.x (#8975)</p></li>
+<li><p>Update mypy to 1.10.0 (#8977)</p></li>
+<li><p>Limit pymongo&lt;4.7 when Python &lt;= 3.10 due to breaking changes in 4.7 (#8988)</p></li>
+<li><p>Bump pytest from 8.1.1 to 8.2.0 (#8987)</p></li>
+<li><p>Update README to Include FastAPI in Framework Integration Section (#8978)</p></li>
+<li><p>Clarify return values of ..._on_commit methods (#8984)</p></li>
+<li><p>add kafka broker docs (#8935)</p></li>
+<li><p>Limit pymongo&lt;4.7 regardless of Python version (#8999)</p></li>
+<li><p>Update pymongo[srv] requirement from &lt;4.7,&gt;=4.0.2 to &gt;=4.0.2,&lt;4.8 (#9000)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.13.0 to &lt;=8.13.1 (#9004)</p></li>
+<li><p>security: SecureSerializer: support generic low-level serializers (#8982)</p></li>
+<li><p>don't kill if pid same as file (#8997) (#8998)</p></li>
+<li><p>Update cryptography to 42.0.6 (#9005)</p></li>
+<li><p>Bump cryptography from 42.0.6 to 42.0.7 (#9009)</p></li>
+<li><p>Added -vv to unit, integration and smoke tests (#9014)</p></li>
+<li><p>SecuritySerializer: ensure pack separator will not be conflicted with serialized fields (#9010)</p></li>
+<li><p>Update sphinx-click to 5.2.2 (#9025)</p></li>
+<li><p>Bump sphinx-click from 5.2.2 to 6.0.0 (#9029)</p></li>
+<li><p>Fix a typo to display the help message in first-steps-with-django (#9036)</p></li>
+<li><p>Pinned requests to v2.31.0 due to docker-py bug #3256 (#9039)</p></li>
+<li><p>Fix certificate validity check (#9037)</p></li>
+<li><p>Revert &quot;Pinned requests to v2.31.0 due to docker-py bug #3256&quot; (#9043)</p></li>
+<li><p>Bump pytest from 8.2.0 to 8.2.1 (#9035)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.13.1 to &lt;=8.13.2 (#9045)</p></li>
+<li><p>Fix detection of custom task set as class attribute with Django (#9038)</p></li>
+<li><p>Update elastic-transport requirement from &lt;=8.13.0 to &lt;=8.13.1 (#9050)</p></li>
+<li><p>Bump pycouchdb from 1.14.2 to 1.16.0 (#9052)</p></li>
+<li><p>Update pytest to 8.2.2 (#9060)</p></li>
+<li><p>Bump cryptography from 42.0.7 to 42.0.8 (#9061)</p></li>
+<li><p>Update elasticsearch requirement from &lt;=8.13.2 to &lt;=8.14.0 (#9069)</p></li>
+<li><p>[enhance feature] Crontab schedule: allow using month names (#9068)</p></li>
+<li><p>Enhance tox environment: [testenv:clean] (#9072)</p></li>
+<li><p>Clarify docs about Reserve one task at a time (#9073)</p></li>
+<li><p>GCS docs fixes (#9075)</p></li>
+<li><p>Use hub.remove_writer instead of hub.remove for write fds (#4185) (#9055)</p></li>
+<li><p>Class method to process crontab string (#9079)</p></li>
+<li><p>Fixed smoke tests env bug when using integration tasks that rely on Redis (#9090)</p></li>
+<li><p>Bugfix - a task will run multiple times when chaining chains with groups (#9021)</p></li>
+<li><p>Bump mypy from 1.10.0 to 1.10.1 (#9096)</p></li>
+<li><p>Don't add a separator to global_keyprefix if it already has one (#9080)</p></li>
+<li><p>Update pymongo[srv] requirement from &lt;4.8,&gt;=4.0.2 to &gt;=4.0.2,&lt;4.9 (#9111)</p></li>
+<li><p>Added missing import in examples for Django (#9099)</p></li>
+<li><p>Bump Kombu to v5.4.0rc1 (#9117)</p></li>
+<li><p>Removed skipping Redis in t/smoke/tests/test_consumer.py tests (#9118)</p></li>
+<li><p>Update pytest-subtests to 0.13.0 (#9120)</p></li>
+<li><p>Increased smoke tests CI timeout (#9122)</p></li>
+<li><p>Bump Kombu to v5.4.0rc2 (#9127)</p></li>
+<li><p>Update zstandard to 0.23.0 (#9129)</p></li>
+<li><p>Update pytest-subtests to 0.13.1 (#9130)</p></li>
+<li><p>Changed retry to tenacity in smoke tests (#9133)</p></li>
+<li><p>Bump mypy from 1.10.1 to 1.11.0 (#9135)</p></li>
+<li><p>Update cryptography to 43.0.0 (#9138)</p></li>
+<li><p>Update pytest to 8.3.1 (#9137)</p></li>
+<li><p>Added support for Quorum Queues (#9121)</p></li>
+<li><p>Bump Kombu to v5.4.0rc3 (#9139)</p></li>
+<li><p>Cleanup in Changelog.rst (#9141)</p></li>
+<li><p>Update Django docs for CELERY_CACHE_BACKEND (#9143)</p></li>
+<li><p>Added missing docs to previous releases (#9144)</p></li>
+<li><p>Fixed a few documentation build warnings (#9145)</p></li>
+<li><p>docs(README): link invalid (#9148)</p></li>
+<li><p>Prepare for (pre) release: v5.5.0b1 (#9146)</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="whatsnew-5.4.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">What's new in Celery 5.4 (Opalescent)</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="whatsnew-5.5.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">What's new in Celery 5.5 (Immunity)</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2009-2023, Ask Solem &amp; contributors
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Change history</a><ul>
+<li><a class="reference internal" href="#version-5-5-1">5.5.1</a><ul>
+<li><a class="reference internal" href="#what-s-changed">What's Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#version-5-5-0">5.5.0</a><ul>
+<li><a class="reference internal" href="#key-highlights">Key Highlights</a><ul>
+<li><a class="reference internal" href="#redis-broker-stability-improvements">Redis Broker Stability Improvements</a></li>
+<li><a class="reference internal" href="#pycurl-replaced-with-urllib3"><code class="docutils literal notranslate"><span class="pre">pycurl</span></code> replaced with <code class="docutils literal notranslate"><span class="pre">urllib3</span></code></a></li>
+<li><a class="reference internal" href="#rabbitmq-quorum-queues-support">RabbitMQ Quorum Queues Support</a></li>
+<li><a class="reference internal" href="#soft-shutdown-mechanism">Soft Shutdown Mechanism</a></li>
+<li><a class="reference internal" href="#pydantic-support">Pydantic Support</a></li>
+<li><a class="reference internal" href="#google-pub-sub-transport">Google Pub/Sub Transport</a></li>
+<li><a class="reference internal" href="#python-3-13-support">Python 3.13 Support</a></li>
+<li><a class="reference internal" href="#remap-sigterm-support">REMAP_SIGTERM Support</a></li>
+<li><a class="reference internal" href="#database-backend-improvements">Database Backend Improvements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id22">What's Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rc5">5.5.0rc5</a><ul>
+<li><a class="reference internal" href="#id23">Key Highlights</a><ul>
+<li><a class="reference internal" href="#using-kombu-5-5-0rc3">Using Kombu 5.5.0rc3</a></li>
+<li><a class="reference internal" href="#complete-quorum-queues-support">Complete Quorum Queues Support</a></li>
+<li><a class="reference internal" href="#new-support-for-google-pub-sub-transport">New support for Google Pub/Sub transport</a></li>
+<li><a class="reference internal" href="#python-3-13-improved-support">Python 3.13 Improved Support</a></li>
+<li><a class="reference internal" href="#soft-shutdown">Soft Shutdown</a></li>
+<li><a class="reference internal" href="#remap-sigterm">REMAP_SIGTERM</a></li>
+<li><a class="reference internal" href="#id30">Pydantic Support</a></li>
+<li><a class="reference internal" href="#id32">Redis Broker Stability Improvements</a></li>
+<li><a class="reference internal" href="#quorum-queues-initial-support">Quorum Queues Initial Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id39">What's Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rc4">5.5.0rc4</a><ul>
+<li><a class="reference internal" href="#id40">Key Highlights</a><ul>
+<li><a class="reference internal" href="#using-kombu-5-5-0rc2">Using Kombu 5.5.0rc2</a></li>
+<li><a class="reference internal" href="#id41">Complete Quorum Queues Support</a></li>
+<li><a class="reference internal" href="#id44">New support for Google Pub/Sub transport</a></li>
+<li><a class="reference internal" href="#id46">Python 3.13 Improved Support</a></li>
+<li><a class="reference internal" href="#id47">Soft Shutdown</a></li>
+<li><a class="reference internal" href="#id51">REMAP_SIGTERM</a></li>
+<li><a class="reference internal" href="#id52">Pydantic Support</a></li>
+<li><a class="reference internal" href="#id54">Redis Broker Stability Improvements</a></li>
+<li><a class="reference internal" href="#id60">Quorum Queues Initial Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id63">What's Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rc3">5.5.0rc3</a><ul>
+<li><a class="reference internal" href="#id64">Key Highlights</a><ul>
+<li><a class="reference internal" href="#id65">Using Kombu 5.5.0rc2</a></li>
+<li><a class="reference internal" href="#id66">Complete Quorum Queues Support</a></li>
+<li><a class="reference internal" href="#id69">New support for Google Pub/Sub transport</a></li>
+<li><a class="reference internal" href="#id71">Python 3.13 Improved Support</a></li>
+<li><a class="reference internal" href="#id72">Soft Shutdown</a></li>
+<li><a class="reference internal" href="#id76">REMAP_SIGTERM</a></li>
+<li><a class="reference internal" href="#id77">Pydantic Support</a></li>
+<li><a class="reference internal" href="#id79">Redis Broker Stability Improvements</a></li>
+<li><a class="reference internal" href="#id85">Quorum Queues Initial Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id88">What's Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rc2">5.5.0rc2</a><ul>
+<li><a class="reference internal" href="#id89">Key Highlights</a><ul>
+<li><a class="reference internal" href="#id90">Using Kombu 5.5.0rc2</a></li>
+<li><a class="reference internal" href="#id91">Complete Quorum Queues Support</a></li>
+<li><a class="reference internal" href="#id94">New support for Google Pub/Sub transport</a></li>
+<li><a class="reference internal" href="#id96">Python 3.13 Improved Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#previous-pre-release-highlights">Previous Pre-release Highlights</a><ul>
+<li><a class="reference internal" href="#python-3-13-initial-support">Python 3.13 Initial Support</a></li>
+<li><a class="reference internal" href="#id97">Soft Shutdown</a></li>
+<li><a class="reference internal" href="#id101">REMAP_SIGTERM</a></li>
+<li><a class="reference internal" href="#id102">Pydantic Support</a></li>
+<li><a class="reference internal" href="#id104">Redis Broker Stability Improvements</a></li>
+<li><a class="reference internal" href="#id110">Quorum Queues Initial Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id113">What's Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rc1">5.5.0rc1</a><ul>
+<li><a class="reference internal" href="#id114">Key Highlights</a><ul>
+<li><a class="reference internal" href="#id115">Python 3.13 Initial Support</a></li>
+<li><a class="reference internal" href="#id116">Soft Shutdown</a></li>
+<li><a class="reference internal" href="#id120">REMAP_SIGTERM</a></li>
+<li><a class="reference internal" href="#id121">Pydantic Support</a></li>
+<li><a class="reference internal" href="#id123">Redis Broker Stability Improvements</a></li>
+<li><a class="reference internal" href="#id129">Quorum Queues Initial Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id132">What's Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#b4">5.5.0b4</a><ul>
+<li><a class="reference internal" href="#id133">Key Highlights</a><ul>
+<li><a class="reference internal" href="#id134">Python 3.13 Initial Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id135">Previous Pre-release Highlights</a><ul>
+<li><a class="reference internal" href="#id136">Soft Shutdown</a></li>
+<li><a class="reference internal" href="#id140">REMAP_SIGTERM</a></li>
+<li><a class="reference internal" href="#id141">Pydantic Support</a></li>
+<li><a class="reference internal" href="#id143">Redis Broker Stability Improvements</a></li>
+<li><a class="reference internal" href="#id149">Quorum Queues Initial Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id152">What's Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#b3">5.5.0b3</a><ul>
+<li><a class="reference internal" href="#id153">Key Highlights</a><ul>
+<li><a class="reference internal" href="#id154">Soft Shutdown</a></li>
+<li><a class="reference internal" href="#id158">REMAP_SIGTERM</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id159">Previous Pre-release Highlights</a><ul>
+<li><a class="reference internal" href="#id160">Pydantic Support</a></li>
+<li><a class="reference internal" href="#id162">Redis Broker Stability Improvements</a></li>
+<li><a class="reference internal" href="#id168">Quorum Queues Initial Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id171">What's Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#b2">5.5.0b2</a><ul>
+<li><a class="reference internal" href="#id172">Key Highlights</a><ul>
+<li><a class="reference internal" href="#id173">Pydantic Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#previous-beta-highlights">Previous Beta Highlights</a><ul>
+<li><a class="reference internal" href="#id175">Redis Broker Stability Improvements</a></li>
+<li><a class="reference internal" href="#id181">Quorum Queues Initial Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id184">What's Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#b1">5.5.0b1</a><ul>
+<li><a class="reference internal" href="#id185">Key Highlights</a><ul>
+<li><a class="reference internal" href="#id186">Redis Broker Stability Improvements</a></li>
+<li><a class="reference internal" href="#id192">Quorum Queues Initial Support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id195">What's Changed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=8156d91f"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=5eb1bb1e"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    </body>
+</html>

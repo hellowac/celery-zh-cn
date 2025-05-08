@@ -1,0 +1,1559 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="周期性任务/Tasks" href="periodic-tasks.html" /><link rel="prev" title="Workers 指南" href="workers.html" />
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>守护进程 - Celery 5.5.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=3ee1c6c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/my.css?v=112ca36d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Celery 5.5.1 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/celery_512_1.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Celery 5.5.1 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../copyright.html">版权</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/index.html">快速开始</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 快速开始</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/introduction.html">Celery 简介</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting-started/backends-and-brokers/index.html">Backends 和 Brokers</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Backends 和 Brokers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/rabbitmq.html">使用 RabbitMQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/redis.html">使用 Redis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html">使用 Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/kafka.html">使用 Kafka</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/gcpubsub.html">使用 Google Pub/Sub</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/first-steps-with-celery.html">使用 Celery 的第一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/next-steps.html">下一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/resources.html">资源</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">用户指南</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 用户指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="application.html">应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calling.html">调用任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="canvas.html">Canvas：设计工作流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workers.html">Workers 指南</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">守护进程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="periodic-tasks.html">周期性任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routing.html">路由任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html">监控和管理指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html">优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">调试</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concurrency/index.html">并发</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 并发</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="concurrency/eventlet.html">Eventlet 并发</a></li>
+<li class="toctree-l3"><a class="reference internal" href="concurrency/gevent.html">gevent 并发</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="signals.html">信号</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">使用 Celery 进行测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extending.html">扩展 和 Bootsteps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">配置和默认值</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx.html">使用 Sphinx 文档化任务</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../django/index.html">Django</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Django</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../django/first-steps-with-django.html">使用 Django 的第一步</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">社区资源</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/task-cookbook.html">Task Cookbook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">更改历史</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">API 参考</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of API 参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cli.html">命令行接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">celery</span></code> --- Distributed processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html">Proxies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.task.html"><code class="docutils literal notranslate"><span class="pre">celery.app.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html">AMQP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html#queues">Queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.defaults.html"><code class="docutils literal notranslate"><span class="pre">celery.app.defaults</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.control.html"><code class="docutils literal notranslate"><span class="pre">celery.app.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.registry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.registry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.app.backends</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.builtins.html"><code class="docutils literal notranslate"><span class="pre">celery.app.builtins</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.events.html"><code class="docutils literal notranslate"><span class="pre">celery.app.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.log.html"><code class="docutils literal notranslate"><span class="pre">celery.app.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.app.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.autoretry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.autoretry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bootsteps.html"><code class="docutils literal notranslate"><span class="pre">celery.bootsteps</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.result.html"><code class="docutils literal notranslate"><span class="pre">celery.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.schedules.html"><code class="docutils literal notranslate"><span class="pre">celery.schedules</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.signals.html"><code class="docutils literal notranslate"><span class="pre">celery.signals</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.security.html"><code class="docutils literal notranslate"><span class="pre">celery.security</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.utils.debug.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.debug</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.exceptions.html"><code class="docutils literal notranslate"><span class="pre">celery.exceptions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.app.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.default.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.default</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.base.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html">States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#sets">Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#misc">Misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.FAILURE"><code class="docutils literal notranslate"><span class="pre">FAILURE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.PENDING"><code class="docutils literal notranslate"><span class="pre">PENDING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RECEIVED"><code class="docutils literal notranslate"><span class="pre">RECEIVED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RETRY"><code class="docutils literal notranslate"><span class="pre">RETRY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.REVOKED"><code class="docutils literal notranslate"><span class="pre">REVOKED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.STARTED"><code class="docutils literal notranslate"><span class="pre">STARTED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.SUCCESS"><code class="docutils literal notranslate"><span class="pre">SUCCESS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.precedence"><code class="docutils literal notranslate"><span class="pre">precedence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.state"><code class="docutils literal notranslate"><span class="pre">state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.abortable.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.abortable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.django.task.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.django.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.pytest.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.pytest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.sphinx.html">celery.contrib.sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.app.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.manager.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.manager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.mocks.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.mocks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.rdb.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.rdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.html"><code class="docutils literal notranslate"><span class="pre">celery.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.receiver.html"><code class="docutils literal notranslate"><span class="pre">celery.events.receiver</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.dispatcher.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.event.html"><code class="docutils literal notranslate"><span class="pre">celery.events.event</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.state.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.request.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.request</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.state.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.strategy.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.strategy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.agent.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.agent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.connection.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.connection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.events.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.gossip.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.gossip</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.heart.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.heart</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.mingle.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.mingle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.tasks.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.tasks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.base.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.celery.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.celery</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.events.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.logtool.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.logtool</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.amqp.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.amqp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.graph</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.call.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.call</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.control.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.list.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.list</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.purge.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.purge</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.result.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.shell.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.shell</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.upgrade.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.upgrade</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">内部</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 内部</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../internals/guide.html">代码贡献指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/deprecation.html">Celery 弃用时间表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/worker.html">内部的 worker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/protocol.html">消息协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/app-overview.html">“大实例”重构</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/reference/index.html">内部模块参考</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 内部模块参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.components.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.components</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.loops.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.loops</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.heartbeat.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.heartbeat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.control</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.pidbox.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.pidbox</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.autoscale.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.autoscale</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.solo.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.solo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.prefork.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.prefork</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.eventlet.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.eventlet</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.gevent.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.gevent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.thread.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.thread</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.base.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.backends</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.base.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.asynchronous.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.asynchronous</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.azureblockblob.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.azureblockblob</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.rpc.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.rpc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cache.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.consul.html">celery.backends.consul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchdb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchdb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.mongodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.mongodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.elasticsearch.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.elasticsearch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.redis.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.redis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cassandra.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cassandra</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchbase.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchbase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.arangodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.arangodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.dynamodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.dynamodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.filesystem.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.filesystem</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cosmosdbsql.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cosmosdbsql</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.s3.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.s3</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.gcs.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.gcs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.trace.html"><code class="docutils literal notranslate"><span class="pre">celery.app.trace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.annotations.html"><code class="docutils literal notranslate"><span class="pre">celery.app.annotations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.routes.html"><code class="docutils literal notranslate"><span class="pre">celery.app.routes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.certificate.html"><code class="docutils literal notranslate"><span class="pre">celery.security.certificate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.key.html"><code class="docutils literal notranslate"><span class="pre">celery.security.key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.security.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.security.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.snapshot.html"><code class="docutils literal notranslate"><span class="pre">celery.events.snapshot</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.cursesmon.html"><code class="docutils literal notranslate"><span class="pre">celery.events.cursesmon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.dumper.html"><code class="docutils literal notranslate"><span class="pre">celery.events.dumper</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.models.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.models</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.session.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.session</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.abstract.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.abstract</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.collections.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.collections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.nodenames.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.nodenames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.deprecated.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.deprecated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.functional.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.functional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.graph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.objects.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.term.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.term</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.time.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.time</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.iso8601.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.iso8601</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.saferepr.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.saferepr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.sysinfo.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.sysinfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.threads.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.threads</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.timer2.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.timer2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.imports.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.imports</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.log.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.log</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.text.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.signal.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch.signal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.platforms.html"><code class="docutils literal notranslate"><span class="pre">celery.platforms</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery._state.html"><code class="docutils literal notranslate"><span class="pre">celery._state</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../history/index.html">历史</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 历史</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.5.html">What's new in Celery 5.5 (Immunity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.5.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.4.html">What's new in Celery 5.4 (Opalescent)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.3.html">What's new in Celery 5.3 (Emerald Rush)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.1.html">What's new in Celery 5.1 (Sun Harmonics)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.0.html">What's new in Celery 5.0 (singularity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.4.html">What's new in Celery 4.4 (Cliffs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.3.html">What's new in Celery 4.3 (rhubarb)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.2.html">What's new in Celery 4.2 (windowlicker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.2.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.1.html">What's new in Celery 4.1 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.0.html">What's new in Celery 4.0 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-3.1.html">What's new in Celery 3.1 (Cipater)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-3.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-3.0.html">What's new in Celery 3.0 (Chiastic Slide)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-3.0.html">Change history for Celery 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-2.5.html">What's new in Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.5.html">Change history for Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.4.html">Change history for Celery 2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.3.html">Change history for Celery 2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.2.html">Change history for Celery 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.1.html">Change history for Celery 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.0.html">Change history for Celery 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-1.0.html">Change history for Celery 1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+</ul>
+
+</div>
+<!-- <iframe src="https://ghbtns.com/github-btn.html?user=celery&repo=celery&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe> -->
+<div id="donate">
+  <h5>捐赠</h5>
+  <p>请捐赠以支持这个社区项目</p>
+  <a href="https://opencollective.com/celery/donate" target="_blank">
+    <!-- <img src="https://opencollective.com/celery/donate/button@2x.png?color=blue" /> -->
+    <img src="https://opencollective.com/celery/donate/button.png?color=blue" />
+  </a>
+</div></div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/userguide/daemonizing.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="daemonizing">
+<span id="id1"></span><h1>守护进程<a class="headerlink" href="#daemonizing" title="Link to this heading">¶</a></h1>
+<p>Daemonization</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>如今，大多数 Linux 发行版使用 systemd 来管理系统和用户服务的生命周期。</p>
+<p>你可以通过输入以下命令检查你的 Linux 发行版是否使用 systemd：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>systemctl<span class="w"> </span>--version
+<span class="go">systemd 249 (v249.9-1.fc35)</span>
+<span class="go">+PAM +AUDIT +SELINUX -APPARMOR +IMA +SMACK +SECCOMP +GCRYPT +GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 -IDN +IPTC +KMOD +LIBCRYPTSETUP +LIBFDISK +PCRE2 +PWQUALITY +P11KIT +QRENCODE +BZIP2 +LZ4 +XZ +ZLIB +ZSTD +XKBCOMMON +UTMP +SYSVINIT default-hierarchy=unified</span>
+</pre></div>
+</div>
+<p>如果你的输出类似于上面所示，请参考
+<a class="reference internal" href="#daemon-systemd-generic"><span class="std std-ref">我们的 systemd 文档</span></a> 以获取更多指导。</p>
+<p>然而，init.d 脚本在这些 Linux 发行版中仍然应该能正常工作，因为 systemd 提供了 systemd-sysv 兼容层
+，该层会自动根据我们提供的 init.d 脚本生成服务。</p>
+<p>如果你为多个 Linux 发行版打包 Celery，
+并且有些不支持 systemd，或者打算支持其他 Unix 系统，
+你可能需要参考 <a class="reference internal" href="#daemon-generic"><span class="std std-ref">我们的 init.d 文档</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>Most Linux distributions these days use systemd for managing the lifecycle of system
+and user services.</p>
+<p>You can check if your Linux distribution uses systemd by typing:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>systemctl<span class="w"> </span>--version
+<span class="go">systemd 249 (v249.9-1.fc35)</span>
+<span class="go">+PAM +AUDIT +SELINUX -APPARMOR +IMA +SMACK +SECCOMP +GCRYPT +GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 -IDN +IPTC +KMOD +LIBCRYPTSETUP +LIBFDISK +PCRE2 +PWQUALITY +P11KIT +QRENCODE +BZIP2 +LZ4 +XZ +ZLIB +ZSTD +XKBCOMMON +UTMP +SYSVINIT default-hierarchy=unified</span>
+</pre></div>
+</div>
+<p>If you have output similar to the above, please refer to
+<a class="reference internal" href="#daemon-systemd-generic"><span class="std std-ref">our systemd documentation</span></a> for guidance.</p>
+<p>However, the init.d script should still work in those Linux distributions
+as well since systemd provides the systemd-sysv compatibility layer
+which generates services automatically from the init.d scripts we provide.</p>
+<p>If you package Celery for multiple Linux distributions
+and some do not support systemd or to other Unix systems as well,
+you may want to refer to <a class="reference internal" href="#daemon-generic"><span class="std std-ref">our init.d documentation</span></a>.</p>
+</div>
+</div>
+<section id="daemon-generic">
+<span id="id2"></span><h2>通用初始化脚本<a class="headerlink" href="#daemon-generic" title="Link to this heading">¶</a></h2>
+<p>Generic init-scripts</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>请查看 Celery 发行版中的 <a class="reference external" href="https://github.com/celery/celery/tree/main/extra/generic-init.d/">extra/generic-init.d/</a> 目录。</p>
+<p>此目录包含用于
+<strong class="program">celery worker</strong> 程序的通用 bash 初始化脚本，
+这些脚本应该能够在 Linux、FreeBSD、OpenBSD 和其他类 Unix 平台上运行。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>See the <a class="reference external" href="https://github.com/celery/celery/tree/main/extra/generic-init.d/">extra/generic-init.d/</a> directory Celery distribution.</p>
+<p>This directory contains generic bash init-scripts for the
+<strong class="program">celery worker</strong> program,
+these should run on Linux, FreeBSD, OpenBSD, and other Unix-like platforms.</p>
+</div>
+</div>
+<section id="celeryd">
+<span id="generic-initd-celeryd"></span><h3>初始化脚本： <code class="docutils literal notranslate"><span class="pre">celeryd</span></code><a class="headerlink" href="#celeryd" title="Link to this heading">¶</a></h3>
+<p>Init-script: <code class="docutils literal notranslate"><span class="pre">celeryd</span></code></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<dl class="field-list simple">
+<dt class="field-odd">用法<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>/etc/init.d/celeryd {start|stop|restart|status}</cite></p>
+</dd>
+<dt class="field-even">配置文件<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="file docutils literal notranslate"><span class="pre">/etc/default/celeryd</span></code></p>
+</dd>
+</dl>
+<p>为了正确配置此脚本以运行 worker，你可能至少需要告诉它
+启动时应该切换到哪个目录（以便找到包含你应用程序或配置模块的模块）。</p>
+<p>守护进程脚本由 <code class="file docutils literal notranslate"><span class="pre">/etc/default/celeryd</span></code> 文件配置。
+这是一个 shell (<strong class="command">sh</strong>) 脚本，你可以在其中添加类似下面的配置选项环境变量。
+要添加真正影响 worker 的环境变量，你还必须导出它们（例如：<strong class="command">export DISPLAY=&quot;:0&quot;</strong>）。</p>
+<div class="admonition- admonition">
+<p class="admonition-title">需要超级用户权限</p>
+<p>初始化脚本只能由 root 用户使用，
+并且 shell 配置文件必须归 root 所有。</p>
+<p>非特权用户不需要使用初始化脚本，
+他们可以使用 <strong class="program">celery multi</strong> 工具（或
+<strong class="program">celery worker --detach</strong>）：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>multi<span class="w"> </span>start<span class="w"> </span>worker1<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--pidfile<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/run/celery/%n.pid&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--logfile<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/log/celery/%n%I.log&quot;</span>
+
+<span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>multi<span class="w"> </span>restart<span class="w"> </span>worker1<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--logfile<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/log/celery/%n%I.log&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--pidfile<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/run/celery/%n.pid</span>
+
+<span class="gp">$ </span>celery<span class="w"> </span>multi<span class="w"> </span>stopwait<span class="w"> </span>worker1<span class="w"> </span>--pidfile<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/run/celery/%n.pid&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<dl class="field-list simple">
+<dt class="field-odd">Usage<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>/etc/init.d/celeryd {start|stop|restart|status}</cite></p>
+</dd>
+<dt class="field-even">Configuration file<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="file docutils literal notranslate"><span class="pre">/etc/default/celeryd</span></code></p>
+</dd>
+</dl>
+<p>To configure this script to run the worker properly you probably need to at least
+tell it where to change
+directory to when it starts (to find the module containing your app, or your
+configuration module).</p>
+<p>The daemonization script is configured by the file <code class="file docutils literal notranslate"><span class="pre">/etc/default/celeryd</span></code>.
+This is a shell (<strong class="command">sh</strong>) script where you can add environment variables like
+the configuration options below.  To add real environment variables affecting
+the worker you must also export them (e.g., <strong class="command">export DISPLAY=&quot;:0&quot;</strong>)</p>
+<div class="admonition-superuser-privileges-required admonition">
+<p class="admonition-title">Superuser privileges required</p>
+<p>The init-scripts can only be used by root,
+and the shell configuration file must also be owned by root.</p>
+<p>Unprivileged users don't need to use the init-script,
+instead they can use the <strong class="program">celery multi</strong> utility (or
+<strong class="program">celery worker --detach</strong>):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>multi<span class="w"> </span>start<span class="w"> </span>worker1<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--pidfile<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/run/celery/%n.pid&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--logfile<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/log/celery/%n%I.log&quot;</span>
+
+<span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>multi<span class="w"> </span>restart<span class="w"> </span>worker1<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--logfile<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/log/celery/%n%I.log&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--pidfile<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/run/celery/%n.pid</span>
+
+<span class="gp">$ </span>celery<span class="w"> </span>multi<span class="w"> </span>stopwait<span class="w"> </span>worker1<span class="w"> </span>--pidfile<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/run/celery/%n.pid&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<section id="generic-initd-celeryd-example">
+<span id="id3"></span><h4>示例配置<a class="headerlink" href="#generic-initd-celeryd-example" title="Link to this heading">¶</a></h4>
+<p>Example configuration</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>这是一个 Python 项目的示例配置。</p>
+<p><code class="file docutils literal notranslate"><span class="pre">/etc/default/celeryd</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 要启动的节点名称</span>
+<span class="c1">#   大多数用户只会启动一个节点：</span>
+<span class="nv">CELERYD_NODES</span><span class="o">=</span><span class="s2">&quot;worker1&quot;</span>
+<span class="c1">#   但你也可以启动多个节点，并在 CELERYD_OPTS 中为每个节点配置设置</span>
+<span class="c1">#CELERYD_NODES=&quot;worker1 worker2 worker3&quot;</span>
+<span class="c1">#   或者，你也可以指定要启动的节点数量：</span>
+<span class="c1">#CELERYD_NODES=10</span>
+
+<span class="c1"># 指向 &#39;celery&#39; 命令的绝对路径或相对路径：</span>
+<span class="nv">CELERY_BIN</span><span class="o">=</span><span class="s2">&quot;/usr/local/bin/celery&quot;</span>
+<span class="c1">#CELERY_BIN=&quot;/virtualenvs/def/bin/celery&quot;</span>
+
+<span class="c1"># 要使用的应用实例</span>
+<span class="c1"># 如果你没有使用 app，可以注释掉此行</span>
+<span class="nv">CELERY_APP</span><span class="o">=</span><span class="s2">&quot;proj&quot;</span>
+<span class="c1"># 或使用完整限定名：</span>
+<span class="c1">#CELERY_APP=&quot;proj.tasks:app&quot;</span>
+
+<span class="c1"># 启动时要切换的目录</span>
+<span class="nv">CELERYD_CHDIR</span><span class="o">=</span><span class="s2">&quot;/opt/Myproject/&quot;</span>
+
+<span class="c1"># 传递给 worker 的额外命令行参数</span>
+<span class="nv">CELERYD_OPTS</span><span class="o">=</span><span class="s2">&quot;--time-limit=300 --concurrency=8&quot;</span>
+<span class="c1"># 通过追加节点名来为特定节点配置设置：</span>
+<span class="c1">#CELERYD_OPTS=&quot;--time-limit=300 -c 8 -c:worker2 4 -c:worker3 2 -Ofair:worker1&quot;</span>
+
+<span class="c1"># 将日志级别设置为 DEBUG</span>
+<span class="c1">#CELERYD_LOG_LEVEL=&quot;DEBUG&quot;</span>
+
+<span class="c1"># %n 会被节点名称的首部替换</span>
+<span class="nv">CELERYD_LOG_FILE</span><span class="o">=</span><span class="s2">&quot;/var/log/celery/%n%I.log&quot;</span>
+<span class="nv">CELERYD_PID_FILE</span><span class="o">=</span><span class="s2">&quot;/var/run/celery/%n.pid&quot;</span>
+
+<span class="c1"># worker 应以非特权用户身份运行</span>
+<span class="c1">#   你需要手动创建此用户（或选择一个已存在的用户/用户组组合，例如 nobody）</span>
+<span class="nv">CELERYD_USER</span><span class="o">=</span><span class="s2">&quot;celery&quot;</span>
+<span class="nv">CELERYD_GROUP</span><span class="o">=</span><span class="s2">&quot;celery&quot;</span>
+
+<span class="c1"># 启用后，如果 pid 和日志目录不存在，将自动创建，</span>
+<span class="c1"># 且将归属于配置的用户 ID/组</span>
+<span class="nv">CELERY_CREATE_DIRS</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>This is an example configuration for a Python project.</p>
+<p><code class="file docutils literal notranslate"><span class="pre">/etc/default/celeryd</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Names of nodes to start</span>
+<span class="c1">#   most people will only start one node:</span>
+<span class="nv">CELERYD_NODES</span><span class="o">=</span><span class="s2">&quot;worker1&quot;</span>
+<span class="c1">#   but you can also start multiple and configure settings</span>
+<span class="c1">#   for each in CELERYD_OPTS</span>
+<span class="c1">#CELERYD_NODES=&quot;worker1 worker2 worker3&quot;</span>
+<span class="c1">#   alternatively, you can specify the number of nodes to start:</span>
+<span class="c1">#CELERYD_NODES=10</span>
+
+<span class="c1"># Absolute or relative path to the &#39;celery&#39; command:</span>
+<span class="nv">CELERY_BIN</span><span class="o">=</span><span class="s2">&quot;/usr/local/bin/celery&quot;</span>
+<span class="c1">#CELERY_BIN=&quot;/virtualenvs/def/bin/celery&quot;</span>
+
+<span class="c1"># App instance to use</span>
+<span class="c1"># comment out this line if you don&#39;t use an app</span>
+<span class="nv">CELERY_APP</span><span class="o">=</span><span class="s2">&quot;proj&quot;</span>
+<span class="c1"># or fully qualified:</span>
+<span class="c1">#CELERY_APP=&quot;proj.tasks:app&quot;</span>
+
+<span class="c1"># Where to chdir at start.</span>
+<span class="nv">CELERYD_CHDIR</span><span class="o">=</span><span class="s2">&quot;/opt/Myproject/&quot;</span>
+
+<span class="c1"># Extra command-line arguments to the worker</span>
+<span class="nv">CELERYD_OPTS</span><span class="o">=</span><span class="s2">&quot;--time-limit=300 --concurrency=8&quot;</span>
+<span class="c1"># Configure node-specific settings by appending node name to arguments:</span>
+<span class="c1">#CELERYD_OPTS=&quot;--time-limit=300 -c 8 -c:worker2 4 -c:worker3 2 -Ofair:worker1&quot;</span>
+
+<span class="c1"># Set logging level to DEBUG</span>
+<span class="c1">#CELERYD_LOG_LEVEL=&quot;DEBUG&quot;</span>
+
+<span class="c1"># %n will be replaced with the first part of the nodename.</span>
+<span class="nv">CELERYD_LOG_FILE</span><span class="o">=</span><span class="s2">&quot;/var/log/celery/%n%I.log&quot;</span>
+<span class="nv">CELERYD_PID_FILE</span><span class="o">=</span><span class="s2">&quot;/var/run/celery/%n.pid&quot;</span>
+
+<span class="c1"># Workers should run as an unprivileged user.</span>
+<span class="c1">#   You need to create this user manually (or you can choose</span>
+<span class="c1">#   a user/group combination that already exists (e.g., nobody).</span>
+<span class="nv">CELERYD_USER</span><span class="o">=</span><span class="s2">&quot;celery&quot;</span>
+<span class="nv">CELERYD_GROUP</span><span class="o">=</span><span class="s2">&quot;celery&quot;</span>
+
+<span class="c1"># If enabled pid and log directories will be created if missing,</span>
+<span class="c1"># and owned by the userid/group configured.</span>
+<span class="nv">CELERY_CREATE_DIRS</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="shell">
+<h4>使用登录 shell<a class="headerlink" href="#shell" title="Link to this heading">¶</a></h4>
+<p>Using a login shell</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>你可以通过使用登录 shell 来继承 <code class="docutils literal notranslate"><span class="pre">CELERYD_USER</span></code> 的环境：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CELERYD_SU_ARGS</span><span class="o">=</span><span class="s2">&quot;-l&quot;</span>
+</pre></div>
+</div>
+<p>请注意，不建议使用此选项，除非在确有必要的情况下才使用。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>You can inherit the environment of the <code class="docutils literal notranslate"><span class="pre">CELERYD_USER</span></code> by using a login
+shell:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CELERYD_SU_ARGS</span><span class="o">=</span><span class="s2">&quot;-l&quot;</span>
+</pre></div>
+</div>
+<p>Note that this isn't recommended, and that you should only use this option
+when absolutely necessary.</p>
+</div>
+</div>
+</section>
+<section id="django">
+<span id="generic-initd-celeryd-django-example"></span><h4>示例 Django 配置<a class="headerlink" href="#django" title="Link to this heading">¶</a></h4>
+<p>Example Django configuration</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>Django 用户现在可以使用与上述完全相同的模板，
+但请确保定义你 Celery 应用实例的模块
+也设置了 <span class="target" id="index-0"></span><a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/settings/#envvar-DJANGO_SETTINGS_MODULE" title="（在 Django v6.0）"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">DJANGO_SETTINGS_MODULE</span></code></a> 的默认值，
+参考 <a class="reference internal" href="../django/first-steps-with-django.html#django-first-steps"><span class="std std-ref">使用 Django 的第一步</span></a> 中的 Django 项目示例。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Django users now uses the exact same template as above,
+but make sure that the module that defines your Celery app instance
+also sets a default value for <span class="target" id="index-1"></span><a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/settings/#envvar-DJANGO_SETTINGS_MODULE" title="（在 Django v6.0）"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">DJANGO_SETTINGS_MODULE</span></code></a>
+as shown in the example Django project in <a class="reference internal" href="../django/first-steps-with-django.html#django-first-steps"><span class="std std-ref">使用 Django 的第一步</span></a>.</p>
+</div>
+</div>
+</section>
+<section id="generic-initd-celeryd-options">
+<span id="id4"></span><h4>可用选项<a class="headerlink" href="#generic-initd-celeryd-options" title="Link to this heading">¶</a></h4>
+<p>Available options</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_APP</span></code></p>
+<p>要使用的应用实例（对应 <a class="reference internal" href="../reference/cli.html#cmdoption-celery-A"><code class="xref std std-option docutils literal notranslate"><span class="pre">--app</span></code></a> 参数的值）。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_BIN</span></code></p>
+<p><strong class="program">celery</strong> 程序的绝对路径或相对路径。
+示例：</p>
+<ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">celery</span></code></p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">/usr/local/bin/celery</span></code></p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">/virtualenvs/proj/bin/celery</span></code></p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">/virtualenvs/proj/bin/python</span> <span class="pre">-m</span> <span class="pre">celery</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_NODES</span></code></p>
+<p>要启动的节点名称列表（以空格分隔）。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_OPTS</span></code></p>
+<p>传递给 worker 的额外命令行参数，参见 <cite>celery worker --help</cite> 获取参数列表。
+此项也支持 <cite>multi</cite> 使用的扩展语法，可为各个节点分别配置参数。
+示例参见 <cite>celery multi --help</cite> 中的多节点配置说明。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_CHDIR</span></code></p>
+<p>启动时切换的目录路径。默认不会切换，保持当前目录。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_PID_FILE</span></code></p>
+<p>PID 文件的完整路径。默认为 /var/run/celery/%n.pid</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_LOG_FILE</span></code></p>
+<p>worker 日志文件的完整路径。默认为 /var/log/celery/%n%I.log
+<strong>注意</strong>：在使用 prefork 池时，使用 <cite>%I</cite> 是非常重要的，
+因为多个进程共享同一日志文件会引发竞争条件。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_LOG_LEVEL</span></code></p>
+<p>worker 的日志级别。默认为 INFO。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_USER</span></code></p>
+<p>运行 worker 的用户。默认为当前用户。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_GROUP</span></code></p>
+<p>运行 worker 的用户组。默认为当前用户。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_CREATE_DIRS</span></code></p>
+<p>是否总是创建所需目录（如日志目录和 PID 文件目录）。
+默认仅在未设置自定义日志文件或 PID 文件路径时创建。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_CREATE_RUNDIR</span></code></p>
+<p>是否总是创建 PID 文件目录。默认仅在未设置自定义 PID 文件路径时启用。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_CREATE_LOGDIR</span></code></p>
+<p>是否总是创建日志文件目录。默认仅在未设置自定义日志路径时启用。</p>
+</li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_APP</span></code></p>
+<p>App instance to use (value for <a class="reference internal" href="../reference/cli.html#cmdoption-celery-A"><code class="xref std std-option docutils literal notranslate"><span class="pre">--app</span></code></a> argument).</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_BIN</span></code></p>
+<p>Absolute or relative path to the <strong class="program">celery</strong> program.
+Examples:</p>
+<ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">celery</span></code></p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">/usr/local/bin/celery</span></code></p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">/virtualenvs/proj/bin/celery</span></code></p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">/virtualenvs/proj/bin/python</span> <span class="pre">-m</span> <span class="pre">celery</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_NODES</span></code></p>
+<p>List of node names to start (separated by space).</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_OPTS</span></code></p>
+<p>Additional command-line arguments for the worker, see
+<cite>celery worker --help</cite> for a list. This also supports the extended
+syntax used by <cite>multi</cite> to configure settings for individual nodes.
+See <cite>celery multi --help</cite> for some multi-node configuration examples.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_CHDIR</span></code></p>
+<p>Path to change directory to at start. Default is to stay in the current
+directory.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_PID_FILE</span></code></p>
+<p>Full path to the PID file. Default is /var/run/celery/%n.pid</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_LOG_FILE</span></code></p>
+<p>Full path to the worker log file. Default is /var/log/celery/%n%I.log
+<strong>Note</strong>: Using <cite>%I</cite> is important when using the prefork pool as having
+multiple processes share the same log file will lead to race conditions.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_LOG_LEVEL</span></code></p>
+<p>Worker log level. Default is INFO.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_USER</span></code></p>
+<p>User to run the worker as. Default is current user.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYD_GROUP</span></code></p>
+<p>Group to run worker as. Default is current user.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_CREATE_DIRS</span></code></p>
+<p>Always create directories (log directory and pid file directory).
+Default is to only create directories when no custom logfile/pidfile set.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_CREATE_RUNDIR</span></code></p>
+<p>Always create pidfile directory. By default only enabled when no custom
+pidfile location set.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_CREATE_LOGDIR</span></code></p>
+<p>Always create logfile directory. By default only enable when no custom
+logfile location set.</p>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="celerybeat">
+<span id="generic-initd-celerybeat"></span><h3>初始化脚本：<code class="docutils literal notranslate"><span class="pre">celerybeat</span></code><a class="headerlink" href="#celerybeat" title="Link to this heading">¶</a></h3>
+<p>Init-script: <code class="docutils literal notranslate"><span class="pre">celerybeat</span></code></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<dl class="field-list simple">
+<dt class="field-odd">用法<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>/etc/init.d/celerybeat {start|stop|restart}</cite></p>
+</dd>
+<dt class="field-even">配置文件<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="file docutils literal notranslate"><span class="pre">/etc/default/celerybeat</span></code> 或 <code class="file docutils literal notranslate"><span class="pre">/etc/default/celeryd</span></code>.</p>
+</dd>
+</dl>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<dl class="field-list simple">
+<dt class="field-odd">Usage<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>/etc/init.d/celerybeat {start|stop|restart}</cite></p>
+</dd>
+<dt class="field-even">Configuration file<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="file docutils literal notranslate"><span class="pre">/etc/default/celerybeat</span></code> or
+<code class="file docutils literal notranslate"><span class="pre">/etc/default/celeryd</span></code>.</p>
+</dd>
+</dl>
+</div>
+</div>
+<section id="generic-initd-celerybeat-example">
+<span id="id5"></span><h4>示例配置<a class="headerlink" href="#generic-initd-celerybeat-example" title="Link to this heading">¶</a></h4>
+<p>Example configuration</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>以下是一个 Python 项目的示例配置：</p>
+<p><cite>/etc/default/celerybeat</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 指向 &#39;celery&#39; 命令的绝对路径或相对路径：</span>
+<span class="nv">CELERY_BIN</span><span class="o">=</span><span class="s2">&quot;/usr/local/bin/celery&quot;</span>
+<span class="c1">#CELERY_BIN=&quot;/virtualenvs/def/bin/celery&quot;</span>
+
+<span class="c1"># 要使用的应用实例</span>
+<span class="c1"># 如果你没有使用 app，可以注释掉此行</span>
+<span class="nv">CELERY_APP</span><span class="o">=</span><span class="s2">&quot;proj&quot;</span>
+<span class="c1"># 或使用完整限定名：</span>
+<span class="c1">#CELERY_APP=&quot;proj.tasks:app&quot;</span>
+
+<span class="c1"># 启动时要切换的目录</span>
+<span class="nv">CELERYBEAT_CHDIR</span><span class="o">=</span><span class="s2">&quot;/opt/Myproject/&quot;</span>
+
+<span class="c1"># 传递给 celerybeat 的额外参数</span>
+<span class="nv">CELERYBEAT_OPTS</span><span class="o">=</span><span class="s2">&quot;--schedule=/var/run/celery/celerybeat-schedule&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>This is an example configuration for a Python project:</p>
+<p><cite>/etc/default/celerybeat</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Absolute or relative path to the &#39;celery&#39; command:</span>
+<span class="nv">CELERY_BIN</span><span class="o">=</span><span class="s2">&quot;/usr/local/bin/celery&quot;</span>
+<span class="c1">#CELERY_BIN=&quot;/virtualenvs/def/bin/celery&quot;</span>
+
+<span class="c1"># App instance to use</span>
+<span class="c1"># comment out this line if you don&#39;t use an app</span>
+<span class="nv">CELERY_APP</span><span class="o">=</span><span class="s2">&quot;proj&quot;</span>
+<span class="c1"># or fully qualified:</span>
+<span class="c1">#CELERY_APP=&quot;proj.tasks:app&quot;</span>
+
+<span class="c1"># Where to chdir at start.</span>
+<span class="nv">CELERYBEAT_CHDIR</span><span class="o">=</span><span class="s2">&quot;/opt/Myproject/&quot;</span>
+
+<span class="c1"># Extra arguments to celerybeat</span>
+<span class="nv">CELERYBEAT_OPTS</span><span class="o">=</span><span class="s2">&quot;--schedule=/var/run/celery/celerybeat-schedule&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="generic-initd-celerybeat-django-example">
+<span id="id6"></span><h4>示例 Django 配置<a class="headerlink" href="#generic-initd-celerybeat-django-example" title="Link to this heading">¶</a></h4>
+<p>Example Django configuration</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>你应该使用与上文相同的模板，但需确保设置并导出 <code class="docutils literal notranslate"><span class="pre">DJANGO_SETTINGS_MODULE</span></code> 变量，
+同时设置 <code class="docutils literal notranslate"><span class="pre">CELERYD_CHDIR</span></code> 指向项目目录：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">DJANGO_SETTINGS_MODULE</span><span class="o">=</span><span class="s2">&quot;settings&quot;</span>
+
+<span class="nv">CELERYD_CHDIR</span><span class="o">=</span><span class="s2">&quot;/opt/MyProject&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>You should use the same template as above, but make sure the
+<code class="docutils literal notranslate"><span class="pre">DJANGO_SETTINGS_MODULE</span></code> variable is set (and exported), and that
+<code class="docutils literal notranslate"><span class="pre">CELERYD_CHDIR</span></code> is set to the projects directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">DJANGO_SETTINGS_MODULE</span><span class="o">=</span><span class="s2">&quot;settings&quot;</span>
+
+<span class="nv">CELERYD_CHDIR</span><span class="o">=</span><span class="s2">&quot;/opt/MyProject&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="generic-initd-celerybeat-options">
+<span id="id7"></span><h4>可用选项<a class="headerlink" href="#generic-initd-celerybeat-options" title="Link to this heading">¶</a></h4>
+<p>Available options</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_APP</span></code></p>
+<p>要使用的应用实例（对应 <a class="reference internal" href="../reference/cli.html#cmdoption-celery-A"><code class="xref std std-option docutils literal notranslate"><span class="pre">--app</span></code></a> 参数的值）。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYBEAT_OPTS</span></code></p>
+<p>传递给 <strong class="program">celery beat</strong> 的额外参数，
+可使用 <strong class="command">celery beat --help</strong> 查看可用选项。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYBEAT_PID_FILE</span></code></p>
+<p>PID 文件的完整路径。默认为 <code class="file docutils literal notranslate"><span class="pre">/var/run/celeryd.pid</span></code>。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYBEAT_LOG_FILE</span></code></p>
+<p>日志文件的完整路径。默认为 <code class="file docutils literal notranslate"><span class="pre">/var/log/celeryd.log</span></code>。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYBEAT_LOG_LEVEL</span></code></p>
+<p>要使用的日志级别。默认为 <code class="docutils literal notranslate"><span class="pre">INFO</span></code>。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYBEAT_USER</span></code></p>
+<p>运行 beat 的用户。默认为当前用户。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYBEAT_GROUP</span></code></p>
+<p>运行 beat 的用户组。默认为当前用户。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_CREATE_DIRS</span></code></p>
+<p>是否总是创建所需目录（如日志目录和 PID 文件目录）。
+默认仅在未设置自定义日志文件或 PID 文件路径时创建。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_CREATE_RUNDIR</span></code></p>
+<p>是否总是创建 PID 文件目录。默认仅在未设置自定义 PID 文件路径时启用。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_CREATE_LOGDIR</span></code></p>
+<p>是否总是创建日志文件目录。默认仅在未设置自定义日志路径时启用。</p>
+</li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_APP</span></code></p>
+<p>App instance to use (value for <a class="reference internal" href="../reference/cli.html#cmdoption-celery-A"><code class="xref std std-option docutils literal notranslate"><span class="pre">--app</span></code></a> argument).</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYBEAT_OPTS</span></code></p>
+<p>Additional arguments to <strong class="program">celery beat</strong>, see
+<strong class="command">celery beat --help</strong> for a list of available options.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYBEAT_PID_FILE</span></code></p>
+<p>Full path to the PID file. Default is <code class="file docutils literal notranslate"><span class="pre">/var/run/celeryd.pid</span></code>.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYBEAT_LOG_FILE</span></code></p>
+<p>Full path to the log file. Default is <code class="file docutils literal notranslate"><span class="pre">/var/log/celeryd.log</span></code>.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYBEAT_LOG_LEVEL</span></code></p>
+<p>Log level to use. Default is <code class="docutils literal notranslate"><span class="pre">INFO</span></code>.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYBEAT_USER</span></code></p>
+<p>User to run beat as. Default is the current user.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERYBEAT_GROUP</span></code></p>
+<p>Group to run beat as. Default is the current user.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_CREATE_DIRS</span></code></p>
+<p>Always create directories (log directory and pid file directory).
+Default is to only create directories when no custom logfile/pidfile set.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_CREATE_RUNDIR</span></code></p>
+<p>Always create pidfile directory. By default only enabled when no custom
+pidfile location set.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CELERY_CREATE_LOGDIR</span></code></p>
+<p>Always create logfile directory. By default only enable when no custom
+logfile location set.</p>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="generic-initd-troubleshooting">
+<span id="id8"></span><h3>故障排除<a class="headerlink" href="#generic-initd-troubleshooting" title="Link to this heading">¶</a></h3>
+<p>Troubleshooting</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">中文</label><div class="tab-content docutils container">
+<p>如果你无法让 init 脚本正常工作，可以尝试以 <em>verbose 模式</em> 启动它们：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>sh<span class="w"> </span>-x<span class="w"> </span>/etc/init.d/celeryd<span class="w"> </span>start
+</pre></div>
+</div>
+<p>这将帮助你定位服务无法启动的原因。</p>
+<p>如果 worker 显示 <em>&quot;OK&quot;</em> 后几乎立刻退出，且日志文件中没有任何信息，
+很可能是有错误发生，但由于守护进程的标准输出已经关闭，
+这些信息将不会被记录。此时，你可以通过设置
+<span class="target" id="index-2"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">C_FAKEFORK</span></code> 环境变量来跳过守护化步骤：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span><span class="nv">C_FAKEFORK</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>sh<span class="w"> </span>-x<span class="w"> </span>/etc/init.d/celeryd<span class="w"> </span>start
+</pre></div>
+</div>
+<p>现在你就能看到具体的错误信息了。</p>
+<p>常见的错误原因包括对某个文件无读取或写入权限，
+也可能是配置模块、用户模块、第三方库，甚至 Celery 自身中存在语法错误
+（如果你发现了 Celery 的 bug，请 <a class="reference internal" href="../contributing.html#reporting-bugs"><span class="std std-ref">报告它</span></a>）。</p>
+</div>
+<input class="tab-input" id="tab-set--11-input--2" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--2">英文</label><div class="tab-content docutils container">
+<p>If you can't get the init-scripts to work, you should try running
+them in <em>verbose mode</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>sh<span class="w"> </span>-x<span class="w"> </span>/etc/init.d/celeryd<span class="w"> </span>start
+</pre></div>
+</div>
+<p>This can reveal hints as to why the service won't start.</p>
+<p>If the worker starts with <em>&quot;OK&quot;</em> but exits almost immediately afterwards
+and there's no evidence in the log file, then there's probably an error
+but as the daemons standard outputs are already closed you'll
+not be able to see them anywhere. For this situation you can use
+the <span class="target" id="index-3"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">C_FAKEFORK</span></code> environment variable to skip the
+daemonization step:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span><span class="nv">C_FAKEFORK</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>sh<span class="w"> </span>-x<span class="w"> </span>/etc/init.d/celeryd<span class="w"> </span>start
+</pre></div>
+</div>
+<p>and now you should be able to see the errors.</p>
+<p>Commonly such errors are caused by insufficient permissions
+to read from, or write to a file, and also by syntax errors
+in configuration modules, user modules, third-party libraries,
+or even from Celery itself (if you've found a bug you
+should <a class="reference internal" href="../contributing.html#reporting-bugs"><span class="std std-ref">report it</span></a>).</p>
+</div>
+</div>
+</section>
+</section>
+<section id="systemd">
+<span id="daemon-systemd-generic"></span><h2>使用 <code class="docutils literal notranslate"><span class="pre">systemd</span></code><a class="headerlink" href="#systemd" title="Link to this heading">¶</a></h2>
+<p>Usage <code class="docutils literal notranslate"><span class="pre">systemd</span></code></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/celery/celery/tree/main/extra/systemd/">extra/systemd/</a></p></li>
+</ul>
+<dl class="field-list simple" id="generic-systemd-celery">
+<dt class="field-odd">Usage<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>systemctl {start|stop|restart|status} celery.service</cite></p>
+</dd>
+<dt class="field-even">Configuration file<span class="colon">:</span></dt>
+<dd class="field-even"><p>/etc/conf.d/celery</p>
+</dd>
+</dl>
+<section id="celery-service">
+<h3>服务文件：celery.service<a class="headerlink" href="#celery-service" title="Link to this heading">¶</a></h3>
+<p>Service file: celery.service</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">中文</label><div class="tab-content docutils container">
+<p>以下是一个 systemd 配置文件示例：</p>
+<p><code class="file docutils literal notranslate"><span class="pre">/etc/systemd/system/celery.service</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>Celery<span class="w"> </span>Service
+<span class="nv">After</span><span class="o">=</span>network.target
+
+<span class="o">[</span>Service<span class="o">]</span>
+<span class="nv">Type</span><span class="o">=</span>forking
+<span class="nv">User</span><span class="o">=</span>celery
+<span class="nv">Group</span><span class="o">=</span>celery
+<span class="nv">EnvironmentFile</span><span class="o">=</span>/etc/conf.d/celery
+<span class="nv">WorkingDirectory</span><span class="o">=</span>/opt/celery
+<span class="nv">ExecStart</span><span class="o">=</span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;${CELERY_BIN} -A $CELERY_APP multi start $CELERYD_NODES \</span>
+<span class="s1">    --pidfile=${CELERYD_PID_FILE} --logfile=${CELERYD_LOG_FILE} \</span>
+<span class="s1">    --loglevel=&quot;${CELERYD_LOG_LEVEL}&quot; $CELERYD_OPTS&#39;</span>
+<span class="nv">ExecStop</span><span class="o">=</span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;${CELERY_BIN} multi stopwait $CELERYD_NODES \</span>
+<span class="s1">    --pidfile=${CELERYD_PID_FILE} --logfile=${CELERYD_LOG_FILE} \</span>
+<span class="s1">    --loglevel=&quot;${CELERYD_LOG_LEVEL}&quot;&#39;</span>
+<span class="nv">ExecReload</span><span class="o">=</span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;${CELERY_BIN} -A $CELERY_APP multi restart $CELERYD_NODES \</span>
+<span class="s1">    --pidfile=${CELERYD_PID_FILE} --logfile=${CELERYD_LOG_FILE} \</span>
+<span class="s1">    --loglevel=&quot;${CELERYD_LOG_LEVEL}&quot; $CELERYD_OPTS&#39;</span>
+<span class="nv">Restart</span><span class="o">=</span>always
+
+<span class="o">[</span>Install<span class="o">]</span>
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</pre></div>
+</div>
+<p>将该文件放入 <code class="file docutils literal notranslate"><span class="pre">/etc/systemd/system</span></code> 后，你应当运行
+<strong class="command">systemctl daemon-reload</strong> 来使 Systemd 识别该文件。
+每次修改该文件后也需要运行此命令。
+如果你希望在系统启动或重启时自动启动 celery 服务，
+可以运行 <strong class="command">systemctl enable celery.service</strong>。</p>
+<p>你也可以为 celery 服务指定额外的依赖项：
+例如，如果你使用 RabbitMQ 作为 broker，可以在 <code class="docutils literal notranslate"><span class="pre">[Unit]</span></code> 的
+<code class="docutils literal notranslate"><span class="pre">After=</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Requires=</span></code> 中同时指定 <code class="docutils literal notranslate"><span class="pre">rabbitmq-server.service</span></code>。
+详细选项可参考 <a class="reference external" href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html#%5BUnit%5D%20Section%20Options">systemd section</a>。</p>
+<p>要配置运行用户、用户组、以及目录切换行为，
+可编辑 <code class="file docutils literal notranslate"><span class="pre">/etc/systemd/system/celery.service</span></code> 中的
+<code class="docutils literal notranslate"><span class="pre">User</span></code>、<code class="docutils literal notranslate"><span class="pre">Group</span></code> 和 <code class="docutils literal notranslate"><span class="pre">WorkingDirectory</span></code>。</p>
+<p>你也可以使用 systemd-tmpfiles 创建工作目录（如日志目录和 PID 文件目录）：</p>
+<p><code class="file docutils literal notranslate"><span class="pre">/etc/tmpfiles.d/celery.conf</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>d /run/celery 0755 celery celery -
+d /var/log/celery 0755 celery celery -</p>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">英文</label><div class="tab-content docutils container">
+<p>This is an example systemd file:</p>
+<p><code class="file docutils literal notranslate"><span class="pre">/etc/systemd/system/celery.service</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>Celery<span class="w"> </span>Service
+<span class="nv">After</span><span class="o">=</span>network.target
+
+<span class="o">[</span>Service<span class="o">]</span>
+<span class="nv">Type</span><span class="o">=</span>forking
+<span class="nv">User</span><span class="o">=</span>celery
+<span class="nv">Group</span><span class="o">=</span>celery
+<span class="nv">EnvironmentFile</span><span class="o">=</span>/etc/conf.d/celery
+<span class="nv">WorkingDirectory</span><span class="o">=</span>/opt/celery
+<span class="nv">ExecStart</span><span class="o">=</span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;${CELERY_BIN} -A $CELERY_APP multi start $CELERYD_NODES \</span>
+<span class="s1">    --pidfile=${CELERYD_PID_FILE} --logfile=${CELERYD_LOG_FILE} \</span>
+<span class="s1">    --loglevel=&quot;${CELERYD_LOG_LEVEL}&quot; $CELERYD_OPTS&#39;</span>
+<span class="nv">ExecStop</span><span class="o">=</span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;${CELERY_BIN} multi stopwait $CELERYD_NODES \</span>
+<span class="s1">    --pidfile=${CELERYD_PID_FILE} --logfile=${CELERYD_LOG_FILE} \</span>
+<span class="s1">    --loglevel=&quot;${CELERYD_LOG_LEVEL}&quot;&#39;</span>
+<span class="nv">ExecReload</span><span class="o">=</span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;${CELERY_BIN} -A $CELERY_APP multi restart $CELERYD_NODES \</span>
+<span class="s1">    --pidfile=${CELERYD_PID_FILE} --logfile=${CELERYD_LOG_FILE} \</span>
+<span class="s1">    --loglevel=&quot;${CELERYD_LOG_LEVEL}&quot; $CELERYD_OPTS&#39;</span>
+<span class="nv">Restart</span><span class="o">=</span>always
+
+<span class="o">[</span>Install<span class="o">]</span>
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</pre></div>
+</div>
+<p>Once you've put that file in <code class="file docutils literal notranslate"><span class="pre">/etc/systemd/system</span></code>, you should run
+<strong class="command">systemctl daemon-reload</strong> in order that Systemd acknowledges that file.
+You should also run that command each time you modify it.
+Use <strong class="command">systemctl enable celery.service</strong> if you want the celery service to
+automatically start when (re)booting the system.</p>
+<p>Optionally you can specify extra dependencies for the celery service: e.g. if you use
+RabbitMQ as a broker, you could specify <code class="docutils literal notranslate"><span class="pre">rabbitmq-server.service</span></code> in both <code class="docutils literal notranslate"><span class="pre">After=</span></code> and <code class="docutils literal notranslate"><span class="pre">Requires=</span></code>
+in the <code class="docutils literal notranslate"><span class="pre">[Unit]</span></code> <a class="reference external" href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html#%5BUnit%5D%20Section%20Options">systemd section</a>.</p>
+<p>To configure user, group, <strong class="command">chdir</strong> change settings:
+<code class="docutils literal notranslate"><span class="pre">User</span></code>, <code class="docutils literal notranslate"><span class="pre">Group</span></code>, and <code class="docutils literal notranslate"><span class="pre">WorkingDirectory</span></code> defined in
+<code class="file docutils literal notranslate"><span class="pre">/etc/systemd/system/celery.service</span></code>.</p>
+<p>You can also use systemd-tmpfiles in order to create working directories (for logs and pid).</p>
+<dl class="field-list simple">
+<dt class="field-odd">file<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>/etc/tmpfiles.d/celery.conf</cite></p>
+</dd>
+</dl>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>d<span class="w"> </span>/run/celery<span class="w"> </span><span class="m">0755</span><span class="w"> </span>celery<span class="w"> </span>celery<span class="w"> </span>-
+d<span class="w"> </span>/var/log/celery<span class="w"> </span><span class="m">0755</span><span class="w"> </span>celery<span class="w"> </span>celery<span class="w"> </span>-
+</pre></div>
+</div>
+</div>
+</div>
+<section id="generic-systemd-celery-example">
+<span id="id10"></span><h4>示例配置<a class="headerlink" href="#generic-systemd-celery-example" title="Link to this heading">¶</a></h4>
+<p>Example configuration</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--13-input--1" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--1">中文</label><div class="tab-content docutils container">
+<p>以下是一个针对 Python 项目的配置文件示例：</p>
+<p><code class="file docutils literal notranslate"><span class="pre">/etc/conf.d/celery</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 要启动的节点名称</span>
+<span class="c1"># 这里仅启动一个节点</span>
+<span class="nv">CELERYD_NODES</span><span class="o">=</span><span class="s2">&quot;w1&quot;</span>
+<span class="c1"># 或者启动三个节点：</span>
+<span class="c1">#CELERYD_NODES=&quot;w1 w2 w3&quot;</span>
+
+<span class="c1"># &#39;celery&#39; 命令的绝对路径或相对路径：</span>
+<span class="nv">CELERY_BIN</span><span class="o">=</span><span class="s2">&quot;/usr/local/bin/celery&quot;</span>
+<span class="c1">#CELERY_BIN=&quot;/virtualenvs/def/bin/celery&quot;</span>
+
+<span class="c1"># 要使用的应用实例</span>
+<span class="c1"># 如果未使用应用可注释此行</span>
+<span class="nv">CELERY_APP</span><span class="o">=</span><span class="s2">&quot;proj&quot;</span>
+<span class="c1"># 或使用完整限定名：</span>
+<span class="c1">#CELERY_APP=&quot;proj.tasks:app&quot;</span>
+
+<span class="c1"># 调用 manage.py 的方式</span>
+<span class="nv">CELERYD_MULTI</span><span class="o">=</span><span class="s2">&quot;multi&quot;</span>
+
+<span class="c1"># 传递给 worker 的额外命令行参数</span>
+<span class="nv">CELERYD_OPTS</span><span class="o">=</span><span class="s2">&quot;--time-limit=300 --concurrency=8&quot;</span>
+
+<span class="c1"># - %n 会被替换为节点名称的第一部分</span>
+<span class="c1"># - %I 会被替换为当前子进程索引</span>
+<span class="c1">#   当使用 prefork 池时，该参数有助于避免竞争条件</span>
+<span class="nv">CELERYD_PID_FILE</span><span class="o">=</span><span class="s2">&quot;/var/run/celery/%n.pid&quot;</span>
+<span class="nv">CELERYD_LOG_FILE</span><span class="o">=</span><span class="s2">&quot;/var/log/celery/%n%I.log&quot;</span>
+<span class="nv">CELERYD_LOG_LEVEL</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span>
+
+<span class="c1"># 如需使用 Celery Beat，可添加以下选项</span>
+<span class="nv">CELERYBEAT_PID_FILE</span><span class="o">=</span><span class="s2">&quot;/var/run/celery/beat.pid&quot;</span>
+<span class="nv">CELERYBEAT_LOG_FILE</span><span class="o">=</span><span class="s2">&quot;/var/log/celery/beat.log&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--13-input--2" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--2">英文</label><div class="tab-content docutils container">
+<p>This is an example configuration for a Python project:</p>
+<p><code class="file docutils literal notranslate"><span class="pre">/etc/conf.d/celery</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Name of nodes to start</span>
+<span class="c1"># here we have a single node</span>
+<span class="nv">CELERYD_NODES</span><span class="o">=</span><span class="s2">&quot;w1&quot;</span>
+<span class="c1"># or we could have three nodes:</span>
+<span class="c1">#CELERYD_NODES=&quot;w1 w2 w3&quot;</span>
+
+<span class="c1"># Absolute or relative path to the &#39;celery&#39; command:</span>
+<span class="nv">CELERY_BIN</span><span class="o">=</span><span class="s2">&quot;/usr/local/bin/celery&quot;</span>
+<span class="c1">#CELERY_BIN=&quot;/virtualenvs/def/bin/celery&quot;</span>
+
+<span class="c1"># App instance to use</span>
+<span class="c1"># comment out this line if you don&#39;t use an app</span>
+<span class="nv">CELERY_APP</span><span class="o">=</span><span class="s2">&quot;proj&quot;</span>
+<span class="c1"># or fully qualified:</span>
+<span class="c1">#CELERY_APP=&quot;proj.tasks:app&quot;</span>
+
+<span class="c1"># How to call manage.py</span>
+<span class="nv">CELERYD_MULTI</span><span class="o">=</span><span class="s2">&quot;multi&quot;</span>
+
+<span class="c1"># Extra command-line arguments to the worker</span>
+<span class="nv">CELERYD_OPTS</span><span class="o">=</span><span class="s2">&quot;--time-limit=300 --concurrency=8&quot;</span>
+
+<span class="c1"># - %n will be replaced with the first part of the nodename.</span>
+<span class="c1"># - %I will be replaced with the current child process index</span>
+<span class="c1">#   and is important when using the prefork pool to avoid race conditions.</span>
+<span class="nv">CELERYD_PID_FILE</span><span class="o">=</span><span class="s2">&quot;/var/run/celery/%n.pid&quot;</span>
+<span class="nv">CELERYD_LOG_FILE</span><span class="o">=</span><span class="s2">&quot;/var/log/celery/%n%I.log&quot;</span>
+<span class="nv">CELERYD_LOG_LEVEL</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span>
+
+<span class="c1"># you may wish to add these options for Celery Beat</span>
+<span class="nv">CELERYBEAT_PID_FILE</span><span class="o">=</span><span class="s2">&quot;/var/run/celery/beat.pid&quot;</span>
+<span class="nv">CELERYBEAT_LOG_FILE</span><span class="o">=</span><span class="s2">&quot;/var/log/celery/beat.log&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="celerybeat-service">
+<h3>服务文件：celerybeat.service<a class="headerlink" href="#celerybeat-service" title="Link to this heading">¶</a></h3>
+<p>Service file: celerybeat.service</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--14-input--1" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--1">中文</label><div class="tab-content docutils container">
+<p>以下是一个 Celery Beat 的 systemd 服务配置示例：</p>
+<p><code class="file docutils literal notranslate"><span class="pre">/etc/systemd/system/celerybeat.service</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>Celery<span class="w"> </span>Beat<span class="w"> </span>Service
+<span class="nv">After</span><span class="o">=</span>network.target
+
+<span class="o">[</span>Service<span class="o">]</span>
+<span class="nv">Type</span><span class="o">=</span>simple
+<span class="nv">User</span><span class="o">=</span>celery
+<span class="nv">Group</span><span class="o">=</span>celery
+<span class="nv">EnvironmentFile</span><span class="o">=</span>/etc/conf.d/celery
+<span class="nv">WorkingDirectory</span><span class="o">=</span>/opt/celery
+<span class="nv">ExecStart</span><span class="o">=</span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;${CELERY_BIN} -A ${CELERY_APP} beat  \</span>
+<span class="s1">    --pidfile=${CELERYBEAT_PID_FILE} \</span>
+<span class="s1">    --logfile=${CELERYBEAT_LOG_FILE} --loglevel=${CELERYD_LOG_LEVEL}&#39;</span>
+<span class="nv">Restart</span><span class="o">=</span>always
+
+<span class="o">[</span>Install<span class="o">]</span>
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</pre></div>
+</div>
+<p>将该文件放入 <code class="file docutils literal notranslate"><span class="pre">/etc/systemd/system</span></code> 后，你应当运行
+<strong class="command">systemctl daemon-reload</strong> 来使 Systemd 识别该文件。
+每次修改该文件后也需要运行此命令。
+如果你希望在系统启动或重启时自动启动 celery beat 服务，
+可以运行 <strong class="command">systemctl enable celerybeat.service</strong>。</p>
+</div>
+<input class="tab-input" id="tab-set--14-input--2" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--2">英文</label><div class="tab-content docutils container">
+<p>This is an example systemd file for Celery Beat:</p>
+<p><code class="file docutils literal notranslate"><span class="pre">/etc/systemd/system/celerybeat.service</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>Celery<span class="w"> </span>Beat<span class="w"> </span>Service
+<span class="nv">After</span><span class="o">=</span>network.target
+
+<span class="o">[</span>Service<span class="o">]</span>
+<span class="nv">Type</span><span class="o">=</span>simple
+<span class="nv">User</span><span class="o">=</span>celery
+<span class="nv">Group</span><span class="o">=</span>celery
+<span class="nv">EnvironmentFile</span><span class="o">=</span>/etc/conf.d/celery
+<span class="nv">WorkingDirectory</span><span class="o">=</span>/opt/celery
+<span class="nv">ExecStart</span><span class="o">=</span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;${CELERY_BIN} -A ${CELERY_APP} beat  \</span>
+<span class="s1">    --pidfile=${CELERYBEAT_PID_FILE} \</span>
+<span class="s1">    --logfile=${CELERYBEAT_LOG_FILE} --loglevel=${CELERYD_LOG_LEVEL}&#39;</span>
+<span class="nv">Restart</span><span class="o">=</span>always
+
+<span class="o">[</span>Install<span class="o">]</span>
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</pre></div>
+</div>
+<p>Once you've put that file in <code class="file docutils literal notranslate"><span class="pre">/etc/systemd/system</span></code>, you should run
+<strong class="command">systemctl daemon-reload</strong> in order that Systemd acknowledges that file.
+You should also run that command each time you modify it.
+Use <strong class="command">systemctl enable celerybeat.service</strong> if you want the celery beat
+service to automatically start when (re)booting the system.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="root">
+<h2>使用超级用户权限 (root) 运行工作器<a class="headerlink" href="#root" title="Link to this heading">¶</a></h2>
+<p>Running the worker with superuser privileges (root)</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--15-input--1" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--1">中文</label><div class="tab-content docutils container">
+<p>以超级用户权限运行 worker 是非常危险的做法。
+应始终寻找替代方案，避免以 root 用户身份运行。因为 Celery 可能会执行消息中使用 pickle 序列化的任意代码 —— 这在以 root 身份运行时尤其危险。</p>
+<p>默认情况下，Celery 不允许以 root 身份运行 worker。相关的错误信息可能不会出现在日志中，但如果使用了 <span class="target" id="index-4"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">C_FAKEFORK</span></code>，则可能会显示出来。</p>
+<p>若确实需要以 root 身份运行 Celery worker，可通过设置 <span class="target" id="index-5"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">C_FORCE_ROOT</span></code> 强制允许。</p>
+<p>如果以 root 身份运行但未设置 <span class="target" id="index-6"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">C_FORCE_ROOT</span></code>，worker 表面上会以 <em>&quot;OK&quot;</em> 状态启动，但随后会立即退出，且没有明显错误提示。这种问题通常出现在项目在新的开发或生产环境中（无意间）以 root 用户身份运行时。</p>
+</div>
+<input class="tab-input" id="tab-set--15-input--2" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--2">英文</label><div class="tab-content docutils container">
+<p>Running the worker with superuser privileges is a very dangerous practice.
+There should always be a workaround to avoid running as root. Celery may
+run arbitrary code in messages serialized with pickle - this is dangerous,
+especially when run as root.</p>
+<p>By default Celery won't run workers as root. The associated error
+message may not be visible in the logs but may be seen if <span class="target" id="index-7"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">C_FAKEFORK</span></code>
+is used.</p>
+<p>To force Celery to run workers as root use <span class="target" id="index-8"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">C_FORCE_ROOT</span></code>.</p>
+<p>When running as root without <span class="target" id="index-9"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">C_FORCE_ROOT</span></code> the worker will
+appear to start with <em>&quot;OK&quot;</em> but exit immediately after with no apparent
+errors. This problem may appear when running the project in a new development
+or production environment (inadvertently) as root.</p>
+</div>
+</div>
+</section>
+<section id="supervisor">
+<span id="daemon-supervisord"></span><h2>supervisor<a class="headerlink" href="#supervisor" title="Link to this heading">¶</a></h2>
+<p><a class="extlink-pypi reference external" href="https://pypi.org/project/supervisor/">https://pypi.org/project/supervisor/</a></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/celery/celery/tree/main/extra/supervisord/">extra/supervisord/</a></p></li>
+</ul>
+</section>
+<section id="launchd-macos">
+<span id="daemon-launchd"></span><h2><code class="docutils literal notranslate"><span class="pre">launchd</span></code> (macOS)<a class="headerlink" href="#launchd-macos" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/celery/celery/tree/main/extra/macOS/">extra/macOS</a></p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="periodic-tasks.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">周期性任务/Tasks</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="workers.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Workers 指南</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2009-2023, Ask Solem &amp; contributors
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">守护进程</a><ul>
+<li><a class="reference internal" href="#daemon-generic">通用初始化脚本</a><ul>
+<li><a class="reference internal" href="#celeryd">初始化脚本： <code class="docutils literal notranslate"><span class="pre">celeryd</span></code></a><ul>
+<li><a class="reference internal" href="#generic-initd-celeryd-example">示例配置</a></li>
+<li><a class="reference internal" href="#shell">使用登录 shell</a></li>
+<li><a class="reference internal" href="#django">示例 Django 配置</a></li>
+<li><a class="reference internal" href="#generic-initd-celeryd-options">可用选项</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#celerybeat">初始化脚本：<code class="docutils literal notranslate"><span class="pre">celerybeat</span></code></a><ul>
+<li><a class="reference internal" href="#generic-initd-celerybeat-example">示例配置</a></li>
+<li><a class="reference internal" href="#generic-initd-celerybeat-django-example">示例 Django 配置</a></li>
+<li><a class="reference internal" href="#generic-initd-celerybeat-options">可用选项</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generic-initd-troubleshooting">故障排除</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#systemd">使用 <code class="docutils literal notranslate"><span class="pre">systemd</span></code></a><ul>
+<li><a class="reference internal" href="#celery-service">服务文件：celery.service</a><ul>
+<li><a class="reference internal" href="#generic-systemd-celery-example">示例配置</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#celerybeat-service">服务文件：celerybeat.service</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#root">使用超级用户权限 (root) 运行工作器</a></li>
+<li><a class="reference internal" href="#supervisor">supervisor</a></li>
+<li><a class="reference internal" href="#launchd-macos"><code class="docutils literal notranslate"><span class="pre">launchd</span></code> (macOS)</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=8156d91f"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=5eb1bb1e"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    </body>
+</html>

@@ -1,0 +1,1812 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="Canvas：设计工作流" href="canvas.html" /><link rel="prev" title="任务/Tasks" href="tasks.html" />
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>调用任务/Tasks - Celery 5.5.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=3ee1c6c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/my.css?v=112ca36d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Celery 5.5.1 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/celery_512_1.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Celery 5.5.1 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../copyright.html">版权</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/index.html">快速开始</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 快速开始</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/introduction.html">Celery 简介</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting-started/backends-and-brokers/index.html">Backends 和 Brokers</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Backends 和 Brokers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/rabbitmq.html">使用 RabbitMQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/redis.html">使用 Redis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html">使用 Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/kafka.html">使用 Kafka</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/gcpubsub.html">使用 Google Pub/Sub</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/first-steps-with-celery.html">使用 Celery 的第一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/next-steps.html">下一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/resources.html">资源</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">用户指南</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 用户指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="application.html">应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">任务/Tasks</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">调用任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="canvas.html">Canvas：设计工作流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workers.html">Workers 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="daemonizing.html">守护进程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="periodic-tasks.html">周期性任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routing.html">路由任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html">监控和管理指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html">优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">调试</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concurrency/index.html">并发</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 并发</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="concurrency/eventlet.html">Eventlet 并发</a></li>
+<li class="toctree-l3"><a class="reference internal" href="concurrency/gevent.html">gevent 并发</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="signals.html">信号</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">使用 Celery 进行测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extending.html">扩展 和 Bootsteps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">配置和默认值</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx.html">使用 Sphinx 文档化任务</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../django/index.html">Django</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Django</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../django/first-steps-with-django.html">使用 Django 的第一步</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">社区资源</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/task-cookbook.html">Task Cookbook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">更改历史</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">API 参考</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of API 参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cli.html">命令行接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">celery</span></code> --- Distributed processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html">Proxies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.task.html"><code class="docutils literal notranslate"><span class="pre">celery.app.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html">AMQP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html#queues">Queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.defaults.html"><code class="docutils literal notranslate"><span class="pre">celery.app.defaults</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.control.html"><code class="docutils literal notranslate"><span class="pre">celery.app.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.registry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.registry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.app.backends</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.builtins.html"><code class="docutils literal notranslate"><span class="pre">celery.app.builtins</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.events.html"><code class="docutils literal notranslate"><span class="pre">celery.app.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.log.html"><code class="docutils literal notranslate"><span class="pre">celery.app.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.app.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.autoretry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.autoretry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bootsteps.html"><code class="docutils literal notranslate"><span class="pre">celery.bootsteps</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.result.html"><code class="docutils literal notranslate"><span class="pre">celery.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.schedules.html"><code class="docutils literal notranslate"><span class="pre">celery.schedules</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.signals.html"><code class="docutils literal notranslate"><span class="pre">celery.signals</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.security.html"><code class="docutils literal notranslate"><span class="pre">celery.security</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.utils.debug.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.debug</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.exceptions.html"><code class="docutils literal notranslate"><span class="pre">celery.exceptions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.app.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.default.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.default</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.base.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html">States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#sets">Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#misc">Misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.FAILURE"><code class="docutils literal notranslate"><span class="pre">FAILURE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.PENDING"><code class="docutils literal notranslate"><span class="pre">PENDING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RECEIVED"><code class="docutils literal notranslate"><span class="pre">RECEIVED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RETRY"><code class="docutils literal notranslate"><span class="pre">RETRY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.REVOKED"><code class="docutils literal notranslate"><span class="pre">REVOKED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.STARTED"><code class="docutils literal notranslate"><span class="pre">STARTED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.SUCCESS"><code class="docutils literal notranslate"><span class="pre">SUCCESS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.precedence"><code class="docutils literal notranslate"><span class="pre">precedence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.state"><code class="docutils literal notranslate"><span class="pre">state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.abortable.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.abortable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.django.task.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.django.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.pytest.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.pytest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.sphinx.html">celery.contrib.sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.app.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.manager.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.manager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.mocks.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.mocks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.rdb.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.rdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.html"><code class="docutils literal notranslate"><span class="pre">celery.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.receiver.html"><code class="docutils literal notranslate"><span class="pre">celery.events.receiver</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.dispatcher.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.event.html"><code class="docutils literal notranslate"><span class="pre">celery.events.event</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.state.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.request.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.request</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.state.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.strategy.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.strategy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.agent.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.agent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.connection.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.connection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.events.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.gossip.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.gossip</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.heart.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.heart</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.mingle.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.mingle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.tasks.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.tasks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.base.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.celery.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.celery</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.events.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.logtool.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.logtool</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.amqp.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.amqp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.graph</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.call.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.call</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.control.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.list.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.list</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.purge.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.purge</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.result.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.shell.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.shell</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.upgrade.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.upgrade</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">内部</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 内部</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../internals/guide.html">代码贡献指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/deprecation.html">Celery 弃用时间表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/worker.html">内部的 worker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/protocol.html">消息协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/app-overview.html">“大实例”重构</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/reference/index.html">内部模块参考</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 内部模块参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.components.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.components</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.loops.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.loops</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.heartbeat.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.heartbeat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.control</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.pidbox.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.pidbox</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.autoscale.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.autoscale</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.solo.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.solo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.prefork.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.prefork</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.eventlet.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.eventlet</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.gevent.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.gevent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.thread.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.thread</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.base.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.backends</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.base.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.asynchronous.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.asynchronous</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.azureblockblob.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.azureblockblob</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.rpc.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.rpc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cache.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.consul.html">celery.backends.consul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchdb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchdb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.mongodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.mongodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.elasticsearch.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.elasticsearch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.redis.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.redis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cassandra.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cassandra</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchbase.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchbase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.arangodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.arangodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.dynamodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.dynamodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.filesystem.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.filesystem</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cosmosdbsql.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cosmosdbsql</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.s3.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.s3</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.gcs.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.gcs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.trace.html"><code class="docutils literal notranslate"><span class="pre">celery.app.trace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.annotations.html"><code class="docutils literal notranslate"><span class="pre">celery.app.annotations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.routes.html"><code class="docutils literal notranslate"><span class="pre">celery.app.routes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.certificate.html"><code class="docutils literal notranslate"><span class="pre">celery.security.certificate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.key.html"><code class="docutils literal notranslate"><span class="pre">celery.security.key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.security.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.security.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.snapshot.html"><code class="docutils literal notranslate"><span class="pre">celery.events.snapshot</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.cursesmon.html"><code class="docutils literal notranslate"><span class="pre">celery.events.cursesmon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.dumper.html"><code class="docutils literal notranslate"><span class="pre">celery.events.dumper</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.models.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.models</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.session.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.session</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.abstract.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.abstract</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.collections.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.collections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.nodenames.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.nodenames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.deprecated.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.deprecated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.functional.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.functional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.graph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.objects.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.term.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.term</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.time.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.time</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.iso8601.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.iso8601</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.saferepr.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.saferepr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.sysinfo.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.sysinfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.threads.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.threads</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.timer2.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.timer2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.imports.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.imports</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.log.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.log</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.text.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.signal.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch.signal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.platforms.html"><code class="docutils literal notranslate"><span class="pre">celery.platforms</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery._state.html"><code class="docutils literal notranslate"><span class="pre">celery._state</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../history/index.html">历史</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 历史</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.5.html">What's new in Celery 5.5 (Immunity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.5.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.4.html">What's new in Celery 5.4 (Opalescent)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.3.html">What's new in Celery 5.3 (Emerald Rush)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.1.html">What's new in Celery 5.1 (Sun Harmonics)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.0.html">What's new in Celery 5.0 (singularity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.4.html">What's new in Celery 4.4 (Cliffs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.3.html">What's new in Celery 4.3 (rhubarb)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.2.html">What's new in Celery 4.2 (windowlicker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.2.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.1.html">What's new in Celery 4.1 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.0.html">What's new in Celery 4.0 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-3.1.html">What's new in Celery 3.1 (Cipater)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-3.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-3.0.html">What's new in Celery 3.0 (Chiastic Slide)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-3.0.html">Change history for Celery 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-2.5.html">What's new in Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.5.html">Change history for Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.4.html">Change history for Celery 2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.3.html">Change history for Celery 2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.2.html">Change history for Celery 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.1.html">Change history for Celery 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.0.html">Change history for Celery 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-1.0.html">Change history for Celery 1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+</ul>
+
+</div>
+<!-- <iframe src="https://ghbtns.com/github-btn.html?user=celery&repo=celery&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe> -->
+<div id="donate">
+  <h5>捐赠</h5>
+  <p>请捐赠以支持这个社区项目</p>
+  <a href="https://opencollective.com/celery/donate" target="_blank">
+    <!-- <img src="https://opencollective.com/celery/donate/button@2x.png?color=blue" /> -->
+    <img src="https://opencollective.com/celery/donate/button.png?color=blue" />
+  </a>
+</div></div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/userguide/calling.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="tasks">
+<span id="guide-calling"></span><h1>调用任务/Tasks<a class="headerlink" href="#tasks" title="Link to this heading">¶</a></h1>
+<p>Calling Tasks</p>
+<section id="calling-cheat">
+<span id="calling-basics"></span><span id="id1"></span><h2>基础知识<a class="headerlink" href="#calling-cheat" title="Link to this heading">¶</a></h2>
+<p>Basics</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>本文档介绍了 Celery 的统一“调用 API（Calling API）”，该 API 被任务实例和 <a class="reference internal" href="canvas.html#guide-canvas"><span class="std std-ref">canvas</span></a> 使用。</p>
+<p>该 API 定义了一组标准的执行选项，并包括三个方法：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">apply_async(args[,</span> <span class="pre">kwargs[,</span> <span class="pre">…]])</span></code></p>
+<p>发送一个任务消息。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delay(*args,</span> <span class="pre">**kwargs)</span></code></p>
+<p>发送任务消息的简写方式，但不支持设置执行选项。</p>
+</li>
+<li><p><em>调用</em> （<code class="docutils literal notranslate"><span class="pre">__call__</span></code>）</p>
+<p>对支持调用 API 的对象进行调用（例如 <code class="docutils literal notranslate"><span class="pre">add(2,</span> <span class="pre">2)</span></code>）意味着任务不会由 worker 执行，而是直接在当前进程中执行（不会发送任务消息）。</p>
+</li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>This document describes Celery's uniform &quot;Calling API&quot;
+used by task instances and the <a class="reference internal" href="canvas.html#guide-canvas"><span class="std std-ref">canvas</span></a>.</p>
+<p>The API defines a standard set of execution options, as well as three methods:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">apply_async(args[,</span> <span class="pre">kwargs[,</span> <span class="pre">…]])</span></code></p>
+<p>Sends a task message.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delay(*args,</span> <span class="pre">**kwargs)</span></code></p>
+<p>Shortcut to send a task message, but doesn't support execution
+options.</p>
+</li>
+<li><p><em>calling</em> (<code class="docutils literal notranslate"><span class="pre">__call__</span></code>)</p>
+<p>Applying an object supporting the calling API (e.g., <code class="docutils literal notranslate"><span class="pre">add(2,</span> <span class="pre">2)</span></code>)
+means that the task will not be executed by a worker, but in the current
+process instead (a message won't be sent).</p>
+</li>
+</ul>
+</div>
+</div>
+<section id="id2">
+<h3>示例<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<p>Example</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p><a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.delay" title="celery.app.task.Task.delay"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delay()</span></code></a> 方法十分便捷，因为它看起来就像是调用一个普通函数：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">kwarg1</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">kwarg2</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>而如果使用 <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.apply_async" title="celery.app.task.Task.apply_async"><code class="xref py py-meth docutils literal notranslate"><span class="pre">apply_async()</span></code></a>，你需要这样写：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">],</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;kwarg1&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;kwarg2&#39;</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>因此，虽然 <cite>delay</cite> 显然更为简洁方便，但如果你想设置额外的执行选项，就必须使用 <code class="docutils literal notranslate"><span class="pre">apply_async</span></code>。</p>
+<p>本文档的其余部分将详细介绍任务执行选项。所有示例都使用一个名为 <cite>add</cite> 的任务，它返回两个参数的和：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>The <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.delay" title="celery.app.task.Task.delay"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delay()</span></code></a> method is convenient as it looks like calling a regular
+function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">kwarg1</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">kwarg2</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.apply_async" title="celery.app.task.Task.apply_async"><code class="xref py py-meth docutils literal notranslate"><span class="pre">apply_async()</span></code></a> instead you have to write:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">],</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;kwarg1&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;kwarg2&#39;</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>So <cite>delay</cite> is clearly convenient, but if you want to set additional execution
+options you have to use <code class="docutils literal notranslate"><span class="pre">apply_async</span></code>.</p>
+<p>The rest of this document will go into the task execution
+options in detail. All examples use a task
+called <cite>add</cite>, returning the sum of two arguments:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="calling-links">
+<span id="id3"></span><h2>链接（回调/错误回调）<a class="headerlink" href="#calling-links" title="Link to this heading">¶</a></h2>
+<p>Linking (callbacks/errbacks)</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>Celery 支持将任务链接在一起，使得一个任务可以在另一个任务之后执行。
+回调任务会以父任务的结果作为部分参数被调用：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">link</span><span class="o">=</span><span class="n">add</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>上述示例中，第一个任务的结果（4）将被发送给一个新任务，
+该任务将之前的结果加上 16，形成表达式：
+<span class="math">(2 + 2) + 16 = 20</span></p>
+<p>你还可以在任务抛出异常时执行回调（<em>errback</em>）。
+Worker 实际上不会以任务的方式调用 errback，而是会直接调用该函数，
+以便可以传递原始请求、异常对象和回溯信息。</p>
+<p>以下是一个错误回调的示例：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">error_handler</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Task </span><span class="si">{0}</span><span class="s1"> raised exception: </span><span class="si">{1!r}</span><span class="se">\n</span><span class="si">{2!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">traceback</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">link_error</span></code> 执行选项将其添加到任务中：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">link_error</span><span class="o">=</span><span class="n">error_handler</span><span class="o">.</span><span class="n">s</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>此外，<code class="docutils literal notranslate"><span class="pre">link</span></code> 和 <code class="docutils literal notranslate"><span class="pre">link_error</span></code> 选项都可以使用列表形式：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">link</span><span class="o">=</span><span class="p">[</span><span class="n">add</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">other_task</span><span class="o">.</span><span class="n">s</span><span class="p">()])</span>
+</pre></div>
+</div>
+<p>所有回调/错误回调将按顺序调用，且每个回调将以父任务的返回值
+作为部分参数执行。</p>
+<p>在 chord 的情况下，我们可以使用多种策略处理错误。
+更多信息请参阅 <a class="reference internal" href="canvas.html#chord-errors"><span class="std std-ref">chord error handling</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>Celery supports linking tasks together so that one task follows another.
+The callback task will be applied with the result of the parent task
+as a partial argument:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">link</span><span class="o">=</span><span class="n">add</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Here the result of the first task (4) will be sent to a new
+task that adds 16 to the previous result, forming the expression
+<span class="math">(2 + 2) + 16 = 20</span></p>
+<p>You can also cause a callback to be applied if task raises an exception
+(<em>errback</em>). The worker won't actually call the errback as a task, but will
+instead call the errback function directly so that the raw request, exception
+and traceback objects can be passed to it.</p>
+<p>This is an example error callback:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">error_handler</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Task </span><span class="si">{0}</span><span class="s1"> raised exception: </span><span class="si">{1!r}</span><span class="se">\n</span><span class="si">{2!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">traceback</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>it can be added to the task using the <code class="docutils literal notranslate"><span class="pre">link_error</span></code> execution
+option:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">link_error</span><span class="o">=</span><span class="n">error_handler</span><span class="o">.</span><span class="n">s</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>In addition, both the <code class="docutils literal notranslate"><span class="pre">link</span></code> and <code class="docutils literal notranslate"><span class="pre">link_error</span></code> options can be expressed
+as a list:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">link</span><span class="o">=</span><span class="p">[</span><span class="n">add</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">other_task</span><span class="o">.</span><span class="n">s</span><span class="p">()])</span>
+</pre></div>
+</div>
+<p>The callbacks/errbacks will then be called in order, and all
+callbacks will be called with the return value of the parent task
+as a partial argument.</p>
+<p>In the case of a chord, we can handle errors using multiple handling strategies.
+See <a class="reference internal" href="canvas.html#chord-errors"><span class="std std-ref">chord error handling</span></a> for more information.</p>
+</div>
+</div>
+</section>
+<section id="calling-on-message">
+<span id="id4"></span><h2>消息<a class="headerlink" href="#calling-on-message" title="Link to this heading">¶</a></h2>
+<p>On message</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>Celery 支持通过设置 on_message 回调来捕获所有状态变更。</p>
+<p>例如，对于一个长时间运行的任务，可通过如下方式发送任务进度：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hello</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">update_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;PROGRESS&quot;</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;progress&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">})</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">update_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;PROGRESS&quot;</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;progress&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">})</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;hello world: </span><span class="si">%i</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">on_raw_message</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">hello</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">on_message</span><span class="o">=</span><span class="n">on_raw_message</span><span class="p">,</span> <span class="n">propagate</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>将输出如下内容：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{&#39;task_id&#39;: &#39;5660d3a3-92b8-40df-8ccc-33a5d1d680d7&#39;,
+ &#39;result&#39;: {&#39;progress&#39;: 50},
+ &#39;children&#39;: [],
+ &#39;status&#39;: &#39;PROGRESS&#39;,
+ &#39;traceback&#39;: None}
+{&#39;task_id&#39;: &#39;5660d3a3-92b8-40df-8ccc-33a5d1d680d7&#39;,
+ &#39;result&#39;: {&#39;progress&#39;: 90},
+ &#39;children&#39;: [],
+ &#39;status&#39;: &#39;PROGRESS&#39;,
+ &#39;traceback&#39;: None}
+{&#39;task_id&#39;: &#39;5660d3a3-92b8-40df-8ccc-33a5d1d680d7&#39;,
+ &#39;result&#39;: &#39;hello world: 10&#39;,
+ &#39;children&#39;: [],
+ &#39;status&#39;: &#39;SUCCESS&#39;,
+ &#39;traceback&#39;: None}
+hello world: 10
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>Celery supports catching all states changes by setting on_message callback.</p>
+<p>For example for long-running tasks to send task progress you can do something like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hello</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">update_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;PROGRESS&quot;</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;progress&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">})</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">update_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;PROGRESS&quot;</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;progress&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">})</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;hello world: </span><span class="si">%i</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">on_raw_message</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">hello</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">on_message</span><span class="o">=</span><span class="n">on_raw_message</span><span class="p">,</span> <span class="n">propagate</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Will generate output like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{&#39;task_id&#39;: &#39;5660d3a3-92b8-40df-8ccc-33a5d1d680d7&#39;,
+ &#39;result&#39;: {&#39;progress&#39;: 50},
+ &#39;children&#39;: [],
+ &#39;status&#39;: &#39;PROGRESS&#39;,
+ &#39;traceback&#39;: None}
+{&#39;task_id&#39;: &#39;5660d3a3-92b8-40df-8ccc-33a5d1d680d7&#39;,
+ &#39;result&#39;: {&#39;progress&#39;: 90},
+ &#39;children&#39;: [],
+ &#39;status&#39;: &#39;PROGRESS&#39;,
+ &#39;traceback&#39;: None}
+{&#39;task_id&#39;: &#39;5660d3a3-92b8-40df-8ccc-33a5d1d680d7&#39;,
+ &#39;result&#39;: &#39;hello world: 10&#39;,
+ &#39;children&#39;: [],
+ &#39;status&#39;: &#39;SUCCESS&#39;,
+ &#39;traceback&#39;: None}
+hello world: 10
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calling-eta">
+<span id="id5"></span><h2>预计到达时间和倒计时<a class="headerlink" href="#calling-eta" title="Link to this heading">¶</a></h2>
+<p>ETA and Countdown</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>ETA（预计到达时间）允许你设置一个具体的日期和时间，
+作为任务最早被执行的时间点。 <cite>countdown</cite> 是设置 ETA 的快捷方式，
+用于指定未来几秒内执行：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">countdown</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>    <span class="c1"># 至少等待 3 秒才返回</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+<p>任务保证会在指定的时间 <em>之后</em> 执行，但不一定是准确时间。
+可能导致超时的原因包括队列中等待的项目过多，或网络延迟严重。
+为了确保任务按时执行，应监控队列是否拥堵。可以使用 Munin 或类似工具接收告警，
+从而采取相应措施来缓解负载。详见 <a class="reference internal" href="monitoring.html#monitoring-munin"><span class="std std-ref">Munin</span></a>。</p>
+<p><cite>countdown</cite> 是一个整数，而 <cite>eta</cite> 必须是 <a class="reference external" href="https://docs.python.org/dev/library/datetime.html#datetime.datetime" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> 对象，
+用于指定精确的时间（支持毫秒精度和时区信息）：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tomorrow</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">eta</span><span class="o">=</span><span class="n">tomorrow</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>使用 <cite>eta</cite> 或 <cite>countdown</cite> 的任务会被 worker 立即拉取，
+并在调度时间到来之前一直保留在内存中。
+如果使用这些选项调度大量未来任务，可能会在 worker 内堆积，
+显著增加内存占用。</p>
+<p>此外，任务在 worker 开始执行之前不会被确认（acknowledged）。
+如果使用 Redis 作为 broker，当 <cite>countdown</cite> 超过 <cite>visibility_timeout</cite>
+时，任务会被重新投递（参见 <a class="reference internal" href="../getting-started/backends-and-brokers/redis.html#redis-caveats"><span class="std std-ref">Caveats</span></a>）。</p>
+<p>因此，<strong>不推荐</strong> 使用 <cite>eta</cite> 和 <cite>countdown</cite> 选项来调度远期任务。
+理想情况下应将调度时间控制在几分钟内。
+对于较长的调度需求，推荐使用基于数据库的周期性任务调度器，
+如在 Django 中使用 <a class="extlink-pypi reference external" href="https://pypi.org/project/django-celery-beat/">https://pypi.org/project/django-celery-beat/</a>
+（参见 <a class="reference internal" href="periodic-tasks.html#beat-custom-schedulers"><span class="std std-ref">使用自定义调度程序类</span></a>）。</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>当使用 RabbitMQ 作为消息代理，并设置超过 15 分钟的 <code class="docutils literal notranslate"><span class="pre">countdown</span></code> 时，
+可能会遇到 worker 被终止并抛出 <a class="reference external" href="https://docs.celeryq.dev/projects/amqp/en/latest/reference/amqp.exceptions.html#amqp.exceptions.PreconditionFailed" title="（在 py-amqp v5.3）"><code class="xref py py-exc docutils literal notranslate"><span class="pre">PreconditionFailed</span></code></a>
+错误的情况：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="go">amqp.exceptions.PreconditionFailed: (0, 0): (406) PRECONDITION_FAILED - consumer ack timed out on channel</span>
+</pre></div>
+</div>
+<p>从 RabbitMQ 3.8.15 开始，默认的 <code class="docutils literal notranslate"><span class="pre">consumer_timeout</span></code> 为 15 分钟。
+在 3.8.17 版本中该值被提高到 30 分钟。
+如果消费者在此超时时间内未确认（ack）其任务交付，
+通道将被以 <code class="docutils literal notranslate"><span class="pre">PRECONDITION_FAILED</span></code> 错误关闭。
+详见 <a class="reference external" href="https://www.rabbitmq.com/consumers.html#acknowledgement-timeout">Delivery Acknowledgement Timeout</a>。</p>
+<p>要解决该问题，应在 RabbitMQ 配置文件 <code class="docutils literal notranslate"><span class="pre">rabbitmq.conf</span></code> 中设置
+<code class="docutils literal notranslate"><span class="pre">consumer_timeout</span></code> 参数，使其大于或等于你的 countdown 值。
+例如可以设置一个很大的值：
+<code class="docutils literal notranslate"><span class="pre">consumer_timeout</span> <span class="pre">=</span> <span class="pre">31622400000</span></code>，即 1 年（毫秒表示），
+以避免将来出现问题。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>The ETA (estimated time of arrival) lets you set a specific date and time that
+is the earliest time at which your task will be executed. <cite>countdown</cite> is
+a shortcut to set ETA by seconds into the future.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">countdown</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>    <span class="c1"># this takes at least 3 seconds to return</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+<p>The task is guaranteed to be executed at some time <em>after</em> the
+specified date and time, but not necessarily at that exact time.
+Possible reasons for broken deadlines may include many items waiting
+in the queue, or heavy network latency. To make sure your tasks
+are executed in a timely manner you should monitor the queue for congestion. Use
+Munin, or similar tools, to receive alerts, so appropriate action can be
+taken to ease the workload. See <a class="reference internal" href="monitoring.html#monitoring-munin"><span class="std std-ref">Munin</span></a>.</p>
+<p>While <cite>countdown</cite> is an integer, <cite>eta</cite> must be a <a class="reference external" href="https://docs.python.org/dev/library/datetime.html#datetime.datetime" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>
+object, specifying an exact date and time (including millisecond precision,
+and timezone information):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tomorrow</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">eta</span><span class="o">=</span><span class="n">tomorrow</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Tasks with <cite>eta</cite> or <cite>countdown</cite> are immediately fetched by the worker
+and until the scheduled time passes, they reside in the worker's memory.
+When using those options to schedule lots of tasks for a distant future,
+those tasks may accumulate in the worker and make a significant impact on
+the RAM usage.</p>
+<p>Moreover, tasks are not acknowledged until the worker starts executing
+them. If using Redis as a broker, task will get redelivered when <cite>countdown</cite>
+exceeds <cite>visibility_timeout</cite> (see <a class="reference internal" href="../getting-started/backends-and-brokers/redis.html#redis-caveats"><span class="std std-ref">Caveats</span></a>).</p>
+<p>Therefore, using <cite>eta</cite> and <cite>countdown</cite> <strong>is not recommended</strong> for
+scheduling tasks for a distant future. Ideally, use values no longer
+than several minutes. For longer durations, consider using
+database-backed periodic tasks, e.g. with <a class="extlink-pypi reference external" href="https://pypi.org/project/django-celery-beat/">https://pypi.org/project/django-celery-beat/</a> if
+using Django (see <a class="reference internal" href="periodic-tasks.html#beat-custom-schedulers"><span class="std std-ref">使用自定义调度程序类</span></a>).</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>When using RabbitMQ as a message broker when specifying a <code class="docutils literal notranslate"><span class="pre">countdown</span></code>
+over 15 minutes, you may encounter the problem that the worker terminates
+with an <a class="reference external" href="https://docs.celeryq.dev/projects/amqp/en/latest/reference/amqp.exceptions.html#amqp.exceptions.PreconditionFailed" title="（在 py-amqp v5.3）"><code class="xref py py-exc docutils literal notranslate"><span class="pre">PreconditionFailed</span></code></a> error will be raised:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="go">amqp.exceptions.PreconditionFailed: (0, 0): (406) PRECONDITION_FAILED - consumer ack timed out on channel</span>
+</pre></div>
+</div>
+<p>In RabbitMQ since version 3.8.15 the default value for
+<code class="docutils literal notranslate"><span class="pre">consumer_timeout</span></code> is 15 minutes.
+Since version 3.8.17 it was increased to 30 minutes. If a consumer does
+not ack its delivery for more than the timeout value, its channel will be
+closed with a <code class="docutils literal notranslate"><span class="pre">PRECONDITION_FAILED</span></code> channel exception.
+See <a class="reference external" href="https://www.rabbitmq.com/consumers.html#acknowledgement-timeout">Delivery Acknowledgement Timeout</a> for more information.</p>
+<p>To solve the problem, in RabbitMQ configuration file <code class="docutils literal notranslate"><span class="pre">rabbitmq.conf</span></code> you
+should specify the <code class="docutils literal notranslate"><span class="pre">consumer_timeout</span></code> parameter greater than or equal to
+your countdown value. For example, you can specify a very large value
+of <code class="docutils literal notranslate"><span class="pre">consumer_timeout</span> <span class="pre">=</span> <span class="pre">31622400000</span></code>, which is equal to 1 year
+in milliseconds, to avoid problems in the future.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="calling-expiration">
+<span id="id6"></span><h2>到期时间<a class="headerlink" href="#calling-expiration" title="Link to this heading">¶</a></h2>
+<p>Expiration</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">expires</span></code> 参数用于定义一个可选的过期时间，
+可以是任务发布后的秒数，或通过 <a class="reference external" href="https://docs.python.org/dev/library/datetime.html#datetime.datetime" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> 指定的具体日期时间：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># 任务将在一分钟后过期</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">expires</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 也支持 datetime 对象</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">kwargs</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">expires</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>当 Worker 接收到一个已过期的任务时，会将其标记为 <a class="reference internal" href="tasks.html#std-state-REVOKED"><code class="xref std std-state docutils literal notranslate"><span class="pre">REVOKED</span></code></a>
+（<a class="reference internal" href="../reference/celery.exceptions.html#celery.exceptions.TaskRevokedError" title="celery.exceptions.TaskRevokedError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TaskRevokedError</span></code></a>）。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>The <cite>expires</cite> argument defines an optional expiry time,
+either as seconds after task publish, or a specific date and time using
+<a class="reference external" href="https://docs.python.org/dev/library/datetime.html#datetime.datetime" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Task expires after one minute from now.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">expires</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Also supports datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">kwargs</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">expires</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>When a worker receives an expired task it will mark
+the task as <a class="reference internal" href="tasks.html#std-state-REVOKED"><code class="xref std std-state docutils literal notranslate"><span class="pre">REVOKED</span></code></a> (<a class="reference internal" href="../reference/celery.exceptions.html#celery.exceptions.TaskRevokedError" title="celery.exceptions.TaskRevokedError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TaskRevokedError</span></code></a>).</p>
+</div>
+</div>
+</section>
+<section id="calling-retry">
+<span id="id7"></span><h2>消息发送重试<a class="headerlink" href="#calling-retry" title="Link to this heading">¶</a></h2>
+<p>Message Sending Retry</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>Celery 在连接失败时会自动重试发送消息，并且可以对重试行为进行配置 —— 包括重试间隔、
+最大重试次数，或完全禁用重试。</p>
+<p>若要禁用重试，可以将 <code class="docutils literal notranslate"><span class="pre">retry</span></code> 执行选项设置为 <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code>：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">retry</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>Celery will automatically retry sending messages in the event of connection
+failure, and retry behavior can be configured -- like how often to retry, or a maximum
+number of retries -- or disabled all together.</p>
+<p>To disable retry you can set the <code class="docutils literal notranslate"><span class="pre">retry</span></code> execution option to <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">retry</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id8">
+<h3>重试策略<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<p>Retry Policy</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>重试策略（retry policy）是一个映射，用于控制重试行为，
+其可包含以下键：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_retries</span></code></p>
+<p>放弃之前最多允许重试的次数；若达到该次数仍失败，则会抛出导致重试失败的异常。</p>
+<p>如果设置为 <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>，则会无限次重试。</p>
+<p>默认值为重试 3 次。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interval_start</span></code></p>
+<p>两次重试之间的等待时间（秒），可为浮点数或整数。默认值为 0（即首次重试立即发生）。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interval_step</span></code></p>
+<p>每次连续重试时，会在之前的延迟基础上增加该值（浮点或整数）。默认值为 0.2。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interval_max</span></code></p>
+<p>两次重试之间的最大等待时间（秒），可为浮点或整数。默认值为 0.2。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">retry_errors</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">retry_errors</span></code> 是一个异常类的元组，仅当任务抛出的异常属于其中之一时才会进行重试。
+若未指定，则忽略。默认值为 <a href="#id9"><span class="problematic" id="id10">``</span></a>None``（忽略）。</p>
+<p>例如，如果你只希望对超时的任务进行重试，可以使用
+<code class="xref py py-exc docutils literal notranslate"><span class="pre">TimeoutError</span></code>：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="ne">TimeoutError</span>
+
+<span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">retry</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">retry_policy</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;max_retries&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s1">&#39;retry_errors&#39;</span><span class="p">:</span> <span class="p">(</span><span class="ne">TimeoutError</span><span class="p">,</span> <span class="p">),</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 5.3.</span></p>
+</div>
+</li>
+</ul>
+<p>例如，默认的重试策略等价于：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">retry</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">retry_policy</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;max_retries&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s1">&#39;interval_start&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;interval_step&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="s1">&#39;interval_max&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="s1">&#39;retry_errors&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>最大总重试时间为 0.4 秒。默认时间较短，
+是为了避免在连接故障时产生“重试风暴”，
+例如在 broker 连接中断时，大量 Web 服务器进程处于等待重试状态，
+从而阻塞其他请求的处理。</p>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>A retry policy is a mapping that controls how retries behave,
+and can contain the following keys:</p>
+<ul>
+<li><p><cite>max_retries</cite></p>
+<p>Maximum number of retries before giving up, in this case the
+exception that caused the retry to fail will be raised.</p>
+<p>A value of <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> means it will retry forever.</p>
+<p>The default is to retry 3 times.</p>
+</li>
+<li><p><cite>interval_start</cite></p>
+<p>Defines the number of seconds (float or integer) to wait between
+retries. Default is 0 (the first retry will be instantaneous).</p>
+</li>
+<li><p><cite>interval_step</cite></p>
+<p>On each consecutive retry this number will be added to the retry
+delay (float or integer). Default is 0.2.</p>
+</li>
+<li><p><cite>interval_max</cite></p>
+<p>Maximum number of seconds (float or integer) to wait between
+retries. Default is 0.2.</p>
+</li>
+<li><p><cite>retry_errors</cite></p>
+<p><cite>retry_errors</cite> is a tuple of exception classes that should be retried.
+It will be ignored if not specified. Default is None (ignored).</p>
+<p>For example, if you want to retry only tasks that were timed out, you can use
+<code class="xref py py-exc docutils literal notranslate"><span class="pre">TimeoutError</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="ne">TimeoutError</span>
+
+<span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">retry</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">retry_policy</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;max_retries&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s1">&#39;retry_errors&#39;</span><span class="p">:</span> <span class="p">(</span><span class="ne">TimeoutError</span><span class="p">,</span> <span class="p">),</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 5.3.</span></p>
+</div>
+</li>
+</ul>
+<p>For example, the default policy correlates to:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">retry</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">retry_policy</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;max_retries&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s1">&#39;interval_start&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;interval_step&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="s1">&#39;interval_max&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="s1">&#39;retry_errors&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>the maximum time spent retrying will be 0.4 seconds. It's set relatively
+short by default because a connection failure could lead to a retry pile effect
+if the broker connection is down -- For example, many web server processes waiting
+to retry, blocking other incoming requests.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="calling-connection-errors">
+<span id="id11"></span><h2>连接错误处理<a class="headerlink" href="#calling-connection-errors" title="Link to this heading">¶</a></h2>
+<p>Connection Error Handling</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>当你发送任务时，如果消息传输连接丢失，或无法建立连接，
+将抛出 <a class="reference internal" href="../reference/celery.exceptions.html#celery.exceptions.OperationalError" title="kombu.exceptions.OperationalError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">OperationalError</span></code></a> 错误：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">proj.tasks</span><span class="w"> </span><span class="kn">import</span> <span class="n">add</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="gr">File &quot;celery/app/task.py&quot;, line 388, in delay</span>
+<span class="gr">        return self.apply_async(args, kwargs)</span>
+<span class="gr">File &quot;celery/app/task.py&quot;, line 503, in apply_async</span>
+<span class="gr">    **options</span>
+<span class="gr">File &quot;celery/app/base.py&quot;, line 662, in send_task</span>
+<span class="gr">    amqp.send_task_message(P, name, message, **options)</span>
+<span class="gr">File &quot;celery/backends/rpc.py&quot;, line 275, in on_task_call</span>
+<span class="gr">    maybe_declare(self.binding(producer.channel), retry=True)</span>
+<span class="gr">File &quot;/opt/celery/kombu/kombu/messaging.py&quot;, line 204, in _get_channel</span>
+<span class="gr">    channel = self._channel = channel()</span>
+<span class="gr">File &quot;/opt/celery/py-amqp/amqp/connection.py&quot;, line 272, in connect</span>
+<span class="gr">    self.transport.connect()</span>
+<span class="gr">File &quot;/opt/celery/py-amqp/amqp/transport.py&quot;, line 100, in connect</span>
+<span class="gr">    self._connect(self.host, self.port, self.connect_timeout)</span>
+<span class="gr">File &quot;/opt/celery/py-amqp/amqp/transport.py&quot;, line 141, in _connect</span>
+<span class="gr">    self.sock.connect(sa)</span>
+<span class="gr">kombu.exceptions.OperationalError</span>: <span class="n">[Errno 61] Connection refused</span>
+</pre></div>
+</div>
+<p>如果你启用了 <a class="reference internal" href="#calling-retry"><span class="std std-ref">重试机制</span></a>，此错误只会在重试耗尽后抛出，
+或在禁用重试时立即抛出。</p>
+<p>你也可以自行处理该异常：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">celery.utils.log</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">add</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">add</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;发送任务时出错: </span><span class="si">%r</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>When you send a task and the message transport connection is lost, or
+the connection cannot be initiated, an <a class="reference internal" href="../reference/celery.exceptions.html#celery.exceptions.OperationalError" title="kombu.exceptions.OperationalError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">OperationalError</span></code></a>
+error will be raised:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">proj.tasks</span><span class="w"> </span><span class="kn">import</span> <span class="n">add</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="gr">File &quot;celery/app/task.py&quot;, line 388, in delay</span>
+<span class="gr">        return self.apply_async(args, kwargs)</span>
+<span class="gr">File &quot;celery/app/task.py&quot;, line 503, in apply_async</span>
+<span class="gr">    **options</span>
+<span class="gr">File &quot;celery/app/base.py&quot;, line 662, in send_task</span>
+<span class="gr">    amqp.send_task_message(P, name, message, **options)</span>
+<span class="gr">File &quot;celery/backends/rpc.py&quot;, line 275, in on_task_call</span>
+<span class="gr">    maybe_declare(self.binding(producer.channel), retry=True)</span>
+<span class="gr">File &quot;/opt/celery/kombu/kombu/messaging.py&quot;, line 204, in _get_channel</span>
+<span class="gr">    channel = self._channel = channel()</span>
+<span class="gr">File &quot;/opt/celery/py-amqp/amqp/connection.py&quot;, line 272, in connect</span>
+<span class="gr">    self.transport.connect()</span>
+<span class="gr">File &quot;/opt/celery/py-amqp/amqp/transport.py&quot;, line 100, in connect</span>
+<span class="gr">    self._connect(self.host, self.port, self.connect_timeout)</span>
+<span class="gr">File &quot;/opt/celery/py-amqp/amqp/transport.py&quot;, line 141, in _connect</span>
+<span class="gr">    self.sock.connect(sa)</span>
+<span class="gr">kombu.exceptions.OperationalError</span>: <span class="n">[Errno 61] Connection refused</span>
+</pre></div>
+</div>
+<p>If you have <a class="reference internal" href="#calling-retry"><span class="std std-ref">retries</span></a> enabled this will only happen after
+retries are exhausted, or when disabled immediately.</p>
+<p>You can handle this error too:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">celery.utils.log</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">add</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">add</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Sending task raised: </span><span class="si">%r</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calling-serializers">
+<span id="id12"></span><h2>序列化器<a class="headerlink" href="#calling-serializers" title="Link to this heading">¶</a></h2>
+<p>Serializers</p>
+<aside class="sidebar">
+<p class="sidebar-title">安全性/Security</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>pickle 模块允许执行任意函数，
+请参阅 <a class="reference internal" href="security.html#guide-security"><span class="std std-ref">安全指南</span></a>。</p>
+<p>Celery 也内置了一个使用加密机制签名消息的专用序列化器。</p>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>The pickle module allows for execution of arbitrary functions,
+please see the <a class="reference internal" href="security.html#guide-security"><span class="std std-ref">security guide</span></a>.</p>
+<p>Celery also comes with a special serializer that uses
+cryptography to sign your messages.</p>
+</div>
+</div>
+</aside>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>客户端与 Worker 之间传输的数据必须经过序列化，
+因此 Celery 中的每条消息都带有 <code class="docutils literal notranslate"><span class="pre">content_type</span></code> 头，
+用于标识使用的序列化方法。</p>
+<p>默认的序列化器是 <cite>JSON</cite>，但你可以通过 <a class="reference internal" href="configuration.html#std-setting-task_serializer"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_serializer</span></code></a> 设置进行更改，
+也可以针对每个任务单独设置，甚至每条消息分别设置。</p>
+<p>Celery 内置支持以下序列化格式：<cite>JSON</cite>、<a class="reference external" href="https://docs.python.org/dev/library/pickle.html#module-pickle" title="（在 Python v3.15）"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pickle</span></code></a>、<cite>YAML</cite> 和 <code class="docutils literal notranslate"><span class="pre">msgpack</span></code>，
+你也可以将自定义序列化器注册到 Kombu 的序列化器注册表中。</p>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<p>Kombu 用户指南中的 <a class="reference external" href="https://docs.celeryq.dev/projects/kombu/en/main/userguide/serialization.html#guide-serialization" title="（在 Kombu v5.5）"><span class="xref std std-ref">消息序列化</span></a>。</p>
+</div>
+<p>以下是各选项的优缺点：</p>
+<dl>
+<dt>json -- JSON 在多种编程语言中都有良好支持，</dt><dd><p>是 Python（自 2.6 起）的标准库之一，解码速度也相当快。</p>
+<p>JSON 的主要限制在于仅支持以下数据类型：字符串、Unicode、浮点数、布尔值、
+字典和列表。不支持 Decimals 和 日期对象。</p>
+<p>二进制数据会通过 Base64 编码传输，
+相比原生二进制类型的编码方式，数据体积会增加约 34%。</p>
+<p>不过，如果你的数据符合上述限制，且需要跨语言支持，
+那么默认的 JSON 配置是一个很好的选择。</p>
+<p>更多信息请参见 <a class="reference external" href="http://json.org">http://json.org</a>。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>（摘自官方 Python 文档 <a class="reference external" href="https://docs.python.org/3.6/library/json.html">https://docs.python.org/3.6/library/json.html</a>）
+JSON 中的键始终为 <a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> 类型。当字典被转换为 JSON 后，
+所有的键都会被强制转换为字符串。
+因此，当一个字典转换为 JSON 后再反序列化回来，可能会与原始字典不等价。
+例如：<code class="docutils literal notranslate"><span class="pre">loads(dumps(x))</span> <span class="pre">!=</span> <span class="pre">x</span></code>，如果 x 含有非字符串类型的键。</p>
+</div>
+</dd>
+<dt>pickle -- 如果你不需要支持 Python 以外的语言，</dt><dd><p>那么使用 pickle 编码可以支持所有内置的 Python 数据类型（类实例除外），
+在传输二进制数据时体积更小，并且处理速度略快于 JSON。</p>
+<p>更多信息请参阅 <a class="reference external" href="https://docs.python.org/dev/library/pickle.html#module-pickle" title="（在 Python v3.15）"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pickle</span></code></a> 模块。</p>
+</dd>
+<dt>yaml -- YAML 与 JSON 特性类似，</dt><dd><p>但原生支持更多的数据类型（包括日期、递归引用等）。</p>
+<p>不过，Python 中的 YAML 库普遍比 JSON 库慢很多。</p>
+<p>如果你需要更丰富的数据类型，且仍需跨语言兼容性，
+那么 YAML 可能是一个更合适的选择。</p>
+<p>安装方式如下：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery<span class="o">[</span>yaml<span class="o">]</span>
+</pre></div>
+</div>
+<p>更多信息请参见 <a class="reference external" href="http://yaml.org/">http://yaml.org/</a></p>
+</dd>
+<dt>msgpack -- msgpack 是一种二进制序列化格式，功能类似于 JSON。</dt><dd><p>它具有更好的压缩能力，因此在编码和解析速度上通常优于 JSON。</p>
+<p>安装方式如下：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery<span class="o">[</span>msgpack<span class="o">]</span>
+</pre></div>
+</div>
+<p>更多信息请参见 <a class="reference external" href="http://msgpack.org/">http://msgpack.org/</a></p>
+</dd>
+</dl>
+<p>若要使用自定义序列化器，需将其内容类型添加到 <a class="reference internal" href="configuration.html#std-setting-accept_content"><code class="xref std std-setting docutils literal notranslate"><span class="pre">accept_content</span></code></a> 配置项中。
+默认情况下，仅接受 JSON 格式；
+含有其他内容类型的任务将会被拒绝处理。</p>
+<p>Celery 在发送任务时会按以下优先级决定使用的序列化器：</p>
+<ol class="arabic simple">
+<li><p><cite>serializer</cite> 执行选项；</p></li>
+<li><p><a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.serializer" title="celery.app.task.Task.serializer"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Task.serializer</span></code></a> 属性；</p></li>
+<li><p><a class="reference internal" href="configuration.html#std-setting-task_serializer"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_serializer</span></code></a> 设置项。</p></li>
+</ol>
+<p>示例：为某个任务调用显式指定序列化器：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">serializer</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<p>Data transferred between clients and workers needs to be serialized,
+so every message in Celery has a <code class="docutils literal notranslate"><span class="pre">content_type</span></code> header that
+describes the serialization method used to encode it.</p>
+<p>The default serializer is <cite>JSON</cite>, but you can
+change this using the <a class="reference internal" href="configuration.html#std-setting-task_serializer"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_serializer</span></code></a> setting,
+or for each individual task, or even per message.</p>
+<p>There's built-in support for <cite>JSON</cite>, <a class="reference external" href="https://docs.python.org/dev/library/pickle.html#module-pickle" title="（在 Python v3.15）"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pickle</span></code></a>, <cite>YAML</cite>
+and <code class="docutils literal notranslate"><span class="pre">msgpack</span></code>, and you can also add your own custom serializers by registering
+them into the Kombu serializer registry</p>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<p><a class="reference external" href="https://docs.celeryq.dev/projects/kombu/en/main/userguide/serialization.html#guide-serialization" title="（在 Kombu v5.5）"><span class="xref std std-ref">Message Serialization</span></a> in the Kombu user
+guide.</p>
+</div>
+<p>Each option has its advantages and disadvantages.</p>
+<dl>
+<dt>json -- JSON is supported in many programming languages, is now</dt><dd><p>a standard part of Python (since 2.6), and is fairly fast to decode.</p>
+<p>The primary disadvantage to JSON is that it limits you to the following
+data types: strings, Unicode, floats, Boolean, dictionaries, and lists.
+Decimals and dates are notably missing.</p>
+<p>Binary data will be transferred using Base64 encoding,
+increasing the size of the transferred data by 34% compared to an encoding
+format where native binary types are supported.</p>
+<p>However, if your data fits inside the above constraints and you need
+cross-language support, the default setting of JSON is probably your
+best choice.</p>
+<p>See <a class="reference external" href="http://json.org">http://json.org</a> for more information.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>(From Python official docs <a class="reference external" href="https://docs.python.org/3.6/library/json.html">https://docs.python.org/3.6/library/json.html</a>)
+Keys in key/value pairs of JSON are always of the type <a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>. When
+a dictionary is converted into JSON, all the keys of the dictionary are
+coerced to strings. As a result of this, if a dictionary is converted
+into JSON and then back into a dictionary, the dictionary may not equal
+the original one. That is, <code class="docutils literal notranslate"><span class="pre">loads(dumps(x))</span> <span class="pre">!=</span> <span class="pre">x</span></code> if x has non-string
+keys.</p>
+</div>
+</dd>
+<dt>pickle -- If you have no desire to support any language other than</dt><dd><p>Python, then using the pickle encoding will gain you the support of
+all built-in Python data types (except class instances), smaller
+messages when sending binary files, and a slight speedup over JSON
+processing.</p>
+<p>See <a class="reference external" href="https://docs.python.org/dev/library/pickle.html#module-pickle" title="（在 Python v3.15）"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pickle</span></code></a> for more information.</p>
+</dd>
+<dt>yaml -- YAML has many of the same characteristics as json,</dt><dd><p>except that it natively supports more data types (including dates,
+recursive references, etc.).</p>
+<p>However, the Python libraries for YAML are a good bit slower than the
+libraries for JSON.</p>
+<p>If you need a more expressive set of data types and need to maintain
+cross-language compatibility, then YAML may be a better fit than the above.</p>
+<p>To use it, install Celery with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery<span class="o">[</span>yaml<span class="o">]</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="http://yaml.org/">http://yaml.org/</a> for more information.</p>
+</dd>
+<dt>msgpack -- msgpack is a binary serialization format that's closer to JSON</dt><dd><p>in features. The format compresses better, so is a faster to parse and
+encode compared to JSON.</p>
+<p>To use it, install Celery with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery<span class="o">[</span>msgpack<span class="o">]</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="http://msgpack.org/">http://msgpack.org/</a> for more information.</p>
+</dd>
+</dl>
+<p>To use a custom serializer you need to add the content type to
+<a class="reference internal" href="configuration.html#std-setting-accept_content"><code class="xref std std-setting docutils literal notranslate"><span class="pre">accept_content</span></code></a>. By default, only JSON is accepted,
+and tasks containing other content headers are rejected.</p>
+<p>The following order is used to decide the serializer
+used when sending a task:</p>
+<ol class="arabic simple">
+<li><p>The <cite>serializer</cite> execution option.</p></li>
+<li><p>The <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.serializer" title="celery.app.task.Task.serializer"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Task.serializer</span></code></a> attribute</p></li>
+<li><p>The <a class="reference internal" href="configuration.html#std-setting-task_serializer"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_serializer</span></code></a> setting.</p></li>
+</ol>
+<p>Example setting a custom serializer for a single task invocation:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">serializer</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calling-compression">
+<span id="id13"></span><h2>压缩<a class="headerlink" href="#calling-compression" title="Link to this heading">¶</a></h2>
+<p>Compression</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">中文</label><div class="tab-content docutils container">
+<p>Celery 支持使用以下内建压缩方案对消息进行压缩：</p>
+<ul>
+<li><p><cite>brotli</cite></p>
+<p>brotli 针对 Web 优化，尤其适用于小型文本文档。它在服务静态内容（如字体和 HTML 页面）时最为高效。</p>
+<p>如需使用此压缩算法，请通过以下命令安装 Celery：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery<span class="o">[</span>brotli<span class="o">]</span>
+</pre></div>
+</div>
+</li>
+<li><p><cite>bzip2</cite></p>
+<p>bzip2 相较于 gzip 可生成更小的文件，但压缩和解压速度明显慢于 gzip。</p>
+<p>要使用该压缩算法，请确保你的 Python 可执行文件已启用 bzip2 支持。</p>
+<p>如果你遇到如下的 <a class="reference external" href="https://docs.python.org/dev/library/exceptions.html#ImportError" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportError</span></code></a> 错误：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">bz2</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="gr">ImportError</span>: <span class="n">No module named &#39;bz2&#39;</span>
+</pre></div>
+</div>
+<p>这表示你需要重新编译 Python，使其包含 bzip2 支持。</p>
+</li>
+<li><p><cite>gzip</cite></p>
+<p>gzip 适用于需要较小内存占用的系统，非常适合内存受限的环境。它常用于生成 <cite>.tar.gz</cite> 后缀的文件。</p>
+<p>要使用该压缩算法，请确保你的 Python 可执行文件已启用 gzip 支持。</p>
+<p>如果你遇到如下的 <a class="reference external" href="https://docs.python.org/dev/library/exceptions.html#ImportError" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportError</span></code></a> 错误：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">gzip</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="gr">ImportError</span>: <span class="n">No module named &#39;gzip&#39;</span>
+</pre></div>
+</div>
+<p>这表示你需要重新编译 Python，使其包含 gzip 支持。</p>
+</li>
+<li><p><cite>lzma</cite></p>
+<p>lzma 提供了较好的压缩比，具有快速的压缩与解压速度，但内存使用量相对较高。</p>
+<p>要使用该压缩算法，请确保你的 Python 可执行文件已启用 lzma 支持，并且 Python 版本不低于 3.3。</p>
+<p>如果你遇到如下的 <a class="reference external" href="https://docs.python.org/dev/library/exceptions.html#ImportError" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportError</span></code></a> 错误：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">lzma</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="gr">ImportError</span>: <span class="n">No module named &#39;lzma&#39;</span>
+</pre></div>
+</div>
+<p>这表示你需要重新编译 Python，使其包含 lzma 支持。</p>
+<p>或者，你也可以通过以下命令安装回移植模块：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery<span class="o">[</span>lzma<span class="o">]</span>
+</pre></div>
+</div>
+</li>
+<li><p><cite>zlib</cite></p>
+<p>zlib 是 Deflate 算法的库形式抽象，API 中既支持 gzip 文件格式，也支持轻量级的流格式。它是许多软件系统的关键组成部分——例如 Linux 内核和 Git 版本控制系统。</p>
+<p>要使用该压缩算法，请确保你的 Python 可执行文件已启用 zlib 支持。</p>
+<p>如果你遇到如下的 <a class="reference external" href="https://docs.python.org/dev/library/exceptions.html#ImportError" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportError</span></code></a> 错误：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">zlib</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="gr">ImportError</span>: <span class="n">No module named &#39;zlib&#39;</span>
+</pre></div>
+</div>
+<p>这表示你需要重新编译 Python，使其包含 zlib 支持。</p>
+</li>
+<li><p><cite>zstd</cite></p>
+<p>zstd 针对实时压缩场景设计，其压缩速度与 zlib 相当甚至更优，同时提供更好的压缩比。它依赖于 Huff0 和 FSE 库提供的高速熵编码阶段。</p>
+<p>如需使用该压缩算法，请通过以下命令安装 Celery：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery<span class="o">[</span>zstd<span class="o">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>你也可以创建自定义的压缩方案，并通过 <a class="reference external" href="https://docs.celeryq.dev/projects/kombu/en/main/reference/kombu.compression.html#kombu.compression.register" title="（在 Kombu v5.5）"><code class="xref py py-func docutils literal notranslate"><span class="pre">kombu</span> <span class="pre">compression</span> <span class="pre">registry</span></code></a> 将其注册到 Kombu 压缩注册表中。</p>
+<p>发送任务时使用的压缩方案按以下顺序确定：</p>
+<ol class="arabic simple">
+<li><p><cite>compression</cite> 执行选项。</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">Task.compression</span></code> 属性。</p></li>
+<li><p><a class="reference internal" href="configuration.html#std-setting-task_compression"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_compression</span></code></a> 设置项。</p></li>
+</ol>
+<p>如下是调用任务时指定压缩方式的示例：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--11-input--2" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--2">英文</label><div class="tab-content docutils container">
+<p>Celery can compress messages using the following builtin schemes:</p>
+<ul>
+<li><p><cite>brotli</cite></p>
+<p>brotli is optimized for the web, in particular small text
+documents. It is most effective for serving static content
+such as fonts and html pages.</p>
+<p>To use it, install Celery with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery<span class="o">[</span>brotli<span class="o">]</span>
+</pre></div>
+</div>
+</li>
+<li><p><cite>bzip2</cite></p>
+<p>bzip2 creates smaller files than gzip, but compression and
+decompression speeds are noticeably slower than those of gzip.</p>
+<p>To use it, please ensure your Python executable was compiled
+with bzip2 support.</p>
+<p>If you get the following <a class="reference external" href="https://docs.python.org/dev/library/exceptions.html#ImportError" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportError</span></code></a>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">bz2</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="gr">ImportError</span>: <span class="n">No module named &#39;bz2&#39;</span>
+</pre></div>
+</div>
+<p>it means that you should recompile your Python version with bzip2 support.</p>
+</li>
+<li><p><cite>gzip</cite></p>
+<p>gzip is suitable for systems that require a small memory footprint,
+making it ideal for systems with limited memory. It is often
+used to generate files with the &quot;.tar.gz&quot; extension.</p>
+<p>To use it, please ensure your Python executable was compiled
+with gzip support.</p>
+<p>If you get the following <a class="reference external" href="https://docs.python.org/dev/library/exceptions.html#ImportError" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportError</span></code></a>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">gzip</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="gr">ImportError</span>: <span class="n">No module named &#39;gzip&#39;</span>
+</pre></div>
+</div>
+<p>it means that you should recompile your Python version with gzip support.</p>
+</li>
+<li><p><cite>lzma</cite></p>
+<p>lzma provides a good compression ratio and executes with
+fast compression and decompression speeds at the expense
+of higher memory usage.</p>
+<p>To use it, please ensure your Python executable was compiled
+with lzma support and that your Python version is 3.3 and above.</p>
+<p>If you get the following <a class="reference external" href="https://docs.python.org/dev/library/exceptions.html#ImportError" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportError</span></code></a>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">lzma</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="gr">ImportError</span>: <span class="n">No module named &#39;lzma&#39;</span>
+</pre></div>
+</div>
+<p>it means that you should recompile your Python version with lzma support.</p>
+<p>Alternatively, you can also install a backport using:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery<span class="o">[</span>lzma<span class="o">]</span>
+</pre></div>
+</div>
+</li>
+<li><p><cite>zlib</cite></p>
+<p>zlib is an abstraction of the Deflate algorithm in library
+form which includes support both for the gzip file format
+and a lightweight stream format in its API. It is a crucial
+component of many software systems - Linux kernel and Git VCS just
+to name a few.</p>
+<p>To use it, please ensure your Python executable was compiled
+with zlib support.</p>
+<p>If you get the following <a class="reference external" href="https://docs.python.org/dev/library/exceptions.html#ImportError" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportError</span></code></a>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">zlib</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="gr">ImportError</span>: <span class="n">No module named &#39;zlib&#39;</span>
+</pre></div>
+</div>
+<p>it means that you should recompile your Python version with zlib support.</p>
+</li>
+<li><p><cite>zstd</cite></p>
+<p>zstd targets real-time compression scenarios at zlib-level
+and better compression ratios. It's backed by a very fast entropy
+stage, provided by Huff0 and FSE library.</p>
+<p>To use it, install Celery with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery<span class="o">[</span>zstd<span class="o">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>You can also create your own compression schemes and register
+them in the <a class="reference external" href="https://docs.celeryq.dev/projects/kombu/en/main/reference/kombu.compression.html#kombu.compression.register" title="（在 Kombu v5.5）"><code class="xref py py-func docutils literal notranslate"><span class="pre">kombu</span> <span class="pre">compression</span> <span class="pre">registry</span></code></a>.</p>
+<p>The following order is used to decide the compression scheme
+used when sending a task:</p>
+<ol class="arabic simple">
+<li><p>The <cite>compression</cite> execution option.</p></li>
+<li><p>The <code class="xref py py-attr docutils literal notranslate"><span class="pre">Task.compression</span></code> attribute.</p></li>
+<li><p>The <a class="reference internal" href="configuration.html#std-setting-task_compression"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_compression</span></code></a> attribute.</p></li>
+</ol>
+<p>Example specifying the compression used when calling a task:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calling-connections">
+<span id="id14"></span><h2>连接<a class="headerlink" href="#calling-connections" title="Link to this heading">¶</a></h2>
+<p>Connections</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">中文</label><div class="tab-content docutils container">
+<div class="admonition- admonition">
+<p class="admonition-title">自动连接池支持</p>
+<p>从 2.3 版本开始，Celery 支持自动连接池，因此你无需手动管理连接和发布者即可重用连接。</p>
+<p>从 2.5 版本开始，连接池默认启用。</p>
+<p>更多信息请参阅 <a class="reference internal" href="configuration.html#std-setting-broker_pool_limit"><code class="xref std std-setting docutils literal notranslate"><span class="pre">broker_pool_limit</span></code></a> 配置项。</p>
+</div>
+<p>你也可以通过创建发布者手动管理连接：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">)]</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">with</span> <span class="n">add</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">connection</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">add</span><span class="o">.</span><span class="n">get_publisher</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">publisher</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">publisher</span><span class="o">=</span><span class="n">publisher</span><span class="p">)</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>不过这个例子使用任务组表达会更加简洁：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">group</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span> <span class="o">=</span> <span class="n">group</span><span class="p">(</span><span class="n">add</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">apply_async</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="go">[4, 8, 16, 32]</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">英文</label><div class="tab-content docutils container">
+<div class="admonition-automatic-pool-support admonition">
+<p class="admonition-title">Automatic Pool Support</p>
+<p>Since version 2.3 there's support for automatic connection pools,
+so you don't have to manually handle connections and publishers
+to reuse connections.</p>
+<p>The connection pool is enabled by default since version 2.5.</p>
+<p>See the <a class="reference internal" href="configuration.html#std-setting-broker_pool_limit"><code class="xref std std-setting docutils literal notranslate"><span class="pre">broker_pool_limit</span></code></a> setting for more information.</p>
+</div>
+<p>You can handle the connection manually by creating a
+publisher:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">)]</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">with</span> <span class="n">add</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">connection</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">add</span><span class="o">.</span><span class="n">get_publisher</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">publisher</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">publisher</span><span class="o">=</span><span class="n">publisher</span><span class="p">)</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Though this particular example is much better expressed as a group:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">group</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span> <span class="o">=</span> <span class="n">group</span><span class="p">(</span><span class="n">add</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">apply_async</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="go">[4, 8, 16, 32]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calling-routing">
+<span id="id15"></span><h2>路由选项<a class="headerlink" href="#calling-routing" title="Link to this heading">¶</a></h2>
+<p>Routing options</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--13-input--1" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--1">中文</label><div class="tab-content docutils container">
+<p>Celery 可以将任务路由到不同的队列。</p>
+<p>简单的路由（名称 &lt;-&gt; 名称）可以通过 <cite>queue</cite> 选项实现:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">queue</span><span class="o">=</span><span class="s1">&#39;priority.high&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>然后，你可以通过 worker 的 <a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-Q"><code class="xref std std-option docutils literal notranslate"><span class="pre">-Q</span></code></a> 参数将其绑定到 <cite>priority.high</cite> 队列：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-l<span class="w"> </span>INFO<span class="w"> </span>-Q<span class="w"> </span>celery,priority.high
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<p>不推荐在代码中硬编码队列名称，最佳实践是使用配置式路由（<a class="reference internal" href="configuration.html#std-setting-task_routes"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_routes</span></code></a>）。</p>
+<p>关于路由的更多信息，请参阅 <a class="reference internal" href="routing.html#guide-routing"><span class="std std-ref">路由任务/Tasks</span></a>。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--13-input--2" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--2">英文</label><div class="tab-content docutils container">
+<p>Celery can route tasks to different queues.</p>
+<p>Simple routing (name &lt;-&gt; name) is accomplished using the <code class="docutils literal notranslate"><span class="pre">queue</span></code> option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">queue</span><span class="o">=</span><span class="s1">&#39;priority.high&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can then assign workers to the <code class="docutils literal notranslate"><span class="pre">priority.high</span></code> queue by using
+the workers <a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-Q"><code class="xref std std-option docutils literal notranslate"><span class="pre">-Q</span></code></a> argument:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-l<span class="w"> </span>INFO<span class="w"> </span>-Q<span class="w"> </span>celery,priority.high
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<p>Hard-coding queue names in code isn't recommended, the best practice
+is to use configuration routers (<a class="reference internal" href="configuration.html#std-setting-task_routes"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_routes</span></code></a>).</p>
+<p>To find out more about routing, please see <a class="reference internal" href="routing.html#guide-routing"><span class="std std-ref">路由任务/Tasks</span></a>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="calling-results">
+<span id="id16"></span><h2>结果选项<a class="headerlink" href="#calling-results" title="Link to this heading">¶</a></h2>
+<p>Results options</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--14-input--1" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--1">中文</label><div class="tab-content docutils container">
+<p>你可以通过 <a class="reference internal" href="configuration.html#std-setting-task_ignore_result"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_ignore_result</span></code></a> 配置项，或使用 <cite>ignore_result</cite> 选项来启用或禁用结果存储：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">ignore_result</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kc">None</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 不忽略结果（默认行为）</span>
+
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">ignore_result</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">3</span>
+</pre></div>
+</div>
+<p>如果你希望在结果后端中存储关于任务的额外元数据，可以将 <a class="reference internal" href="configuration.html#std-setting-result_extended"><code class="xref std std-setting docutils literal notranslate"><span class="pre">result_extended</span></code></a> 设置为 <cite>True</cite>。</p>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<p>有关任务的更多信息，请参阅 <a class="reference internal" href="tasks.html#guide-tasks"><span class="std std-ref">任务/Tasks</span></a>。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--14-input--2" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--2">英文</label><div class="tab-content docutils container">
+<p>You can enable or disable result storage using the <a class="reference internal" href="configuration.html#std-setting-task_ignore_result"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_ignore_result</span></code></a>
+setting or by using the <code class="docutils literal notranslate"><span class="pre">ignore_result</span></code> option:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">ignore_result</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="go">None</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Do not ignore result (default)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">ignore_result</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>If you'd like to store additional metadata about the task in the result backend
+set the <a class="reference internal" href="configuration.html#std-setting-result_extended"><code class="xref std std-setting docutils literal notranslate"><span class="pre">result_extended</span></code></a> setting to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<p>For more information on tasks, please see <a class="reference internal" href="tasks.html#guide-tasks"><span class="std std-ref">任务/Tasks</span></a>.</p>
+</div>
+</div>
+</div>
+<section id="id17">
+<h3>高级选项<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
+<p>Advanced Options</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--15-input--1" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--1">中文</label><div class="tab-content docutils container">
+<p>以下选项适用于希望充分利用 AMQP 路由能力的高级用户。如有兴趣，请阅读 <a class="reference internal" href="routing.html#guide-routing"><span class="std std-ref">routing guide</span></a>。</p>
+<ul>
+<li><p>exchange</p>
+<p>要将消息发送到的交换器名称（或一个 <a class="reference internal" href="../internals/reference/celery.backends.rpc.html#celery.backends.rpc.RPCBackend.Exchange" title="kombu.entity.Exchange"><code class="xref py py-class docutils literal notranslate"><span class="pre">kombu.entity.Exchange</span></code></a> 实例）。</p>
+</li>
+<li><p>routing_key</p>
+<p>用于决定路由的路由键。</p>
+</li>
+<li><p>priority</p>
+<p>范围为 <cite>0</cite> 到 <cite>255</cite> 的整数，其中 <cite>255</cite> 表示最高优先级。</p>
+<p>支持此选项的系统有：RabbitMQ、Redis（Redis 中优先级相反，<cite>0</cite> 表示最高）。</p>
+</li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--15-input--2" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--2">英文</label><div class="tab-content docutils container">
+<p>These options are for advanced users who want to take use of
+AMQP's full routing capabilities. Interested parties may read the
+<a class="reference internal" href="routing.html#guide-routing"><span class="std std-ref">routing guide</span></a>.</p>
+<ul>
+<li><p>exchange</p>
+<p>Name of exchange (or a <a class="reference internal" href="../internals/reference/celery.backends.rpc.html#celery.backends.rpc.RPCBackend.Exchange" title="kombu.entity.Exchange"><code class="xref py py-class docutils literal notranslate"><span class="pre">kombu.entity.Exchange</span></code></a>) to
+send the message to.</p>
+</li>
+<li><p>routing_key</p>
+<p>Routing key used to determine.</p>
+</li>
+<li><p>priority</p>
+<p>A number between <cite>0</cite> and <cite>255</cite>, where <cite>255</cite> is the highest priority.</p>
+<p>Supported by: RabbitMQ, Redis (priority reversed, 0 is highest).</p>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="canvas.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Canvas：设计工作流</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="tasks.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">任务/Tasks</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2009-2023, Ask Solem &amp; contributors
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">调用任务/Tasks</a><ul>
+<li><a class="reference internal" href="#calling-cheat">基础知识</a><ul>
+<li><a class="reference internal" href="#id2">示例</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#calling-links">链接（回调/错误回调）</a></li>
+<li><a class="reference internal" href="#calling-on-message">消息</a></li>
+<li><a class="reference internal" href="#calling-eta">预计到达时间和倒计时</a></li>
+<li><a class="reference internal" href="#calling-expiration">到期时间</a></li>
+<li><a class="reference internal" href="#calling-retry">消息发送重试</a><ul>
+<li><a class="reference internal" href="#id8">重试策略</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#calling-connection-errors">连接错误处理</a></li>
+<li><a class="reference internal" href="#calling-serializers">序列化器</a></li>
+<li><a class="reference internal" href="#calling-compression">压缩</a></li>
+<li><a class="reference internal" href="#calling-connections">连接</a></li>
+<li><a class="reference internal" href="#calling-routing">路由选项</a></li>
+<li><a class="reference internal" href="#calling-results">结果选项</a><ul>
+<li><a class="reference internal" href="#id17">高级选项</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=8156d91f"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=5eb1bb1e"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    </body>
+</html>

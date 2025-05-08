@@ -1,0 +1,1285 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="贡献" href="../contributing.html" /><link rel="prev" title="Django" href="index.html" />
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>使用 Django 的第一步 - Celery 5.5.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=3ee1c6c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/my.css?v=112ca36d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Celery 5.5.1 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/celery_512_1.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Celery 5.5.1 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../copyright.html">版权</a></li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/index.html">快速开始</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 快速开始</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/introduction.html">Celery 简介</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting-started/backends-and-brokers/index.html">Backends 和 Brokers</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Backends 和 Brokers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/rabbitmq.html">使用 RabbitMQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/redis.html">使用 Redis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html">使用 Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/kafka.html">使用 Kafka</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/gcpubsub.html">使用 Google Pub/Sub</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/first-steps-with-celery.html">使用 Celery 的第一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/next-steps.html">下一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/resources.html">资源</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../userguide/index.html">用户指南</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 用户指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/application.html">应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/tasks.html">任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/calling.html">调用任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/canvas.html">Canvas：设计工作流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/workers.html">Workers 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/daemonizing.html">守护进程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/periodic-tasks.html">周期性任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/routing.html">路由任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/monitoring.html">监控和管理指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/security.html">安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/optimizing.html">优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/debugging.html">调试</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../userguide/concurrency/index.html">并发</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 并发</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../userguide/concurrency/eventlet.html">Eventlet 并发</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../userguide/concurrency/gevent.html">gevent 并发</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/signals.html">信号</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/testing.html">使用 Celery 进行测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/extending.html">扩展 和 Bootsteps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/configuration.html">配置和默认值</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/sphinx.html">使用 Sphinx 文档化任务</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Django</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Django</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">使用 Django 的第一步</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">社区资源</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/task-cookbook.html">Task Cookbook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">更改历史</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">API 参考</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of API 参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cli.html">命令行接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">celery</span></code> --- Distributed processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html">Proxies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.task.html"><code class="docutils literal notranslate"><span class="pre">celery.app.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html">AMQP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html#queues">Queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.defaults.html"><code class="docutils literal notranslate"><span class="pre">celery.app.defaults</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.control.html"><code class="docutils literal notranslate"><span class="pre">celery.app.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.registry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.registry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.app.backends</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.builtins.html"><code class="docutils literal notranslate"><span class="pre">celery.app.builtins</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.events.html"><code class="docutils literal notranslate"><span class="pre">celery.app.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.log.html"><code class="docutils literal notranslate"><span class="pre">celery.app.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.app.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.autoretry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.autoretry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bootsteps.html"><code class="docutils literal notranslate"><span class="pre">celery.bootsteps</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.result.html"><code class="docutils literal notranslate"><span class="pre">celery.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.schedules.html"><code class="docutils literal notranslate"><span class="pre">celery.schedules</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.signals.html"><code class="docutils literal notranslate"><span class="pre">celery.signals</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.security.html"><code class="docutils literal notranslate"><span class="pre">celery.security</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.utils.debug.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.debug</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.exceptions.html"><code class="docutils literal notranslate"><span class="pre">celery.exceptions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.app.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.default.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.default</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.base.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html">States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#sets">Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#misc">Misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.FAILURE"><code class="docutils literal notranslate"><span class="pre">FAILURE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.PENDING"><code class="docutils literal notranslate"><span class="pre">PENDING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RECEIVED"><code class="docutils literal notranslate"><span class="pre">RECEIVED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RETRY"><code class="docutils literal notranslate"><span class="pre">RETRY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.REVOKED"><code class="docutils literal notranslate"><span class="pre">REVOKED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.STARTED"><code class="docutils literal notranslate"><span class="pre">STARTED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.SUCCESS"><code class="docutils literal notranslate"><span class="pre">SUCCESS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.precedence"><code class="docutils literal notranslate"><span class="pre">precedence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.state"><code class="docutils literal notranslate"><span class="pre">state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.abortable.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.abortable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.django.task.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.django.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.pytest.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.pytest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.sphinx.html">celery.contrib.sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.app.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.manager.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.manager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.mocks.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.mocks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.rdb.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.rdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.html"><code class="docutils literal notranslate"><span class="pre">celery.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.receiver.html"><code class="docutils literal notranslate"><span class="pre">celery.events.receiver</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.dispatcher.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.event.html"><code class="docutils literal notranslate"><span class="pre">celery.events.event</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.state.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.request.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.request</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.state.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.strategy.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.strategy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.agent.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.agent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.connection.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.connection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.events.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.gossip.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.gossip</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.heart.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.heart</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.mingle.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.mingle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.tasks.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.tasks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.base.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.celery.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.celery</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.events.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.logtool.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.logtool</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.amqp.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.amqp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.graph</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.call.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.call</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.control.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.list.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.list</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.purge.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.purge</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.result.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.shell.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.shell</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.upgrade.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.upgrade</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">内部</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 内部</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../internals/guide.html">代码贡献指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/deprecation.html">Celery 弃用时间表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/worker.html">内部的 worker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/protocol.html">消息协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/app-overview.html">“大实例”重构</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/reference/index.html">内部模块参考</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 内部模块参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.components.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.components</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.loops.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.loops</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.heartbeat.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.heartbeat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.control</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.pidbox.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.pidbox</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.autoscale.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.autoscale</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.solo.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.solo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.prefork.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.prefork</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.eventlet.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.eventlet</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.gevent.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.gevent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.thread.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.thread</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.base.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.backends</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.base.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.asynchronous.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.asynchronous</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.azureblockblob.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.azureblockblob</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.rpc.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.rpc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cache.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.consul.html">celery.backends.consul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchdb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchdb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.mongodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.mongodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.elasticsearch.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.elasticsearch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.redis.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.redis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cassandra.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cassandra</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchbase.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchbase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.arangodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.arangodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.dynamodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.dynamodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.filesystem.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.filesystem</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cosmosdbsql.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cosmosdbsql</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.s3.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.s3</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.gcs.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.gcs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.trace.html"><code class="docutils literal notranslate"><span class="pre">celery.app.trace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.annotations.html"><code class="docutils literal notranslate"><span class="pre">celery.app.annotations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.routes.html"><code class="docutils literal notranslate"><span class="pre">celery.app.routes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.certificate.html"><code class="docutils literal notranslate"><span class="pre">celery.security.certificate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.key.html"><code class="docutils literal notranslate"><span class="pre">celery.security.key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.security.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.security.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.snapshot.html"><code class="docutils literal notranslate"><span class="pre">celery.events.snapshot</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.cursesmon.html"><code class="docutils literal notranslate"><span class="pre">celery.events.cursesmon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.dumper.html"><code class="docutils literal notranslate"><span class="pre">celery.events.dumper</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.models.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.models</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.session.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.session</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.abstract.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.abstract</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.collections.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.collections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.nodenames.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.nodenames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.deprecated.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.deprecated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.functional.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.functional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.graph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.objects.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.term.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.term</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.time.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.time</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.iso8601.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.iso8601</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.saferepr.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.saferepr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.sysinfo.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.sysinfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.threads.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.threads</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.timer2.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.timer2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.imports.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.imports</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.log.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.log</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.text.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.signal.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch.signal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.platforms.html"><code class="docutils literal notranslate"><span class="pre">celery.platforms</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery._state.html"><code class="docutils literal notranslate"><span class="pre">celery._state</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../history/index.html">历史</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 历史</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.5.html">What's new in Celery 5.5 (Immunity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.5.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.4.html">What's new in Celery 5.4 (Opalescent)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.3.html">What's new in Celery 5.3 (Emerald Rush)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.1.html">What's new in Celery 5.1 (Sun Harmonics)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.0.html">What's new in Celery 5.0 (singularity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.4.html">What's new in Celery 4.4 (Cliffs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.3.html">What's new in Celery 4.3 (rhubarb)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.2.html">What's new in Celery 4.2 (windowlicker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.2.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.1.html">What's new in Celery 4.1 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.0.html">What's new in Celery 4.0 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-3.1.html">What's new in Celery 3.1 (Cipater)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-3.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-3.0.html">What's new in Celery 3.0 (Chiastic Slide)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-3.0.html">Change history for Celery 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-2.5.html">What's new in Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.5.html">Change history for Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.4.html">Change history for Celery 2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.3.html">Change history for Celery 2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.2.html">Change history for Celery 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.1.html">Change history for Celery 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.0.html">Change history for Celery 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-1.0.html">Change history for Celery 1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+</ul>
+
+</div>
+<!-- <iframe src="https://ghbtns.com/github-btn.html?user=celery&repo=celery&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe> -->
+<div id="donate">
+  <h5>捐赠</h5>
+  <p>请捐赠以支持这个社区项目</p>
+  <a href="https://opencollective.com/celery/donate" target="_blank">
+    <!-- <img src="https://opencollective.com/celery/donate/button@2x.png?color=blue" /> -->
+    <img src="https://opencollective.com/celery/donate/button.png?color=blue" />
+  </a>
+</div></div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/django/first-steps-with-django.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="django">
+<span id="django-first-steps"></span><h1>使用 Django 的第一步<a class="headerlink" href="#django" title="Link to this heading">¶</a></h1>
+<p>First steps with Django</p>
+<section id="celery-django">
+<h2>将 Celery 与 Django 结合使用<a class="headerlink" href="#celery-django" title="Link to this heading">¶</a></h2>
+<p>Using Celery with Django</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>旧版本的 Celery 需要单独的库才能与 Django 一起使用，
+但从 3.1 版本开始不再需要。Celery 现在原生支持 Django，
+因此本教程仅介绍 Celery 与 Django 集成的基础方法。
+你将使用与非 Django 用户相同的 API，因此推荐你首先阅读 <a class="reference internal" href="../getting-started/first-steps-with-celery.html#first-steps"><span class="std std-ref">使用 Celery 的第一步</span></a> 教程，
+然后再回来阅读本教程。当你有了一个可运行的示例之后，
+可以继续阅读 <a class="reference internal" href="../getting-started/next-steps.html#next-steps"><span class="std std-ref">下一步</span></a> 指南。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Celery 5.5.x 支持 Django 2.2 LTS 或更新版本。
+如果你的 Django 版本低于 2.2，请使用 Celery 5.2.x；
+如果低于 1.11，请使用 Celery 4.4.x。</p>
+</div>
+<p>要在你的 Django 项目中使用 Celery，首先需要定义
+一个 Celery 库的实例（称为“app”）。</p>
+<p>如果你有一个现代的 Django 项目结构，例如:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">proj</span><span class="o">/</span>
+<span class="o">-</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span>
+<span class="o">-</span> <span class="n">proj</span><span class="o">/</span>
+    <span class="o">-</span> <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+    <span class="o">-</span> <span class="n">settings</span><span class="o">.</span><span class="n">py</span>
+    <span class="o">-</span> <span class="n">urls</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>推荐的做法是在 <cite>proj/proj/celery.py</cite> 中创建一个新模块，
+用于定义 Celery 实例：</p>
+<p><code class="file docutils literal notranslate"><span class="pre">proj/proj/celery.py</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">Celery</span>
+
+<span class="c1"># Set the default Django settings module for the &#39;celery&#39; program.</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">,</span> <span class="s1">&#39;proj.settings&#39;</span><span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s1">&#39;proj&#39;</span><span class="p">)</span>
+
+<span class="c1"># Using a string here means the worker doesn&#39;t have to serialize</span>
+<span class="c1"># the configuration object to child processes.</span>
+<span class="c1"># - namespace=&#39;CELERY&#39; means all celery-related configuration keys</span>
+<span class="c1">#   should have a `CELERY_` prefix.</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config_from_object</span><span class="p">(</span><span class="s1">&#39;django.conf:settings&#39;</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="s1">&#39;CELERY&#39;</span><span class="p">)</span>
+
+<span class="c1"># Load task modules from all registered Django apps.</span>
+<span class="n">app</span><span class="o">.</span><span class="n">autodiscover_tasks</span><span class="p">()</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_result</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">debug_task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Request: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>然后你需要在 <code class="file docutils literal notranslate"><span class="pre">proj/proj/__init__.py</span></code> 模块中导入此 app。
+这确保了 Django 启动时 app 被加载，
+以便稍后提到的 <code class="docutils literal notranslate"><span class="pre">&#64;shared_task</span></code> 装饰器能够使用它：</p>
+<p><code class="file docutils literal notranslate"><span class="pre">proj/proj/__init__.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This will make sure the app is always imported when</span>
+<span class="c1"># Django starts so that shared_task will use this app.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span> <span class="k">as</span> <span class="n">celery_app</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;celery_app&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>注意，这种项目结构适用于较大的项目，
+对于简单项目，你也可以使用一个包含 app 和任务定义的单一模块，
+如 <a class="reference internal" href="../getting-started/first-steps-with-celery.html#tut-celery"><span class="std std-ref">使用 Celery 的第一步</span></a> 教程所示。</p>
+<p>我们来分解第一个模块中的内容，
+首先我们为 <strong class="program">celery</strong> 命令行程序设置默认的
+<span class="target" id="index-0"></span><a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/settings/#envvar-DJANGO_SETTINGS_MODULE" title="（在 Django v6.0）"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">DJANGO_SETTINGS_MODULE</span></code></a> 环境变量：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">,</span> <span class="s1">&#39;proj.settings&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这行并不是必须的，但它能省去每次都要给 <code class="docutils literal notranslate"><span class="pre">celery</span></code> 程序传递
+settings 模块的麻烦。它必须放在创建 app 实例之前，就像我们接下来所做的那样：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s1">&#39;proj&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这是我们定义的 Celery 实例。你可以定义多个实例，
+但在使用 Django 时通常没必要这样做。</p>
+<p>我们还将 Django 的 settings 模块添加为 Celery 的配置来源。
+这意味着你不需要使用多个配置文件，
+可以直接从 Django 的设置中配置 Celery；
+当然你也可以将其分离配置。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">config_from_object</span><span class="p">(</span><span class="s1">&#39;django.conf:settings&#39;</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="s1">&#39;CELERY&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这个大写的命名空间意味着所有的
+<a class="reference internal" href="../userguide/configuration.html#configuration"><span class="std std-ref">Celery 配置选项</span></a>
+必须以大写字母书写，并以 <code class="docutils literal notranslate"><span class="pre">CELERY_</span></code> 开头，
+例如 <a class="reference internal" href="../userguide/configuration.html#std-setting-task_always_eager"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_always_eager</span></code></a> 设置对应为 <code class="docutils literal notranslate"><span class="pre">CELERY_TASK_ALWAYS_EAGER</span></code>，
+<a class="reference internal" href="../userguide/configuration.html#std-setting-broker_url"><code class="xref std std-setting docutils literal notranslate"><span class="pre">broker_url</span></code></a> 设置对应为 <code class="docutils literal notranslate"><span class="pre">CELERY_BROKER_URL</span></code>。
+这也适用于 worker 的设置，例如 <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_concurrency"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_concurrency</span></code></a> 设置对应为 <code class="docutils literal notranslate"><span class="pre">CELERY_WORKER_CONCURRENCY</span></code>。</p>
+<p>例如，一个 Django 项目的配置文件可能包含如下内容：</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">settings.py</span><a class="headerlink" href="#id5" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+
+<span class="c1"># Celery 配置选项</span>
+<span class="n">CELERY_TIMEZONE</span> <span class="o">=</span> <span class="s2">&quot;Australia/Tasmania&quot;</span>
+<span class="n">CELERY_TASK_TRACK_STARTED</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">CELERY_TASK_TIME_LIMIT</span> <span class="o">=</span> <span class="mi">30</span> <span class="o">*</span> <span class="mi">60</span>
+</pre></div>
+</div>
+</div>
+<p>你也可以直接传递设置对象，但使用字符串更好，
+因为 worker 不必序列化该对象。
+命名空间 <code class="docutils literal notranslate"><span class="pre">CELERY_</span></code> 是可选的，但推荐使用（以防与其他 Django 设置冲突）。</p>
+<p>接下来，一个可重用 app 的通用做法是将所有任务
+定义在一个独立的 <code class="docutils literal notranslate"><span class="pre">tasks.py</span></code> 模块中，而 Celery 提供了
+自动发现这些模块的功能：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">autodiscover_tasks</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>有了上述这一行，Celery 将自动从所有已安装的 app 中发现任务，
+只要这些模块遵循 <code class="docutils literal notranslate"><span class="pre">tasks.py</span></code> 的命名规范:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">app1</span><span class="o">/</span>
+    <span class="o">-</span> <span class="n">tasks</span><span class="o">.</span><span class="n">py</span>
+    <span class="o">-</span> <span class="n">models</span><span class="o">.</span><span class="n">py</span>
+<span class="o">-</span> <span class="n">app2</span><span class="o">/</span>
+    <span class="o">-</span> <span class="n">tasks</span><span class="o">.</span><span class="n">py</span>
+    <span class="o">-</span> <span class="n">models</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>这样你就不需要手动将每个模块添加到 <a class="reference internal" href="../userguide/configuration.html#std-setting-imports"><code class="xref std std-setting docutils literal notranslate"><span class="pre">CELERY_IMPORTS</span></code></a> 设置中。</p>
+<p>最后，<code class="docutils literal notranslate"><span class="pre">debug_task</span></code> 示例是一个用于输出
+当前请求信息的任务。这使用了 Celery 3.1 中引入的新选项 <code class="docutils literal notranslate"><span class="pre">bind=True</span></code>，
+用于方便地引用当前任务实例。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Previous versions of Celery required a separate library to work with Django,
+but since 3.1 this is no longer the case. Django is supported out of the
+box now so this document only contains a basic way to integrate Celery and
+Django. You'll use the same API as non-Django users so you're recommended
+to read the <a class="reference internal" href="../getting-started/first-steps-with-celery.html#first-steps"><span class="std std-ref">使用 Celery 的第一步</span></a> tutorial
+first and come back to this tutorial. When you have a working example you can
+continue to the <a class="reference internal" href="../getting-started/next-steps.html#next-steps"><span class="std std-ref">下一步</span></a> guide.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Celery 5.5.x supports Django 2.2 LTS or newer versions.
+Please use Celery 5.2.x for versions older than Django 2.2 or Celery 4.4.x if your Django version is older than 1.11.</p>
+</div>
+<p>To use Celery with your Django project you must first define
+an instance of the Celery library (called an &quot;app&quot;)</p>
+<p>If you have a modern Django project layout like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">proj</span><span class="o">/</span>
+<span class="o">-</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span>
+<span class="o">-</span> <span class="n">proj</span><span class="o">/</span>
+    <span class="o">-</span> <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+    <span class="o">-</span> <span class="n">settings</span><span class="o">.</span><span class="n">py</span>
+    <span class="o">-</span> <span class="n">urls</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>then the recommended way is to create a new <cite>proj/proj/celery.py</cite> module
+that defines the Celery instance:</p>
+<dl class="field-list simple">
+<dt class="field-odd">file<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>proj/proj/celery.py</cite></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">Celery</span>
+
+<span class="c1"># Set the default Django settings module for the &#39;celery&#39; program.</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">,</span> <span class="s1">&#39;proj.settings&#39;</span><span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s1">&#39;proj&#39;</span><span class="p">)</span>
+
+<span class="c1"># Using a string here means the worker doesn&#39;t have to serialize</span>
+<span class="c1"># the configuration object to child processes.</span>
+<span class="c1"># - namespace=&#39;CELERY&#39; means all celery-related configuration keys</span>
+<span class="c1">#   should have a `CELERY_` prefix.</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config_from_object</span><span class="p">(</span><span class="s1">&#39;django.conf:settings&#39;</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="s1">&#39;CELERY&#39;</span><span class="p">)</span>
+
+<span class="c1"># Load task modules from all registered Django apps.</span>
+<span class="n">app</span><span class="o">.</span><span class="n">autodiscover_tasks</span><span class="p">()</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_result</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">debug_task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Request: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then you need to import this app in your <code class="file docutils literal notranslate"><span class="pre">proj/proj/__init__.py</span></code>
+module. This ensures that the app is loaded when Django starts
+so that the <code class="docutils literal notranslate"><span class="pre">&#64;shared_task</span></code> decorator (mentioned later) will use it:</p>
+<p><code class="file docutils literal notranslate"><span class="pre">proj/proj/__init__.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This will make sure the app is always imported when</span>
+<span class="c1"># Django starts so that shared_task will use this app.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span> <span class="k">as</span> <span class="n">celery_app</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;celery_app&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>Note that this example project layout is suitable for larger projects,
+for simple projects you may use a single contained module that defines
+both the app and tasks, like in the <a class="reference internal" href="../getting-started/first-steps-with-celery.html#tut-celery"><span class="std std-ref">使用 Celery 的第一步</span></a> tutorial.</p>
+<p>Let's break down what happens in the first module,
+first, we set the default <span class="target" id="index-1"></span><a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/settings/#envvar-DJANGO_SETTINGS_MODULE" title="（在 Django v6.0）"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">DJANGO_SETTINGS_MODULE</span></code></a> environment
+variable for the <strong class="program">celery</strong> command-line program:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">,</span> <span class="s1">&#39;proj.settings&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You don't need this line, but it saves you from always passing in the
+settings module to the <code class="docutils literal notranslate"><span class="pre">celery</span></code> program. It must always come before
+creating the app instances, as is what we do next:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s1">&#39;proj&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is our instance of the library, you can have many instances
+but there's probably no reason for that when using Django.</p>
+<p>We also add the Django settings module as a configuration source
+for Celery. This means that you don't have to use multiple
+configuration files, and instead configure Celery directly
+from the Django settings; but you can also separate them if wanted.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">config_from_object</span><span class="p">(</span><span class="s1">&#39;django.conf:settings&#39;</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="s1">&#39;CELERY&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The uppercase name-space means that all
+<a class="reference internal" href="../userguide/configuration.html#configuration"><span class="std std-ref">Celery configuration options</span></a>
+must be specified in uppercase instead of lowercase, and start with
+<code class="docutils literal notranslate"><span class="pre">CELERY_</span></code>, so for example the <a class="reference internal" href="../userguide/configuration.html#std-setting-task_always_eager"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_always_eager</span></code></a> setting
+becomes <code class="docutils literal notranslate"><span class="pre">CELERY_TASK_ALWAYS_EAGER</span></code>, and the <a class="reference internal" href="../userguide/configuration.html#std-setting-broker_url"><code class="xref std std-setting docutils literal notranslate"><span class="pre">broker_url</span></code></a>
+setting becomes <code class="docutils literal notranslate"><span class="pre">CELERY_BROKER_URL</span></code>. This also applies to the
+workers settings, for instance, the <a class="reference internal" href="../userguide/configuration.html#std-setting-worker_concurrency"><code class="xref std std-setting docutils literal notranslate"><span class="pre">worker_concurrency</span></code></a>
+setting becomes <code class="docutils literal notranslate"><span class="pre">CELERY_WORKER_CONCURRENCY</span></code>.</p>
+<p>For example, a Django project's configuration file might include:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">settings.py</span><a class="headerlink" href="#id6" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+
+<span class="c1"># Celery Configuration Options</span>
+<span class="n">CELERY_TIMEZONE</span> <span class="o">=</span> <span class="s2">&quot;Australia/Tasmania&quot;</span>
+<span class="n">CELERY_TASK_TRACK_STARTED</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">CELERY_TASK_TIME_LIMIT</span> <span class="o">=</span> <span class="mi">30</span> <span class="o">*</span> <span class="mi">60</span>
+</pre></div>
+</div>
+</div>
+<p>You can pass the settings object directly instead, but using a string
+is better since then the worker doesn't have to serialize the object.
+The <code class="docutils literal notranslate"><span class="pre">CELERY_</span></code> namespace is also optional, but recommended (to
+prevent overlap with other Django settings).</p>
+<p>Next, a common practice for reusable apps is to define all tasks
+in a separate <code class="docutils literal notranslate"><span class="pre">tasks.py</span></code> module, and Celery does have a way to
+auto-discover these modules:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">autodiscover_tasks</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>With the line above Celery will automatically discover tasks from all
+of your installed apps, following the <code class="docutils literal notranslate"><span class="pre">tasks.py</span></code> convention:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">app1</span><span class="o">/</span>
+    <span class="o">-</span> <span class="n">tasks</span><span class="o">.</span><span class="n">py</span>
+    <span class="o">-</span> <span class="n">models</span><span class="o">.</span><span class="n">py</span>
+<span class="o">-</span> <span class="n">app2</span><span class="o">/</span>
+    <span class="o">-</span> <span class="n">tasks</span><span class="o">.</span><span class="n">py</span>
+    <span class="o">-</span> <span class="n">models</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>This way you don't have to manually add the individual modules
+to the <a class="reference internal" href="../userguide/configuration.html#std-setting-imports"><code class="xref std std-setting docutils literal notranslate"><span class="pre">CELERY_IMPORTS</span></code></a> setting.</p>
+<p>Finally, the <code class="docutils literal notranslate"><span class="pre">debug_task</span></code> example is a task that dumps
+its own request information. This is using the new <code class="docutils literal notranslate"><span class="pre">bind=True</span></code> task option
+introduced in Celery 3.1 to easily refer to the current task instance.</p>
+</div>
+</div>
+<section id="shared-task">
+<h3>使用 <code class="docutils literal notranslate"><span class="pre">&#64;shared_task</span></code> 装饰器<a class="headerlink" href="#shared-task" title="Link to this heading">¶</a></h3>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">&#64;shared_task</span></code> decorator</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>你编写的任务通常会放在可重用的应用中，而可重用应用不能依赖于项目本身，
+因此你也不能直接导入项目中的 app 实例。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&#64;shared_task</span></code> 装饰器允许你在没有具体 app 实例的情况下定义任务：</p>
+<p><code class="file docutils literal notranslate"><span class="pre">demoapp/tasks.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create your tasks here</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">demoapp.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Widget</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">shared_task</span>
+
+
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+
+
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">xsum</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+
+
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">count_widgets</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Widget</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rename_widget</span><span class="p">(</span><span class="n">widget_id</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">Widget</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">widget_id</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<p>你可以在以下地址找到 Django 示例项目的完整源代码：
+<a class="reference external" href="https://github.com/celery/celery/tree/main/examples/django/">https://github.com/celery/celery/tree/main/examples/django/</a></p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>The tasks you write will probably live in reusable apps, and reusable
+apps cannot depend on the project itself, so you also cannot import your app
+instance directly.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">&#64;shared_task</span></code> decorator lets you create tasks without having any
+concrete app instance:</p>
+<p><code class="file docutils literal notranslate"><span class="pre">demoapp/tasks.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create your tasks here</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">demoapp.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Widget</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">shared_task</span>
+
+
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+
+
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">xsum</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+
+
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">count_widgets</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Widget</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rename_widget</span><span class="p">(</span><span class="n">widget_id</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">Widget</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">widget_id</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<p>You can find the full source code for the Django example project at:
+<a class="reference external" href="https://github.com/celery/celery/tree/main/examples/django/">https://github.com/celery/celery/tree/main/examples/django/</a></p>
+</div>
+</div>
+</div>
+</section>
+<section id="id1">
+<h3>在数据库事务结束时触发任务<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<p>Trigger tasks at the end of the database transaction</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>在 Django 中的一个常见陷阱是：在数据库事务提交之前立即触发任务，
+这意味着 Celery 任务可能会在所有更改被持久化到数据库之前运行。例如：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># views.py</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_user</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># 注意：这是一个简化示例，实际应使用表单来验证输入</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>
+    <span class="n">send_email</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s1">&#39;User created&#39;</span><span class="p">)</span>
+
+<span class="c1"># task.py</span>
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">send_email</span><span class="p">(</span><span class="n">user_pk</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">user_pk</span><span class="p">)</span>
+    <span class="c1"># 发送邮件...</span>
+</pre></div>
+</div>
+<p>在这种情况下，<code class="docutils literal notranslate"><span class="pre">send_email</span></code> 任务可能会在视图函数提交事务之前启动，
+从而导致任务无法查找到该用户。</p>
+<p>一种常见的解决方案是使用 Django 的 <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/db/transactions/#django.db.transaction.on_commit">on_commit</a> 钩子，
+在事务提交之后再触发任务：</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- send_email.delay(user.pk)</span>
+<span class="gi">+ transaction.on_commit(lambda: send_email.delay(user.pk))</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 5.4.</span></p>
+</div>
+<p>由于这是一个非常常见的模式，Celery 5.4 引入了一个便捷的快捷方式，
+通过 <a class="reference internal" href="../reference/celery.contrib.django.task.html#celery.contrib.django.task.DjangoTask" title="celery.contrib.django.task.DjangoTask"><code class="xref py py-class docutils literal notranslate"><span class="pre">DjangoTask</span></code></a> 实现。你可以不再调用
+<a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.delay" title="celery.app.task.Task.delay"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delay()</span></code></a>，而是使用
+<a class="reference internal" href="../reference/celery.contrib.django.task.html#celery.contrib.django.task.DjangoTask.delay_on_commit" title="celery.contrib.django.task.DjangoTask.delay_on_commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delay_on_commit()</span></code></a>：</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- send_email.delay(user.pk)</span>
+<span class="gi">+ send_email.delay_on_commit(user.pk)</span>
+</pre></div>
+</div>
+<p>该 API 会自动将任务封装在 <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/db/transactions/#django.db.transaction.on_commit">on_commit</a> 钩子中。
+如果你确实需要立即触发任务，仍然可以使用原有的
+<a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.delay" title="celery.app.task.Task.delay"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delay()</span></code></a> 方法。</p>
+<p>与 <code class="docutils literal notranslate"><span class="pre">delay</span></code> 方法相比，<code class="docutils literal notranslate"><span class="pre">delay_on_commit</span></code> 的一个关键区别在于：
+该方法不会立即返回任务 ID。任务只有在 Django 事务完成后才会被发送到消息代理。
+如果你需要获取任务 ID，建议继续使用 <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.delay" title="celery.app.task.Task.delay"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delay()</span></code></a>。</p>
+<p>如果你已经按照前述步骤进行设置，
+那么该任务类将会自动启用此行为。
+但如果你的 app <a class="reference internal" href="../userguide/tasks.html#task-custom-classes"><span class="std std-ref">使用了自定义的任务基类</span></a>，
+那么你需要继承 <a class="reference internal" href="../reference/celery.contrib.django.task.html#celery.contrib.django.task.DjangoTask" title="celery.contrib.django.task.DjangoTask"><code class="xref py py-class docutils literal notranslate"><span class="pre">DjangoTask</span></code></a>，
+而不是 <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task" title="celery.app.task.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">Task</span></code></a>，以获得这一行为。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>A common pitfall with Django is triggering a task immediately and not wait until
+the end of the database transaction, which means that the Celery task may run
+before all changes are persisted to the database. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># views.py</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_user</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># Note: simplified example, use a form to validate input</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>
+    <span class="n">send_email</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s1">&#39;User created&#39;</span><span class="p">)</span>
+
+<span class="c1"># task.py</span>
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">send_email</span><span class="p">(</span><span class="n">user_pk</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">user_pk</span><span class="p">)</span>
+    <span class="c1"># send email ...</span>
+</pre></div>
+</div>
+<p>In this case, the <code class="docutils literal notranslate"><span class="pre">send_email</span></code> task could start before the view has committed
+the transaction to the database, and therefore the task may not be able to find
+the user.</p>
+<p>A common solution is to use Django's <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/db/transactions/#django.db.transaction.on_commit">on_commit</a> hook to trigger the task
+after the transaction has been committed:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- send_email.delay(user.pk)</span>
+<span class="gi">+ transaction.on_commit(lambda: send_email.delay(user.pk))</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 5.4.</span></p>
+</div>
+<p>Since this is such a common pattern, Celery 5.4 introduced a handy shortcut for this,
+using a <a class="reference internal" href="../reference/celery.contrib.django.task.html#celery.contrib.django.task.DjangoTask" title="celery.contrib.django.task.DjangoTask"><code class="xref py py-class docutils literal notranslate"><span class="pre">DjangoTask</span></code></a>. Instead of calling
+<a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.delay" title="celery.app.task.Task.delay"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delay()</span></code></a>, you should call
+<a class="reference internal" href="../reference/celery.contrib.django.task.html#celery.contrib.django.task.DjangoTask.delay_on_commit" title="celery.contrib.django.task.DjangoTask.delay_on_commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delay_on_commit()</span></code></a>:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- send_email.delay(user.pk)</span>
+<span class="gi">+ send_email.delay_on_commit(user.pk)</span>
+</pre></div>
+</div>
+<p>This API takes care of wrapping the call into the <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/db/transactions/#django.db.transaction.on_commit">on_commit</a> hook for you.
+In rare cases where you want to trigger a task without waiting, the existing
+<a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.delay" title="celery.app.task.Task.delay"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delay()</span></code></a> API is still available.</p>
+<p>One key difference compared to the <code class="docutils literal notranslate"><span class="pre">delay</span></code> method, is that <code class="docutils literal notranslate"><span class="pre">delay_on_commit</span></code>
+will NOT return the task ID back to the caller. The task is not sent to the broker
+when you call the method, only when the Django transaction finishes. If you need the
+task ID, best to stick to <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.delay" title="celery.app.task.Task.delay"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delay()</span></code></a>.</p>
+<p>This task class should be used automatically if you've follow the setup steps above.
+However, if your app <a class="reference internal" href="../userguide/tasks.html#task-custom-classes"><span class="std std-ref">uses a custom task base class</span></a>,
+you'll need inherit from <a class="reference internal" href="../reference/celery.contrib.django.task.html#celery.contrib.django.task.DjangoTask" title="celery.contrib.django.task.DjangoTask"><code class="xref py py-class docutils literal notranslate"><span class="pre">DjangoTask</span></code></a> instead of
+<a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task" title="celery.app.task.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">Task</span></code></a> to get this behaviour.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id2">
+<h2>扩展<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<p>Extensions</p>
+<section id="django-celery-results-django-orm-cache">
+<span id="django-celery-results"></span><h3><code class="docutils literal notranslate"><span class="pre">django-celery-results</span></code> - 使用 Django ORM/Cache 作为结果后端<a class="headerlink" href="#django-celery-results-django-orm-cache" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">django-celery-results</span></code> - Using the Django ORM/Cache as a result backend</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p><a class="extlink-pypi reference external" href="https://pypi.org/project/django-celery-results/">https://pypi.org/project/django-celery-results/</a> 扩展提供了使用 Django ORM 或 Django 缓存框架作为结果后端的能力。</p>
+<p>要在你的项目中使用该扩展，请按照以下步骤操作：</p>
+<ol class="arabic">
+<li><dl>
+<dt>安装 <a class="extlink-pypi reference external" href="https://pypi.org/project/django-celery-results/">https://pypi.org/project/django-celery-results/</a> 库：</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>django-celery-results
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>在 Django 项目的 <code class="file docutils literal notranslate"><span class="pre">settings.py</span></code> 文件中将 <code class="docutils literal notranslate"><span class="pre">django_celery_results</span></code> 添加到 <code class="docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code> 中</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="s1">&#39;django_celery_results&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ol>
+<p>注意：模块名中使用的是下划线而不是连字符。</p>
+<ol class="arabic">
+<li><dl>
+<dt>执行数据库迁移以创建 Celery 所需的数据库表：</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate<span class="w"> </span>django_celery_results
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>配置 Celery 使用 <a class="extlink-pypi reference external" href="https://pypi.org/project/django-celery-results/">https://pypi.org/project/django-celery-results/</a> 作为结果后端。</dt><dd><p>假设你也在使用 Django 的 <code class="file docutils literal notranslate"><span class="pre">settings.py</span></code> 来配置 Celery，添加如下配置：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CELERY_RESULT_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;django-db&#39;</span>
+</pre></div>
+</div>
+<p>如果使用缓存后端，你可以指定一个在 Django 的 CACHES 设置中定义的缓存：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CELERY_RESULT_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;django-cache&#39;</span>
+
+<span class="c1"># 从 CACHES 设置中选择要使用的缓存</span>
+<span class="n">CELERY_CACHE_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+
+<span class="c1"># Django 中的缓存设置</span>
+<span class="n">CACHES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;BACKEND&#39;</span><span class="p">:</span> <span class="s1">&#39;django.core.cache.backends.db.DatabaseCache&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;LOCATION&#39;</span><span class="p">:</span> <span class="s1">&#39;my_cache_table&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>有关更多配置选项，请参阅 <a class="reference internal" href="../userguide/configuration.html#conf-result-backend"><span class="std std-ref">任务结果后端设置</span></a> 参考文档。</p>
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>The <a class="extlink-pypi reference external" href="https://pypi.org/project/django-celery-results/">https://pypi.org/project/django-celery-results/</a> extension provides result backends
+using either the Django ORM, or the Django Cache framework.</p>
+<p>To use this with your project you need to follow these steps:</p>
+<ol class="arabic">
+<li><dl>
+<dt>Install the <a class="extlink-pypi reference external" href="https://pypi.org/project/django-celery-results/">https://pypi.org/project/django-celery-results/</a> library:</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>django-celery-results
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Add <code class="docutils literal notranslate"><span class="pre">django_celery_results</span></code> to <code class="docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code> in your Django project's <code class="file docutils literal notranslate"><span class="pre">settings.py</span></code></dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="s1">&#39;django_celery_results&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ol>
+<p>Note that there is no dash in the module name, only underscores.</p>
+<ol class="arabic">
+<li><dl>
+<dt>Create the Celery database tables by performing a database migrations:</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate<span class="w"> </span>django_celery_results
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Configure Celery to use the <a class="extlink-pypi reference external" href="https://pypi.org/project/django-celery-results/">https://pypi.org/project/django-celery-results/</a> backend.</dt><dd><p>Assuming you are using Django's <code class="file docutils literal notranslate"><span class="pre">settings.py</span></code> to also configure
+Celery, add the following settings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CELERY_RESULT_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;django-db&#39;</span>
+</pre></div>
+</div>
+<p>When using the cache backend, you can specify a cache defined within
+Django's CACHES setting.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CELERY_RESULT_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;django-cache&#39;</span>
+
+<span class="c1"># pick which cache from the CACHES setting.</span>
+<span class="n">CELERY_CACHE_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+
+<span class="c1"># django setting.</span>
+<span class="n">CACHES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;BACKEND&#39;</span><span class="p">:</span> <span class="s1">&#39;django.core.cache.backends.db.DatabaseCache&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;LOCATION&#39;</span><span class="p">:</span> <span class="s1">&#39;my_cache_table&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For additional configuration options, view the
+<a class="reference internal" href="../userguide/configuration.html#conf-result-backend"><span class="std std-ref">任务结果后端设置</span></a> reference.</p>
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="django-celery-beat">
+<h3><code class="docutils literal notranslate"><span class="pre">django-celery-beat</span></code> - 带有管理界面的数据库支持的周期性任务。<a class="headerlink" href="#django-celery-beat" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">django-celery-beat</span></code> - Database-backed Periodic Tasks with Admin interface.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>更多信息请参考 <a class="reference internal" href="../userguide/periodic-tasks.html#beat-custom-schedulers"><span class="std std-ref">使用自定义调度程序类</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>See <a class="reference internal" href="../userguide/periodic-tasks.html#beat-custom-schedulers"><span class="std std-ref">使用自定义调度程序类</span></a> for more information.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id3">
+<h2>启动工作进程<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<p>Starting the worker process</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>在生产环境中，你应该将 worker 作为后台守护进程运行 —— 参见 <a class="reference internal" href="../userguide/daemonizing.html#daemonizing"><span class="std std-ref">守护进程</span></a>。
+但在测试和开发阶段，你可以使用 <strong class="program">celery worker</strong> 管理命令启动一个 worker 实例，
+这与使用 Django 的 <strong class="command">manage.py runserver</strong> 命令类似：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-l<span class="w"> </span>INFO
+</pre></div>
+</div>
+<p>如需查看所有可用的命令行选项，请使用 help 命令：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>--help
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>In a production environment you'll want to run the worker in the background
+as a daemon - see <a class="reference internal" href="../userguide/daemonizing.html#daemonizing"><span class="std std-ref">守护进程</span></a> - but for testing and
+development it is useful to be able to start a worker instance by using the
+<strong class="program">celery worker</strong> manage command, much as you'd use Django's
+<strong class="command">manage.py runserver</strong>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-l<span class="w"> </span>INFO
+</pre></div>
+</div>
+<p>For a complete listing of the command-line options available,
+use the help command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>--help
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>下一步<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<p>Where to go from here</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>如果你希望进一步了解 Celery，建议继续阅读 <a class="reference internal" href="../getting-started/next-steps.html#next-steps"><span class="std std-ref">Next Steps</span></a> 教程，
+之后可以深入学习 <a class="reference internal" href="../userguide/index.html#guide"><span class="std std-ref">User Guide</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>If you want to learn more you should continue to the
+<a class="reference internal" href="../getting-started/next-steps.html#next-steps"><span class="std std-ref">Next Steps</span></a> tutorial, and after that you
+can study the <a class="reference internal" href="../userguide/index.html#guide"><span class="std std-ref">User Guide</span></a>.</p>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../contributing.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">贡献</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Django</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2009-2023, Ask Solem &amp; contributors
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">使用 Django 的第一步</a><ul>
+<li><a class="reference internal" href="#celery-django">将 Celery 与 Django 结合使用</a><ul>
+<li><a class="reference internal" href="#shared-task">使用 <code class="docutils literal notranslate"><span class="pre">&#64;shared_task</span></code> 装饰器</a></li>
+<li><a class="reference internal" href="#id1">在数据库事务结束时触发任务</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2">扩展</a><ul>
+<li><a class="reference internal" href="#django-celery-results-django-orm-cache"><code class="docutils literal notranslate"><span class="pre">django-celery-results</span></code> - 使用 Django ORM/Cache 作为结果后端</a></li>
+<li><a class="reference internal" href="#django-celery-beat"><code class="docutils literal notranslate"><span class="pre">django-celery-beat</span></code> - 带有管理界面的数据库支持的周期性任务。</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3">启动工作进程</a></li>
+<li><a class="reference internal" href="#id4">下一步</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=8156d91f"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=5eb1bb1e"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    </body>
+</html>

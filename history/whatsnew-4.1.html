@@ -1,0 +1,845 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="Change history" href="changelog-4.1.html" /><link rel="prev" title="Change history" href="changelog-4.2.html" />
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>What&#39;s new in Celery 4.1 (latentcall) - Celery 5.5.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=3ee1c6c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/my.css?v=112ca36d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Celery 5.5.1 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/celery_512_1.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Celery 5.5.1 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../copyright.html">版权</a></li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/index.html">快速开始</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 快速开始</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/introduction.html">Celery 简介</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting-started/backends-and-brokers/index.html">Backends 和 Brokers</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Backends 和 Brokers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/rabbitmq.html">使用 RabbitMQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/redis.html">使用 Redis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html">使用 Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/kafka.html">使用 Kafka</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/gcpubsub.html">使用 Google Pub/Sub</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/first-steps-with-celery.html">使用 Celery 的第一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/next-steps.html">下一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/resources.html">资源</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../userguide/index.html">用户指南</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 用户指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/application.html">应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/tasks.html">任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/calling.html">调用任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/canvas.html">Canvas：设计工作流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/workers.html">Workers 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/daemonizing.html">守护进程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/periodic-tasks.html">周期性任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/routing.html">路由任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/monitoring.html">监控和管理指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/security.html">安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/optimizing.html">优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/debugging.html">调试</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../userguide/concurrency/index.html">并发</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 并发</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../userguide/concurrency/eventlet.html">Eventlet 并发</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../userguide/concurrency/gevent.html">gevent 并发</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/signals.html">信号</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/testing.html">使用 Celery 进行测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/extending.html">扩展 和 Bootsteps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/configuration.html">配置和默认值</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/sphinx.html">使用 Sphinx 文档化任务</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../django/index.html">Django</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Django</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../django/first-steps-with-django.html">使用 Django 的第一步</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">社区资源</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/task-cookbook.html">Task Cookbook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">更改历史</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">API 参考</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of API 参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cli.html">命令行接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">celery</span></code> --- Distributed processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html">Proxies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.task.html"><code class="docutils literal notranslate"><span class="pre">celery.app.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html">AMQP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html#queues">Queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.defaults.html"><code class="docutils literal notranslate"><span class="pre">celery.app.defaults</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.control.html"><code class="docutils literal notranslate"><span class="pre">celery.app.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.registry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.registry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.app.backends</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.builtins.html"><code class="docutils literal notranslate"><span class="pre">celery.app.builtins</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.events.html"><code class="docutils literal notranslate"><span class="pre">celery.app.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.log.html"><code class="docutils literal notranslate"><span class="pre">celery.app.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.app.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.autoretry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.autoretry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bootsteps.html"><code class="docutils literal notranslate"><span class="pre">celery.bootsteps</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.result.html"><code class="docutils literal notranslate"><span class="pre">celery.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.schedules.html"><code class="docutils literal notranslate"><span class="pre">celery.schedules</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.signals.html"><code class="docutils literal notranslate"><span class="pre">celery.signals</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.security.html"><code class="docutils literal notranslate"><span class="pre">celery.security</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.utils.debug.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.debug</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.exceptions.html"><code class="docutils literal notranslate"><span class="pre">celery.exceptions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.app.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.default.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.default</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.base.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html">States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#sets">Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#misc">Misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.FAILURE"><code class="docutils literal notranslate"><span class="pre">FAILURE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.PENDING"><code class="docutils literal notranslate"><span class="pre">PENDING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RECEIVED"><code class="docutils literal notranslate"><span class="pre">RECEIVED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RETRY"><code class="docutils literal notranslate"><span class="pre">RETRY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.REVOKED"><code class="docutils literal notranslate"><span class="pre">REVOKED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.STARTED"><code class="docutils literal notranslate"><span class="pre">STARTED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.SUCCESS"><code class="docutils literal notranslate"><span class="pre">SUCCESS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.precedence"><code class="docutils literal notranslate"><span class="pre">precedence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.state"><code class="docutils literal notranslate"><span class="pre">state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.abortable.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.abortable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.django.task.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.django.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.pytest.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.pytest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.sphinx.html">celery.contrib.sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.app.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.manager.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.manager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.mocks.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.mocks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.rdb.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.rdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.html"><code class="docutils literal notranslate"><span class="pre">celery.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.receiver.html"><code class="docutils literal notranslate"><span class="pre">celery.events.receiver</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.dispatcher.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.event.html"><code class="docutils literal notranslate"><span class="pre">celery.events.event</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.state.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.request.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.request</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.state.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.strategy.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.strategy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.agent.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.agent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.connection.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.connection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.events.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.gossip.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.gossip</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.heart.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.heart</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.mingle.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.mingle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.tasks.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.tasks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.base.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.celery.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.celery</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.events.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.logtool.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.logtool</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.amqp.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.amqp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.graph</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.call.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.call</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.control.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.list.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.list</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.purge.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.purge</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.result.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.shell.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.shell</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.upgrade.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.upgrade</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">内部</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 内部</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../internals/guide.html">代码贡献指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/deprecation.html">Celery 弃用时间表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/worker.html">内部的 worker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/protocol.html">消息协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/app-overview.html">“大实例”重构</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/reference/index.html">内部模块参考</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 内部模块参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.components.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.components</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.loops.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.loops</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.heartbeat.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.heartbeat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.control</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.pidbox.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.pidbox</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.autoscale.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.autoscale</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.solo.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.solo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.prefork.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.prefork</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.eventlet.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.eventlet</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.gevent.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.gevent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.thread.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.thread</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.base.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.backends</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.base.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.asynchronous.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.asynchronous</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.azureblockblob.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.azureblockblob</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.rpc.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.rpc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cache.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.consul.html">celery.backends.consul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchdb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchdb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.mongodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.mongodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.elasticsearch.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.elasticsearch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.redis.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.redis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cassandra.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cassandra</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchbase.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchbase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.arangodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.arangodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.dynamodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.dynamodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.filesystem.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.filesystem</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cosmosdbsql.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cosmosdbsql</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.s3.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.s3</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.gcs.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.gcs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.trace.html"><code class="docutils literal notranslate"><span class="pre">celery.app.trace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.annotations.html"><code class="docutils literal notranslate"><span class="pre">celery.app.annotations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.routes.html"><code class="docutils literal notranslate"><span class="pre">celery.app.routes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.certificate.html"><code class="docutils literal notranslate"><span class="pre">celery.security.certificate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.key.html"><code class="docutils literal notranslate"><span class="pre">celery.security.key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.security.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.security.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.snapshot.html"><code class="docutils literal notranslate"><span class="pre">celery.events.snapshot</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.cursesmon.html"><code class="docutils literal notranslate"><span class="pre">celery.events.cursesmon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.dumper.html"><code class="docutils literal notranslate"><span class="pre">celery.events.dumper</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.models.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.models</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.session.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.session</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.abstract.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.abstract</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.collections.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.collections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.nodenames.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.nodenames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.deprecated.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.deprecated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.functional.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.functional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.graph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.objects.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.term.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.term</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.time.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.time</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.iso8601.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.iso8601</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.saferepr.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.saferepr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.sysinfo.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.sysinfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.threads.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.threads</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.timer2.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.timer2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.imports.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.imports</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.log.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.log</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.text.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.signal.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch.signal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.platforms.html"><code class="docutils literal notranslate"><span class="pre">celery.platforms</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery._state.html"><code class="docutils literal notranslate"><span class="pre">celery._state</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">历史</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 历史</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-5.5.html">What's new in Celery 5.5 (Immunity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-5.5.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-5.4.html">What's new in Celery 5.4 (Opalescent)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-5.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-5.3.html">What's new in Celery 5.3 (Emerald Rush)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-5.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-5.1.html">What's new in Celery 5.1 (Sun Harmonics)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-5.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-5.0.html">What's new in Celery 5.0 (singularity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-5.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-4.4.html">What's new in Celery 4.4 (Cliffs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-4.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-4.3.html">What's new in Celery 4.3 (rhubarb)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-4.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-4.2.html">What's new in Celery 4.2 (windowlicker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-4.2.html">Change history</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">What's new in Celery 4.1 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-4.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-4.0.html">What's new in Celery 4.0 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-4.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-3.1.html">What's new in Celery 3.1 (Cipater)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-3.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-3.0.html">What's new in Celery 3.0 (Chiastic Slide)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-3.0.html">Change history for Celery 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew-2.5.html">What's new in Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-2.5.html">Change history for Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-2.4.html">Change history for Celery 2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-2.3.html">Change history for Celery 2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-2.2.html">Change history for Celery 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-2.1.html">Change history for Celery 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-2.0.html">Change history for Celery 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog-1.0.html">Change history for Celery 1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+</ul>
+
+</div>
+<!-- <iframe src="https://ghbtns.com/github-btn.html?user=celery&repo=celery&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe> -->
+<div id="donate">
+  <h5>捐赠</h5>
+  <p>请捐赠以支持这个社区项目</p>
+  <a href="https://opencollective.com/celery/donate" target="_blank">
+    <!-- <img src="https://opencollective.com/celery/donate/button@2x.png?color=blue" /> -->
+    <img src="https://opencollective.com/celery/donate/button.png?color=blue" />
+  </a>
+</div></div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/history/whatsnew-4.1.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="what-s-new-in-celery-4-1-latentcall">
+<span id="whatsnew-4-1"></span><h1>What's new in Celery 4.1 (latentcall)<a class="headerlink" href="#what-s-new-in-celery-4-1-latentcall" title="Link to this heading">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Omer Katz (<code class="docutils literal notranslate"><span class="pre">omer.drow</span> <span class="pre">at</span> <span class="pre">gmail.com</span></code>)</p>
+</dd>
+</dl>
+<aside class="sidebar">
+<p class="sidebar-title">Change history</p>
+<p>What's new documents describe the changes in major versions,
+we also have a <a class="reference internal" href="../changelog.html#changelog"><span class="std std-ref">更改历史</span></a> that lists the changes in bugfix
+releases (0.0.x), while older series are archived under the <a class="reference internal" href="index.html#history"><span class="std std-ref">历史</span></a>
+section.</p>
+</aside>
+<p>Celery is a simple, flexible, and reliable distributed system to
+process vast amounts of messages, while providing operations with
+the tools required to maintain such a system.</p>
+<p>It's a task queue with focus on real-time processing, while also
+supporting task scheduling.</p>
+<p>Celery has a large and diverse community of users and contributors,
+you should come join us <span class="xref std std-ref">on IRC</span>
+or <span class="xref std std-ref">our mailing-list</span>.</p>
+<p>To read more about Celery you should go read the <a class="reference internal" href="../getting-started/introduction.html#intro"><span class="std std-ref">introduction</span></a>.</p>
+<p>While this version is backward compatible with previous versions
+it's important that you read the following section.</p>
+<p>This version is officially supported on CPython 2.7, 3.4, 3.5 &amp; 3.6
+and is also supported on PyPy.</p>
+<aside class="topic">
+<p class="topic-title">Table of Contents</p>
+<p>Make sure you read the important notes before upgrading to this version.</p>
+</aside>
+<section id="preface">
+<h2>Preface<a class="headerlink" href="#preface" title="Link to this heading">¶</a></h2>
+<p>The 4.1.0 release continues to improve our efforts to provide you with
+the best task execution platform for Python.</p>
+<p>This release is mainly a bug fix release, ironing out some issues and regressions
+found in Celery 4.0.0.</p>
+<p>We added official support for Python 3.6 and PyPy 5.8.0.</p>
+<p>This is the first time we release without Ask Solem as an active contributor.
+We'd like to thank him for his hard work in creating and maintaining Celery over the years.</p>
+<p>Since Ask Solem was not involved there were a few kinks in the release process
+which we promise to resolve in the next release.
+This document was missing when we did release Celery 4.1.0.
+Also, we did not update the release codename as we should have.
+We apologize for the inconvenience.</p>
+<p>For the time being, I, Omer Katz will be the release manager.</p>
+<p>Thank you for your support!</p>
+<p><em>— Omer Katz</em></p>
+<section id="wall-of-contributors">
+<h3>Wall of Contributors<a class="headerlink" href="#wall-of-contributors" title="Link to this heading">¶</a></h3>
+<p>Acey &lt;<a class="reference external" href="mailto:huiwang&#46;e&#37;&#52;&#48;gmail&#46;com">huiwang<span>&#46;</span>e<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Acey9 &lt;<a class="reference external" href="mailto:huiwang&#46;e&#37;&#52;&#48;gmail&#46;com">huiwang<span>&#46;</span>e<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Alan Hamlett &lt;<a class="reference external" href="mailto:alanhamlett&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">alanhamlett<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Alan Justino da Silva &lt;<a class="reference external" href="mailto:alan&#46;justino&#37;&#52;&#48;yahoo&#46;com&#46;br">alan<span>&#46;</span>justino<span>&#64;</span>yahoo<span>&#46;</span>com<span>&#46;</span>br</a>&gt;
+Alejandro Pernin &lt;<a class="reference external" href="mailto:ale&#46;pernin&#37;&#52;&#48;gmail&#46;com">ale<span>&#46;</span>pernin<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Alli &lt;<a class="reference external" href="mailto:alzeih&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">alzeih<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Andreas Pelme &lt;<a class="reference external" href="mailto:andreas&#37;&#52;&#48;pelme&#46;se">andreas<span>&#64;</span>pelme<span>&#46;</span>se</a>&gt;
+Andrew de Quincey &lt;<a class="reference external" href="mailto:adq&#37;&#52;&#48;lidskialf&#46;net">adq<span>&#64;</span>lidskialf<span>&#46;</span>net</a>&gt;
+Anthony Lukach &lt;<a class="reference external" href="mailto:anthonylukach&#37;&#52;&#48;gmail&#46;com">anthonylukach<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Arcadiy Ivanov &lt;<a class="reference external" href="mailto:arcadiy&#37;&#52;&#48;ivanov&#46;biz">arcadiy<span>&#64;</span>ivanov<span>&#46;</span>biz</a>&gt;
+Arnaud Rocher &lt;<a class="reference external" href="mailto:cailloumajor&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">cailloumajor<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Arthur Vigil &lt;<a class="reference external" href="mailto:ahvigil&#37;&#52;&#48;mail&#46;sfsu&#46;edu">ahvigil<span>&#64;</span>mail<span>&#46;</span>sfsu<span>&#46;</span>edu</a>&gt;
+Asif Saifuddin Auvi &lt;<a class="reference external" href="mailto:auvipy&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">auvipy<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Ask Solem &lt;<a class="reference external" href="mailto:ask&#37;&#52;&#48;celeryproject&#46;org">ask<span>&#64;</span>celeryproject<span>&#46;</span>org</a>&gt;
+BLAGA Razvan-Paul &lt;<a class="reference external" href="mailto:razvan&#46;paul&#46;blaga&#37;&#52;&#48;gmail&#46;com">razvan<span>&#46;</span>paul<span>&#46;</span>blaga<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Brendan MacDonell &lt;<a class="reference external" href="mailto:macdonellba&#37;&#52;&#48;gmail&#46;com">macdonellba<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Brian Luan &lt;<a class="reference external" href="mailto:jznight&#37;&#52;&#48;gmail&#46;com">jznight<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Brian May &lt;<a class="reference external" href="mailto:brian&#37;&#52;&#48;linuxpenguins&#46;xyz">brian<span>&#64;</span>linuxpenguins<span>&#46;</span>xyz</a>&gt;
+Bruno Alla &lt;<a class="reference external" href="mailto:browniebroke&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">browniebroke<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Chris Kuehl &lt;<a class="reference external" href="mailto:chris&#37;&#52;&#48;techxonline&#46;net">chris<span>&#64;</span>techxonline<span>&#46;</span>net</a>&gt;
+Christian &lt;<a class="reference external" href="mailto:github&#37;&#52;&#48;penpal4u&#46;net">github<span>&#64;</span>penpal4u<span>&#46;</span>net</a>&gt;
+Christopher Hoskin &lt;<a class="reference external" href="mailto:mans0954&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">mans0954<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Daniel Hahler &lt;<a class="reference external" href="mailto:github&#37;&#52;&#48;thequod&#46;de">github<span>&#64;</span>thequod<span>&#46;</span>de</a>&gt;
+Daniel Huang &lt;<a class="reference external" href="mailto:dxhuang&#37;&#52;&#48;gmail&#46;com">dxhuang<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Derek Harland &lt;<a class="reference external" href="mailto:donkopotamus&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">donkopotamus<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Dmytro Petruk &lt;<a class="reference external" href="mailto:bavaria95&#37;&#52;&#48;gmail&#46;com">bavaria95<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Ed Morley &lt;<a class="reference external" href="mailto:edmorley&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">edmorley<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Eric Poelke &lt;<a class="reference external" href="mailto:epoelke&#37;&#52;&#48;gmail&#46;com">epoelke<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Felipe &lt;<a class="reference external" href="mailto:fcoelho&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">fcoelho<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+François Voron &lt;<a class="reference external" href="mailto:fvoron&#37;&#52;&#48;gmail&#46;com">fvoron<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+GDR! &lt;<a class="reference external" href="mailto:gdr&#37;&#52;&#48;gdr&#46;name">gdr<span>&#64;</span>gdr<span>&#46;</span>name</a>&gt;
+George Psarakis &lt;<a class="reference external" href="mailto:giwrgos&#46;psarakis&#37;&#52;&#48;gmail&#46;com">giwrgos<span>&#46;</span>psarakis<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+J Alan Brogan &lt;<a class="reference external" href="mailto:jalanb&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">jalanb<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+James Michael DuPont &lt;<a class="reference external" href="mailto:JamesMikeDuPont&#37;&#52;&#48;gmail&#46;com">JamesMikeDuPont<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Jamie Alessio &lt;<a class="reference external" href="mailto:jamie&#37;&#52;&#48;stoic&#46;net">jamie<span>&#64;</span>stoic<span>&#46;</span>net</a>&gt;
+Javier Domingo Cansino &lt;<a class="reference external" href="mailto:javierdo1&#37;&#52;&#48;gmail&#46;com">javierdo1<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Jay McGrath &lt;<a class="reference external" href="mailto:jaymcgrath&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">jaymcgrath<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Jian Yu &lt;<a class="reference external" href="mailto:askingyj&#37;&#52;&#48;gmail&#46;com">askingyj<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Joey Wilhelm &lt;<a class="reference external" href="mailto:tarkatronic&#37;&#52;&#48;gmail&#46;com">tarkatronic<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Jon Dufresne &lt;<a class="reference external" href="mailto:jon&#46;dufresne&#37;&#52;&#48;gmail&#46;com">jon<span>&#46;</span>dufresne<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Kalle Bronsen &lt;<a class="reference external" href="mailto:bronsen&#37;&#52;&#48;nrrd&#46;de">bronsen<span>&#64;</span>nrrd<span>&#46;</span>de</a>&gt;
+Kirill Romanov &lt;<a class="reference external" href="mailto:djaler1&#37;&#52;&#48;gmail&#46;com">djaler1<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Laurent Peuch &lt;<a class="reference external" href="mailto:cortex&#37;&#52;&#48;worlddomination&#46;be">cortex<span>&#64;</span>worlddomination<span>&#46;</span>be</a>&gt;
+Luke Plant &lt;<a class="reference external" href="mailto:L&#46;Plant&#46;98&#37;&#52;&#48;cantab&#46;net">L<span>&#46;</span>Plant<span>&#46;</span>98<span>&#64;</span>cantab<span>&#46;</span>net</a>&gt;
+Marat Sharafutdinov &lt;<a class="reference external" href="mailto:decaz89&#37;&#52;&#48;gmail&#46;com">decaz89<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Marc Gibbons &lt;<a class="reference external" href="mailto:marc_gibbons&#37;&#52;&#48;rogers&#46;com">marc_gibbons<span>&#64;</span>rogers<span>&#46;</span>com</a>&gt;
+Marc Hörsken &lt;<a class="reference external" href="mailto:mback2k&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">mback2k<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Michael &lt;<a class="reference external" href="mailto:michael-k&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">michael-k<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Michael Howitz &lt;<a class="reference external" href="mailto:mh&#37;&#52;&#48;gocept&#46;com">mh<span>&#64;</span>gocept<span>&#46;</span>com</a>&gt;
+Michal Kuffa &lt;<a class="reference external" href="mailto:beezz&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">beezz<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Mike Chen &lt;<a class="reference external" href="mailto:yi&#46;chen&#46;it&#37;&#52;&#48;gmail&#46;com">yi<span>&#46;</span>chen<span>&#46;</span>it<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Mike Helmick &lt;<a class="reference external" href="mailto:michaelhelmick&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">michaelhelmick<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Morgan Doocy &lt;<a class="reference external" href="mailto:morgan&#37;&#52;&#48;doocy&#46;net">morgan<span>&#64;</span>doocy<span>&#46;</span>net</a>&gt;
+Moussa Taifi &lt;<a class="reference external" href="mailto:moutai10&#37;&#52;&#48;gmail&#46;com">moutai10<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Omer Katz &lt;<a class="reference external" href="mailto:omer&#46;drow&#37;&#52;&#48;gmail&#46;com">omer<span>&#46;</span>drow<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Patrick Cloke &lt;<a class="reference external" href="mailto:clokep&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">clokep<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Peter Bittner &lt;<a class="reference external" href="mailto:django&#37;&#52;&#48;bittner&#46;it">django<span>&#64;</span>bittner<span>&#46;</span>it</a>&gt;
+Preston Moore &lt;<a class="reference external" href="mailto:prestonkmoore&#37;&#52;&#48;gmail&#46;com">prestonkmoore<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Primož Kerin &lt;<a class="reference external" href="mailto:kerin&#46;primoz&#37;&#52;&#48;gmail&#46;com">kerin<span>&#46;</span>primoz<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Pysaoke &lt;<a class="reference external" href="mailto:pysaoke&#37;&#52;&#48;gmail&#46;com">pysaoke<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Rick Wargo &lt;<a class="reference external" href="mailto:rickwargo&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">rickwargo<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Rico Moorman &lt;<a class="reference external" href="mailto:rico&#46;moorman&#37;&#52;&#48;gmail&#46;com">rico<span>&#46;</span>moorman<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Roman Sichny &lt;<a class="reference external" href="mailto:roman&#37;&#52;&#48;sichnyi&#46;com">roman<span>&#64;</span>sichnyi<span>&#46;</span>com</a>&gt;
+Ross Patterson &lt;<a class="reference external" href="mailto:me&#37;&#52;&#48;rpatterson&#46;net">me<span>&#64;</span>rpatterson<span>&#46;</span>net</a>&gt;
+Ryan Hiebert &lt;<a class="reference external" href="mailto:ryan&#37;&#52;&#48;ryanhiebert&#46;com">ryan<span>&#64;</span>ryanhiebert<span>&#46;</span>com</a>&gt;
+Rémi Marenco &lt;<a class="reference external" href="mailto:remi&#46;marenco&#37;&#52;&#48;gmail&#46;com">remi<span>&#46;</span>marenco<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Salvatore Rinchiera &lt;<a class="reference external" href="mailto:srinchiera&#37;&#52;&#48;college&#46;harvard&#46;edu">srinchiera<span>&#64;</span>college<span>&#46;</span>harvard<span>&#46;</span>edu</a>&gt;
+Samuel Dion-Girardeau &lt;<a class="reference external" href="mailto:samuel&#46;diongirardeau&#37;&#52;&#48;gmail&#46;com">samuel<span>&#46;</span>diongirardeau<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Sergey Fursov &lt;<a class="reference external" href="mailto:GeyseR85&#37;&#52;&#48;gmail&#46;com">GeyseR85<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Simon Legner &lt;<a class="reference external" href="mailto:Simon&#46;Legner&#37;&#52;&#48;gmail&#46;com">Simon<span>&#46;</span>Legner<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Simon Schmidt &lt;<a class="reference external" href="mailto:schmidt&#46;simon&#37;&#52;&#48;gmail&#46;com">schmidt<span>&#46;</span>simon<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Slam &lt;<a class="reference external" href="mailto:3lnc&#46;slam&#37;&#52;&#48;gmail&#46;com">3lnc<span>&#46;</span>slam<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Static &lt;<a class="reference external" href="mailto:staticfox&#37;&#52;&#48;staticfox&#46;net">staticfox<span>&#64;</span>staticfox<span>&#46;</span>net</a>&gt;
+Steffen Allner &lt;<a class="reference external" href="mailto:sa&#37;&#52;&#48;gocept&#46;com">sa<span>&#64;</span>gocept<span>&#46;</span>com</a>&gt;
+Steven &lt;<a class="reference external" href="mailto:rh0dium&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">rh0dium<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Steven Johns &lt;<a class="reference external" href="mailto:duoi&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">duoi<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Tamer Sherif &lt;<a class="reference external" href="mailto:tamer&#46;sherif&#37;&#52;&#48;flyingelephantlab&#46;com">tamer<span>&#46;</span>sherif<span>&#64;</span>flyingelephantlab<span>&#46;</span>com</a>&gt;
+Tao Qingyun &lt;<a class="reference external" href="mailto:845767657&#37;&#52;&#48;qq&#46;com">845767657<span>&#64;</span>qq<span>&#46;</span>com</a>&gt;
+Tayfun Sen &lt;<a class="reference external" href="mailto:totayfun&#37;&#52;&#48;gmail&#46;com">totayfun<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Taylor C. Richberger &lt;<a class="reference external" href="mailto:taywee&#37;&#52;&#48;gmx&#46;com">taywee<span>&#64;</span>gmx<span>&#46;</span>com</a>&gt;
+Thierry RAMORASOAVINA &lt;<a class="reference external" href="mailto:thierry&#46;ramorasoavina&#37;&#52;&#48;orange&#46;com">thierry<span>&#46;</span>ramorasoavina<span>&#64;</span>orange<span>&#46;</span>com</a>&gt;
+Tom 'Biwaa' Riat &lt;<a class="reference external" href="mailto:riat&#46;tom&#37;&#52;&#48;gmail&#46;com">riat<span>&#46;</span>tom<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Viktor Holmqvist &lt;<a class="reference external" href="mailto:viktorholmqvist&#37;&#52;&#48;gmail&#46;com">viktorholmqvist<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Viraj &lt;<a class="reference external" href="mailto:vnavkal0&#37;&#52;&#48;gmail&#46;com">vnavkal0<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Vivek Anand &lt;<a class="reference external" href="mailto:vivekanand1101&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">vivekanand1101<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Will &lt;<a class="reference external" href="mailto:paradox41&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">paradox41<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+Wojciech Żywno &lt;<a class="reference external" href="mailto:w&#46;zywno&#37;&#52;&#48;gmail&#46;com">w<span>&#46;</span>zywno<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+Yoichi NAKAYAMA &lt;<a class="reference external" href="mailto:yoichi&#46;nakayama&#37;&#52;&#48;gmail&#46;com">yoichi<span>&#46;</span>nakayama<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+YuLun Shih &lt;<a class="reference external" href="mailto:shih&#37;&#52;&#48;yulun&#46;me">shih<span>&#64;</span>yulun<span>&#46;</span>me</a>&gt;
+Yuhannaa &lt;<a class="reference external" href="mailto:yuhannaa&#37;&#52;&#48;gmail&#46;com">yuhannaa<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+abhinav nilaratna &lt;<a class="reference external" href="mailto:anilaratna2&#37;&#52;&#48;bloomberg&#46;net">anilaratna2<span>&#64;</span>bloomberg<span>&#46;</span>net</a>&gt;
+aydin &lt;<a class="reference external" href="mailto:adigeaydin&#37;&#52;&#48;gmail&#46;com">adigeaydin<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+csfeathers &lt;<a class="reference external" href="mailto:csfeathers&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">csfeathers<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+georgepsarakis &lt;<a class="reference external" href="mailto:giwrgos&#46;psarakis&#37;&#52;&#48;gmail&#46;com">giwrgos<span>&#46;</span>psarakis<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+orf &lt;<a class="reference external" href="mailto:tom&#37;&#52;&#48;tomforb&#46;es">tom<span>&#64;</span>tomforb<span>&#46;</span>es</a>&gt;
+shalev67 &lt;<a class="reference external" href="mailto:shalev67&#37;&#52;&#48;gmail&#46;com">shalev67<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+sww &lt;<a class="reference external" href="mailto:sww&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">sww<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+tnir &lt;<a class="reference external" href="mailto:tnir&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">tnir<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>&gt;
+何翔宇(Sean Ho) &lt;<a class="reference external" href="mailto:h1x2y3awalm&#37;&#52;&#48;gmail&#46;com">h1x2y3awalm<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This wall was automatically generated from git history,
+so sadly it doesn't not include the people who help with more important
+things like answering mailing-list questions.</p>
+</div>
+</section>
+</section>
+<section id="important-notes">
+<span id="v410-important"></span><h2>Important Notes<a class="headerlink" href="#important-notes" title="Link to this heading">¶</a></h2>
+<section id="added-support-for-python-3-6-pypy-5-8-0">
+<h3>Added support for Python 3.6 &amp; PyPy 5.8.0<a class="headerlink" href="#added-support-for-python-3-6-pypy-5-8-0" title="Link to this heading">¶</a></h3>
+<p>We now run our unit test suite and integration test suite on Python 3.6.x
+and PyPy 5.8.0.</p>
+<p>We expect newer versions of PyPy to work but unfortunately we do not have the
+resources to test PyPy with those versions.</p>
+<p>The supported Python Versions are:</p>
+<ul class="simple">
+<li><p>CPython 2.7</p></li>
+<li><p>CPython 3.4</p></li>
+<li><p>CPython 3.5</p></li>
+<li><p>CPython 3.6</p></li>
+<li><p>PyPy 5.8 (<code class="docutils literal notranslate"><span class="pre">pypy2</span></code>)</p></li>
+</ul>
+</section>
+</section>
+<section id="news">
+<span id="v410-news"></span><h2>News<a class="headerlink" href="#news" title="Link to this heading">¶</a></h2>
+<section id="result-backends">
+<h3>Result Backends<a class="headerlink" href="#result-backends" title="Link to this heading">¶</a></h3>
+<section id="new-dynamodb-results-backend">
+<h4>New DynamoDB Results Backend<a class="headerlink" href="#new-dynamodb-results-backend" title="Link to this heading">¶</a></h4>
+<p>We added a new results backend for those of you who are using DynamoDB.</p>
+<p>If you are interested in using this results backend, refer to <a class="reference internal" href="../userguide/configuration.html#conf-dynamodb-result-backend"><span class="std std-ref">AWS DynamoDB 后端设置</span></a> for more information.</p>
+</section>
+<section id="elasticsearch">
+<h4>Elasticsearch<a class="headerlink" href="#elasticsearch" title="Link to this heading">¶</a></h4>
+<p>The Elasticsearch results backend is now more robust and configurable.</p>
+<p>See <a class="reference internal" href="../userguide/configuration.html#conf-elasticsearch-result-backend"><span class="std std-ref">Elasticsearch 后端设置</span></a> for more information
+about the new configuration options.</p>
+</section>
+<section id="redis">
+<h4>Redis<a class="headerlink" href="#redis" title="Link to this heading">¶</a></h4>
+<p>The Redis results backend can now use TLS to encrypt the communication with the
+Redis database server.</p>
+<p>See <a class="reference internal" href="../userguide/configuration.html#conf-redis-result-backend"><span class="std std-ref">Redis 后端设置</span></a>.</p>
+</section>
+<section id="mongodb">
+<h4>MongoDB<a class="headerlink" href="#mongodb" title="Link to this heading">¶</a></h4>
+<p>The MongoDB results backend can now handle binary-encoded task results.</p>
+<p>This was a regression from 4.0.0 which resulted in a problem using serializers
+such as MsgPack or Pickle in conjunction with the MongoDB results backend.</p>
+</section>
+</section>
+<section id="periodic-tasks">
+<h3>Periodic Tasks<a class="headerlink" href="#periodic-tasks" title="Link to this heading">¶</a></h3>
+<p>The task schedule now updates automatically when new tasks are added.
+Now if you use the Django database scheduler, you can add and remove tasks from the schedule without restarting Celery beat.</p>
+</section>
+<section id="tasks">
+<h3>Tasks<a class="headerlink" href="#tasks" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">disable_sync_subtasks</span></code> argument was added to allow users to override disabling
+synchronous subtasks.</p>
+<p>See <a class="reference internal" href="../userguide/tasks.html#task-synchronous-subtasks"><span class="std std-ref">避免启动同步子任务</span></a></p>
+</section>
+<section id="canvas">
+<h3>Canvas<a class="headerlink" href="#canvas" title="Link to this heading">¶</a></h3>
+<p>Multiple bugs were resolved resulting in a much smoother experience when using Canvas.</p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="changelog-4.1.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Change history</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="changelog-4.2.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Change history</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2009-2023, Ask Solem &amp; contributors
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">What's new in Celery 4.1 (latentcall)</a><ul>
+<li><a class="reference internal" href="#preface">Preface</a><ul>
+<li><a class="reference internal" href="#wall-of-contributors">Wall of Contributors</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#important-notes">Important Notes</a><ul>
+<li><a class="reference internal" href="#added-support-for-python-3-6-pypy-5-8-0">Added support for Python 3.6 &amp; PyPy 5.8.0</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#news">News</a><ul>
+<li><a class="reference internal" href="#result-backends">Result Backends</a><ul>
+<li><a class="reference internal" href="#new-dynamodb-results-backend">New DynamoDB Results Backend</a></li>
+<li><a class="reference internal" href="#elasticsearch">Elasticsearch</a></li>
+<li><a class="reference internal" href="#redis">Redis</a></li>
+<li><a class="reference internal" href="#mongodb">MongoDB</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#periodic-tasks">Periodic Tasks</a></li>
+<li><a class="reference internal" href="#tasks">Tasks</a></li>
+<li><a class="reference internal" href="#canvas">Canvas</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=8156d91f"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=5eb1bb1e"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    </body>
+</html>

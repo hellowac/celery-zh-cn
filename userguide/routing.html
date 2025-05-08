@@ -1,0 +1,1913 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="监控和管理指南" href="monitoring.html" /><link rel="prev" title="周期性任务/Tasks" href="periodic-tasks.html" />
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>路由任务/Tasks - Celery 5.5.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=3ee1c6c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/my.css?v=112ca36d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Celery 5.5.1 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/celery_512_1.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Celery 5.5.1 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../copyright.html">版权</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/index.html">快速开始</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 快速开始</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/introduction.html">Celery 简介</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting-started/backends-and-brokers/index.html">Backends 和 Brokers</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Backends 和 Brokers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/rabbitmq.html">使用 RabbitMQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/redis.html">使用 Redis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html">使用 Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/kafka.html">使用 Kafka</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/gcpubsub.html">使用 Google Pub/Sub</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/first-steps-with-celery.html">使用 Celery 的第一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/next-steps.html">下一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/resources.html">资源</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">用户指南</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 用户指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="application.html">应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calling.html">调用任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="canvas.html">Canvas：设计工作流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workers.html">Workers 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="daemonizing.html">守护进程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="periodic-tasks.html">周期性任务/Tasks</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">路由任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html">监控和管理指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html">优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">调试</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concurrency/index.html">并发</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 并发</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="concurrency/eventlet.html">Eventlet 并发</a></li>
+<li class="toctree-l3"><a class="reference internal" href="concurrency/gevent.html">gevent 并发</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="signals.html">信号</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">使用 Celery 进行测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extending.html">扩展 和 Bootsteps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">配置和默认值</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx.html">使用 Sphinx 文档化任务</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../django/index.html">Django</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Django</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../django/first-steps-with-django.html">使用 Django 的第一步</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">社区资源</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/task-cookbook.html">Task Cookbook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">更改历史</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">API 参考</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of API 参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cli.html">命令行接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">celery</span></code> --- Distributed processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html">Proxies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.task.html"><code class="docutils literal notranslate"><span class="pre">celery.app.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html">AMQP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html#queues">Queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.defaults.html"><code class="docutils literal notranslate"><span class="pre">celery.app.defaults</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.control.html"><code class="docutils literal notranslate"><span class="pre">celery.app.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.registry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.registry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.app.backends</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.builtins.html"><code class="docutils literal notranslate"><span class="pre">celery.app.builtins</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.events.html"><code class="docutils literal notranslate"><span class="pre">celery.app.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.log.html"><code class="docutils literal notranslate"><span class="pre">celery.app.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.app.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.autoretry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.autoretry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bootsteps.html"><code class="docutils literal notranslate"><span class="pre">celery.bootsteps</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.result.html"><code class="docutils literal notranslate"><span class="pre">celery.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.schedules.html"><code class="docutils literal notranslate"><span class="pre">celery.schedules</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.signals.html"><code class="docutils literal notranslate"><span class="pre">celery.signals</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.security.html"><code class="docutils literal notranslate"><span class="pre">celery.security</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.utils.debug.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.debug</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.exceptions.html"><code class="docutils literal notranslate"><span class="pre">celery.exceptions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.app.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.default.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.default</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.base.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html">States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#sets">Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#misc">Misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.FAILURE"><code class="docutils literal notranslate"><span class="pre">FAILURE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.PENDING"><code class="docutils literal notranslate"><span class="pre">PENDING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RECEIVED"><code class="docutils literal notranslate"><span class="pre">RECEIVED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RETRY"><code class="docutils literal notranslate"><span class="pre">RETRY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.REVOKED"><code class="docutils literal notranslate"><span class="pre">REVOKED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.STARTED"><code class="docutils literal notranslate"><span class="pre">STARTED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.SUCCESS"><code class="docutils literal notranslate"><span class="pre">SUCCESS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.precedence"><code class="docutils literal notranslate"><span class="pre">precedence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.state"><code class="docutils literal notranslate"><span class="pre">state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.abortable.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.abortable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.django.task.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.django.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.pytest.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.pytest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.sphinx.html">celery.contrib.sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.app.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.manager.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.manager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.mocks.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.mocks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.rdb.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.rdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.html"><code class="docutils literal notranslate"><span class="pre">celery.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.receiver.html"><code class="docutils literal notranslate"><span class="pre">celery.events.receiver</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.dispatcher.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.event.html"><code class="docutils literal notranslate"><span class="pre">celery.events.event</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.state.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.request.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.request</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.state.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.strategy.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.strategy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.agent.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.agent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.connection.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.connection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.events.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.gossip.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.gossip</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.heart.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.heart</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.mingle.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.mingle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.tasks.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.tasks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.base.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.celery.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.celery</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.events.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.logtool.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.logtool</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.amqp.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.amqp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.graph</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.call.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.call</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.control.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.list.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.list</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.purge.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.purge</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.result.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.shell.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.shell</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.upgrade.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.upgrade</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">内部</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 内部</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../internals/guide.html">代码贡献指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/deprecation.html">Celery 弃用时间表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/worker.html">内部的 worker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/protocol.html">消息协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/app-overview.html">“大实例”重构</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/reference/index.html">内部模块参考</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 内部模块参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.components.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.components</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.loops.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.loops</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.heartbeat.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.heartbeat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.control</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.pidbox.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.pidbox</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.autoscale.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.autoscale</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.solo.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.solo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.prefork.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.prefork</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.eventlet.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.eventlet</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.gevent.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.gevent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.thread.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.thread</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.base.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.backends</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.base.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.asynchronous.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.asynchronous</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.azureblockblob.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.azureblockblob</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.rpc.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.rpc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cache.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.consul.html">celery.backends.consul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchdb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchdb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.mongodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.mongodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.elasticsearch.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.elasticsearch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.redis.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.redis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cassandra.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cassandra</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchbase.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchbase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.arangodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.arangodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.dynamodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.dynamodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.filesystem.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.filesystem</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cosmosdbsql.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cosmosdbsql</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.s3.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.s3</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.gcs.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.gcs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.trace.html"><code class="docutils literal notranslate"><span class="pre">celery.app.trace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.annotations.html"><code class="docutils literal notranslate"><span class="pre">celery.app.annotations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.routes.html"><code class="docutils literal notranslate"><span class="pre">celery.app.routes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.certificate.html"><code class="docutils literal notranslate"><span class="pre">celery.security.certificate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.key.html"><code class="docutils literal notranslate"><span class="pre">celery.security.key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.security.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.security.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.snapshot.html"><code class="docutils literal notranslate"><span class="pre">celery.events.snapshot</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.cursesmon.html"><code class="docutils literal notranslate"><span class="pre">celery.events.cursesmon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.dumper.html"><code class="docutils literal notranslate"><span class="pre">celery.events.dumper</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.models.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.models</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.session.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.session</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.abstract.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.abstract</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.collections.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.collections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.nodenames.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.nodenames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.deprecated.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.deprecated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.functional.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.functional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.graph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.objects.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.term.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.term</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.time.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.time</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.iso8601.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.iso8601</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.saferepr.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.saferepr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.sysinfo.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.sysinfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.threads.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.threads</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.timer2.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.timer2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.imports.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.imports</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.log.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.log</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.text.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.signal.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch.signal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.platforms.html"><code class="docutils literal notranslate"><span class="pre">celery.platforms</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery._state.html"><code class="docutils literal notranslate"><span class="pre">celery._state</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../history/index.html">历史</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 历史</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.5.html">What's new in Celery 5.5 (Immunity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.5.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.4.html">What's new in Celery 5.4 (Opalescent)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.3.html">What's new in Celery 5.3 (Emerald Rush)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.1.html">What's new in Celery 5.1 (Sun Harmonics)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.0.html">What's new in Celery 5.0 (singularity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.4.html">What's new in Celery 4.4 (Cliffs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.3.html">What's new in Celery 4.3 (rhubarb)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.2.html">What's new in Celery 4.2 (windowlicker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.2.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.1.html">What's new in Celery 4.1 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.0.html">What's new in Celery 4.0 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-3.1.html">What's new in Celery 3.1 (Cipater)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-3.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-3.0.html">What's new in Celery 3.0 (Chiastic Slide)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-3.0.html">Change history for Celery 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-2.5.html">What's new in Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.5.html">Change history for Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.4.html">Change history for Celery 2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.3.html">Change history for Celery 2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.2.html">Change history for Celery 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.1.html">Change history for Celery 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.0.html">Change history for Celery 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-1.0.html">Change history for Celery 1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+</ul>
+
+</div>
+<!-- <iframe src="https://ghbtns.com/github-btn.html?user=celery&repo=celery&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe> -->
+<div id="donate">
+  <h5>捐赠</h5>
+  <p>请捐赠以支持这个社区项目</p>
+  <a href="https://opencollective.com/celery/donate" target="_blank">
+    <!-- <img src="https://opencollective.com/celery/donate/button@2x.png?color=blue" /> -->
+    <img src="https://opencollective.com/celery/donate/button.png?color=blue" />
+  </a>
+</div></div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/userguide/routing.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="tasks">
+<span id="guide-routing"></span><h1>路由任务/Tasks<a class="headerlink" href="#tasks" title="Link to this heading">¶</a></h1>
+<p>Routing Tasks</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>类似“主题（topic）”与“广播（fanout）”的路由概念并非在所有传输方案中都可用，
+请参阅 <a class="reference external" href="https://docs.celeryq.dev/projects/kombu/en/main/introduction.html#transport-comparison" title="（在 Kombu v5.5）"><span class="xref std std-ref">transport comparison table</span></a> 获取详细信息。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Alternate routing concepts like topic and fanout is not
+available for all transports, please consult the
+<a class="reference external" href="https://docs.celeryq.dev/projects/kombu/en/main/introduction.html#transport-comparison" title="（在 Kombu v5.5）"><span class="xref std std-ref">transport comparison table</span></a>.</p>
+</div>
+</div>
+</div>
+<section id="routing-basics">
+<span id="id1"></span><h2>基础知识<a class="headerlink" href="#routing-basics" title="Link to this heading">¶</a></h2>
+<p>Basics</p>
+<section id="routing-automatic">
+<span id="id2"></span><h3>自动路由<a class="headerlink" href="#routing-automatic" title="Link to this heading">¶</a></h3>
+<p>Automatic routing</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>最简单的路由方式是启用 <a class="reference internal" href="configuration.html#std-setting-task_create_missing_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_create_missing_queues</span></code></a> 配置（默认已开启）。</p>
+<p>启用该设置后，在 <a class="reference internal" href="configuration.html#std-setting-task_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queues</span></code></a> 中未显式定义的命名队列会被自动创建。这使得执行简单的路由任务变得非常容易。</p>
+<p>假设你有两台处理常规任务的服务器 <cite>x</cite> 与 <cite>y</cite>，以及一台专门处理 feed 相关任务的服务器 <cite>z</cite>，你可以使用如下配置:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;feed.tasks.import_feed&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;feeds&#39;</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>启用上述路由后，feed 导入任务将会被路由到 <cite>&quot;feeds&quot;</cite> 队列，其它任务将会被路由到默认队列（历史原因下默认命名为 <cite>&quot;celery&quot;</cite>）。</p>
+<p>你也可以使用通配符或正则表达式来匹配 <code class="docutils literal notranslate"><span class="pre">feed.tasks</span></code> 命名空间中的所有任务：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;feed.tasks.*&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;feeds&#39;</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>如果匹配顺序很重要，你应使用 <em>items</em> 格式来指定路由器：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;feed.tasks.*&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;feeds&#39;</span><span class="p">}),</span>
+    <span class="p">(</span><span class="s1">&#39;web.tasks.*&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;web&#39;</span><span class="p">}),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(video|image)\.tasks\..*&#39;</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;media&#39;</span><span class="p">}),</span>
+<span class="p">],)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>配置项 <a class="reference internal" href="configuration.html#std-setting-task_routes"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_routes</span></code></a> 可以是一个字典，也可以是一个包含路由器对象的列表，
+所以在本例中我们使用元组包裹该列表以进行指定。</p>
+</div>
+<p>在安装好路由器之后，你可以通过如下命令启动服务器 <cite>z</cite>，使其只处理 feeds 队列：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">user@z:/$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-Q<span class="w"> </span>feeds
+</pre></div>
+</div>
+<p>你可以指定任意数量的队列，因此你也可以让该服务器同时处理默认队列：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">user@z:/$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-Q<span class="w"> </span>feeds,celery
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>The simplest way to do routing is to use the
+<a class="reference internal" href="configuration.html#std-setting-task_create_missing_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_create_missing_queues</span></code></a> setting (on by default).</p>
+<p>With this setting on, a named queue that's not already defined in
+<a class="reference internal" href="configuration.html#std-setting-task_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queues</span></code></a> will be created automatically. This makes it easy to
+perform simple routing tasks.</p>
+<p>Say you have two servers, <cite>x</cite>, and <cite>y</cite> that handle regular tasks,
+and one server <cite>z</cite>, that only handles feed related tasks. You can use this
+configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;feed.tasks.import_feed&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;feeds&#39;</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>With this route enabled import feed tasks will be routed to the
+<cite>&quot;feeds&quot;</cite> queue, while all other tasks will be routed to the default queue
+(named <cite>&quot;celery&quot;</cite> for historical reasons).</p>
+<p>Alternatively, you can use glob pattern matching, or even regular expressions,
+to match all tasks in the <code class="docutils literal notranslate"><span class="pre">feed.tasks</span></code> name-space:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;feed.tasks.*&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;feeds&#39;</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>If the order of matching patterns is important you should
+specify the router in <em>items</em> format instead:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;feed.tasks.*&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;feeds&#39;</span><span class="p">}),</span>
+    <span class="p">(</span><span class="s1">&#39;web.tasks.*&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;web&#39;</span><span class="p">}),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(video|image)\.tasks\..*&#39;</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;media&#39;</span><span class="p">}),</span>
+<span class="p">],)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The <a class="reference internal" href="configuration.html#std-setting-task_routes"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_routes</span></code></a> setting can either be a dictionary, or a
+list of router objects, so in this case we need to specify the setting
+as a tuple containing a list.</p>
+</div>
+<p>After installing the router, you can start server <cite>z</cite> to only process the feeds
+queue like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">user@z:/$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-Q<span class="w"> </span>feeds
+</pre></div>
+</div>
+<p>You can specify as many queues as you want, so you can make this server
+process the default queue as well:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">user@z:/$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-Q<span class="w"> </span>feeds,celery
+</pre></div>
+</div>
+</div>
+</div>
+<section id="routing-changing-default-queue">
+<span id="id3"></span><h4>更改默认队列的名称<a class="headerlink" href="#routing-changing-default-queue" title="Link to this heading">¶</a></h4>
+<p>Changing the name of the default queue</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>你可以通过以下配置修改默认队列的名称：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_queue</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>You can change the name of the default queue by using the following
+configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_queue</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="routing-autoqueue-details">
+<span id="id4"></span><h4>队列的定义方式<a class="headerlink" href="#routing-autoqueue-details" title="Link to this heading">¶</a></h4>
+<p>How the queues are defined</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>该特性旨在为用户隐藏复杂的 AMQP 协议，实现基本需求即可使用。但你可能仍然对这些队列是如何声明的感兴趣。</p>
+<p>一个名为 <cite>&quot;video&quot;</cite> 的队列将会使用以下配置被创建：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;exchange&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video&#39;</span><span class="p">,</span>
+<span class="s1">&#39;exchange_type&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;direct&#39;</span><span class="p">,</span>
+<span class="s1">&#39;routing_key&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>对于非 AMQP 后端（如 <cite>Redis</cite> 或 <cite>SQS</cite>），它们不支持 exchange 的概念，因此要求 exchange 的名称与队列一致。该设计可确保其兼容。</p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>The point with this feature is to hide the complex AMQP protocol for users
+with only basic needs. However -- you may still be interested in how these queues
+are declared.</p>
+<p>A queue named <cite>&quot;video&quot;</cite> will be created with the following settings:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;exchange&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video&#39;</span><span class="p">,</span>
+<span class="s1">&#39;exchange_type&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;direct&#39;</span><span class="p">,</span>
+<span class="s1">&#39;routing_key&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The non-AMQP backends like <cite>Redis</cite> or <cite>SQS</cite> don't support exchanges,
+so they require the exchange to have the same name as the queue. Using this
+design ensures it will work for them as well.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="routing-manual">
+<span id="id5"></span><h3>手动路由<a class="headerlink" href="#routing-manual" title="Link to this heading">¶</a></h3>
+<p>Manual routing</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>再次假设你有两台处理常规任务的服务器 <cite>x</cite> 与 <cite>y</cite>，以及一台专门处理 feed 任务的服务器 <cite>z</cite>，你可以使用如下配置：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu</span><span class="w"> </span><span class="kn">import</span> <span class="n">Queue</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_queue</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span>    <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;task.#&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;feed_tasks&#39;</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;feed.#&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_exchange</span> <span class="o">=</span> <span class="s1">&#39;tasks&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_exchange_type</span> <span class="o">=</span> <span class="s1">&#39;topic&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_routing_key</span> <span class="o">=</span> <span class="s1">&#39;task.default&#39;</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="configuration.html#std-setting-task_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queues</span></code></a> 是由 <a class="reference external" href="https://docs.celeryq.dev/projects/kombu/en/main/reference/kombu.html#kombu.Queue" title="（在 Kombu v5.5）"><code class="xref py py-class docutils literal notranslate"><span class="pre">Queue</span></code></a> 实例组成的列表。
+如果你未为某项设置 exchange 或 exchange_type，这些值将从配置项
+<a class="reference internal" href="configuration.html#std-setting-task_default_exchange"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_exchange</span></code></a> 与 <a class="reference internal" href="configuration.html#std-setting-task_default_exchange_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_exchange_type</span></code></a> 中继承。</p>
+<p>要将任务路由至 <cite>feed_tasks</cite> 队列，可以在 <a class="reference internal" href="configuration.html#std-setting-task_routes"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_routes</span></code></a> 配置中添加如下条目：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;feeds.tasks.import_feed&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;feed_tasks&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;routing_key&#39;</span><span class="p">:</span> <span class="s1">&#39;feed.import&#39;</span><span class="p">,</span>
+        <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>你也可以通过 <code class="xref py py-meth docutils literal notranslate"><span class="pre">Task.apply_async()</span></code> 或 <code class="xref py py-func docutils literal notranslate"><span class="pre">send_task()</span></code>
+的 <cite>routing_key</cite> 参数进行覆盖：</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">feeds.tasks</span><span class="w"> </span><span class="kn">import</span> <span class="n">import_feed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">import_feed</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;http://cnn.com/rss&#39;</span><span class="p">],</span>
+<span class="gp">... </span>                        <span class="n">queue</span><span class="o">=</span><span class="s1">&#39;feed_tasks&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;feed.import&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>要让服务器 <cite>z</cite> 专门消费 feed 队列，可以使用 <a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-Q"><code class="xref std std-option docutils literal notranslate"><span class="pre">celery</span> <span class="pre">worker</span> <span class="pre">-Q</span></code></a> 启动：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">user@z:/$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-Q<span class="w"> </span>feed_tasks<span class="w"> </span>--hostname<span class="o">=</span>z@%h
+</pre></div>
+</div>
+<p>服务器 <cite>x</cite> 与 <cite>y</cite> 应配置为消费默认队列：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">user@x:/$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-Q<span class="w"> </span>default<span class="w"> </span>--hostname<span class="o">=</span>x@%h
+<span class="gp">user@y:/$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-Q<span class="w"> </span>default<span class="w"> </span>--hostname<span class="o">=</span>y@%h
+</pre></div>
+</div>
+<p>如果你希望 feed 处理节点在高负载时也能处理常规任务，可以这样启动：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">user@z:/$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-Q<span class="w"> </span>feed_tasks,default<span class="w"> </span>--hostname<span class="o">=</span>z@%h
+</pre></div>
+</div>
+<p>如果你想添加一个使用不同 exchange 的队列，只需显式指定 exchange 与类型：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exchange</span><span class="p">,</span> <span class="n">Queue</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;feed_tasks&#39;</span><span class="p">,</span>    <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;feed.#&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;regular_tasks&#39;</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;task.#&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;image_tasks&#39;</span><span class="p">,</span>   <span class="n">exchange</span><span class="o">=</span><span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;mediatasks&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;direct&#39;</span><span class="p">),</span>
+                        <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;image.compress&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>如果你对上述术语感到困惑，建议你阅读 AMQP 相关文档。</p>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<p>除了下面的 <a class="reference internal" href="#amqp-primer"><span class="std std-ref">Redis 消息优先级</span></a> 外，还有一篇优秀的博文 <a class="reference external" href="http://web.archive.org/web/20160323134044/http://blogs.digitar.com/jjww/2009/01/rabbits-and-warrens/">Rabbits and Warrens</a> 介绍了队列与交换机的概念；
+同时还有 <cite>CloudAMQP 教程</cite>，以及面向 RabbitMQ 用户的 <a class="reference external" href="https://www.rabbitmq.com/faq.html">RabbitMQ FAQ</a>，都可以作为信息来源。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>Say you have two servers, <cite>x</cite>, and <cite>y</cite> that handle regular tasks,
+and one server <cite>z</cite>, that only handles feed related tasks, you can use this
+configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu</span><span class="w"> </span><span class="kn">import</span> <span class="n">Queue</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_queue</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span>    <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;task.#&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;feed_tasks&#39;</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;feed.#&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_exchange</span> <span class="o">=</span> <span class="s1">&#39;tasks&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_exchange_type</span> <span class="o">=</span> <span class="s1">&#39;topic&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_routing_key</span> <span class="o">=</span> <span class="s1">&#39;task.default&#39;</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="configuration.html#std-setting-task_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queues</span></code></a> is a list of <a class="reference external" href="https://docs.celeryq.dev/projects/kombu/en/main/reference/kombu.html#kombu.Queue" title="（在 Kombu v5.5）"><code class="xref py py-class docutils literal notranslate"><span class="pre">Queue</span></code></a>
+instances.
+If you don't set the exchange or exchange type values for a key, these
+will be taken from the <a class="reference internal" href="configuration.html#std-setting-task_default_exchange"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_exchange</span></code></a> and
+<a class="reference internal" href="configuration.html#std-setting-task_default_exchange_type"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_exchange_type</span></code></a> settings.</p>
+<p>To route a task to the <cite>feed_tasks</cite> queue, you can add an entry in the
+<a class="reference internal" href="configuration.html#std-setting-task_routes"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_routes</span></code></a> setting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;feeds.tasks.import_feed&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;feed_tasks&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;routing_key&#39;</span><span class="p">:</span> <span class="s1">&#39;feed.import&#39;</span><span class="p">,</span>
+        <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You can also override this using the <cite>routing_key</cite> argument to
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Task.apply_async()</span></code>, or <code class="xref py py-func docutils literal notranslate"><span class="pre">send_task()</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">feeds.tasks</span><span class="w"> </span><span class="kn">import</span> <span class="n">import_feed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">import_feed</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;http://cnn.com/rss&#39;</span><span class="p">],</span>
+<span class="gp">... </span>                        <span class="n">queue</span><span class="o">=</span><span class="s1">&#39;feed_tasks&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;feed.import&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To make server <cite>z</cite> consume from the feed queue exclusively you can
+start it with the <a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-Q"><code class="xref std std-option docutils literal notranslate"><span class="pre">celery</span> <span class="pre">worker</span> <span class="pre">-Q</span></code></a> option:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">user@z:/$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-Q<span class="w"> </span>feed_tasks<span class="w"> </span>--hostname<span class="o">=</span>z@%h
+</pre></div>
+</div>
+<p>Servers <cite>x</cite> and <cite>y</cite> must be configured to consume from the default queue:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">user@x:/$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-Q<span class="w"> </span>default<span class="w"> </span>--hostname<span class="o">=</span>x@%h
+<span class="gp">user@y:/$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-Q<span class="w"> </span>default<span class="w"> </span>--hostname<span class="o">=</span>y@%h
+</pre></div>
+</div>
+<p>If you want, you can even have your feed processing worker handle regular
+tasks as well, maybe in times when there's a lot of work to do:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">user@z:/$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-Q<span class="w"> </span>feed_tasks,default<span class="w"> </span>--hostname<span class="o">=</span>z@%h
+</pre></div>
+</div>
+<p>If you have another queue but on another exchange you want to add,
+just specify a custom exchange and exchange type:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exchange</span><span class="p">,</span> <span class="n">Queue</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;feed_tasks&#39;</span><span class="p">,</span>    <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;feed.#&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;regular_tasks&#39;</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;task.#&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;image_tasks&#39;</span><span class="p">,</span>   <span class="n">exchange</span><span class="o">=</span><span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;mediatasks&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;direct&#39;</span><span class="p">),</span>
+                        <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;image.compress&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>If you're confused about these terms, you should read up on AMQP.</p>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<p>In addition to the <a class="reference internal" href="#amqp-primer"><span class="std std-ref">Redis 消息优先级</span></a> below, there's
+<a class="reference external" href="http://web.archive.org/web/20160323134044/http://blogs.digitar.com/jjww/2009/01/rabbits-and-warrens/">Rabbits and Warrens</a>, an excellent blog post describing queues and
+exchanges. There's also The <cite>CloudAMQP tutorial</cite>,
+For users of RabbitMQ the <a class="reference external" href="https://www.rabbitmq.com/faq.html">RabbitMQ FAQ</a>
+could be useful as a source of information.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="routing-special-options">
+<span id="id6"></span><h2>特殊路由选项<a class="headerlink" href="#routing-special-options" title="Link to this heading">¶</a></h2>
+<p>Special Routing Options</p>
+<section id="rabbitmq">
+<span id="routing-options-rabbitmq-priorities"></span><h3>RabbitMQ 消息优先级<a class="headerlink" href="#rabbitmq" title="Link to this heading">¶</a></h3>
+<p>RabbitMQ Message Priorities</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<dl class="field-list simple">
+<dt class="field-odd">supported transports<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RabbitMQ</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.0.</span></p>
+</div>
+<p>可以通过设置 <code class="docutils literal notranslate"><span class="pre">x-max-priority</span></code> 参数来配置队列以支持优先级：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exchange</span><span class="p">,</span> <span class="n">Queue</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;tasks&#39;</span><span class="p">,</span> <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;tasks&#39;</span><span class="p">),</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;tasks&#39;</span><span class="p">,</span>
+        <span class="n">queue_arguments</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x-max-priority&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>可以使用 <a class="reference internal" href="configuration.html#std-setting-task_queue_max_priority"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queue_max_priority</span></code></a> 设置为所有队列配置一个默认优先级上限：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queue_max_priority</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+<p>也可以使用 <a class="reference internal" href="configuration.html#std-setting-task_default_priority"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_priority</span></code></a> 为所有任务设置默认优先级：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_priority</span> <span class="o">=</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<dl class="field-list simple">
+<dt class="field-odd">supported transports<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RabbitMQ</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.0.</span></p>
+</div>
+<p>Queues can be configured to support priorities by setting the
+<code class="docutils literal notranslate"><span class="pre">x-max-priority</span></code> argument:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exchange</span><span class="p">,</span> <span class="n">Queue</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;tasks&#39;</span><span class="p">,</span> <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;tasks&#39;</span><span class="p">),</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;tasks&#39;</span><span class="p">,</span>
+        <span class="n">queue_arguments</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x-max-priority&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>A default value for all queues can be set using the
+<a class="reference internal" href="configuration.html#std-setting-task_queue_max_priority"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queue_max_priority</span></code></a> setting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queue_max_priority</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+<p>A default priority for all tasks can also be specified using the
+<a class="reference internal" href="configuration.html#std-setting-task_default_priority"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_priority</span></code></a> setting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_priority</span> <span class="o">=</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="redis">
+<span id="amqp-primer"></span><h3>Redis 消息优先级<a class="headerlink" href="#redis" title="Link to this heading">¶</a></h3>
+<p>Redis Message Priorities</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<dl class="field-list simple">
+<dt class="field-odd">supported transports<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Redis</p>
+</dd>
+</dl>
+<p>虽然 Celery 的 Redis 传输支持读取任务的优先级字段，但 Redis 本身并不具备原生的优先级概念。在尝试使用 Redis 实现优先级功能前，请务必阅读以下说明，因为这可能会导致某些意料之外的行为。</p>
+<p>要启用基于优先级的任务调度，需配置传输选项中的 queue_order_strategy：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">broker_transport_options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;queue_order_strategy&#39;</span><span class="p">:</span> <span class="s1">&#39;priority&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>该优先级支持机制是通过为每个队列创建多个列表（list）实现的。
+尽管理论上支持 10 个（0 到 9）优先级等级，但为了节省资源，默认会将其压缩为 4 个等级。
+也就是说，一个名为 celery 的队列实际上会被拆分为 4 个内部队列。</p>
+<p>优先级最高的队列仍然命名为 celery，其他的队列则会使用一个分隔符（默认是 <cite>x06x16</cite>）加上优先级数字附加在原始队列名后构成：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;celery&#39;</span><span class="p">,</span> <span class="s1">&#39;celery</span><span class="se">\x06\x16</span><span class="s1">3&#39;</span><span class="p">,</span> <span class="s1">&#39;celery</span><span class="se">\x06\x16</span><span class="s1">6&#39;</span><span class="p">,</span> <span class="s1">&#39;celery</span><span class="se">\x06\x16</span><span class="s1">9&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>如果你希望使用更多的优先级等级，或想更改默认分隔符，可以通过配置 priority_steps 与 sep 参数实现：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">broker_transport_options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;priority_steps&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)),</span>
+    <span class="s1">&#39;sep&#39;</span><span class="p">:</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;queue_order_strategy&#39;</span><span class="p">:</span> <span class="s1">&#39;priority&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>上述配置将生成如下的队列名称：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;celery&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:1&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:2&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:3&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:4&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:5&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:6&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:7&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:8&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:9&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>需要注意的是，这种机制永远无法达到由消息代理服务器层实现的优先级那样的精确性，充其量是一种近似的实现。
+但对于大多数应用场景而言，这种机制可能已经足够用。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<dl class="field-list simple">
+<dt class="field-odd">supported transports<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Redis</p>
+</dd>
+</dl>
+<p>While the Celery Redis transport does honor the priority field, Redis itself has
+no notion of priorities. Please read this note before attempting to implement
+priorities with Redis as you may experience some unexpected behavior.</p>
+<p>To start scheduling tasks based on priorities you need to configure queue_order_strategy transport option.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">broker_transport_options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;queue_order_strategy&#39;</span><span class="p">:</span> <span class="s1">&#39;priority&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The priority support is implemented by creating n lists for each queue.
+This means that even though there are 10 (0-9) priority levels, these are
+consolidated into 4 levels by default to save resources. This means that a
+queue named celery will really be split into 4 queues.</p>
+<p>The highest priority queue will be named celery, and the the other queues will
+have a separator (by default <cite>x06x16</cite>) and their priority number appended to
+the queue name.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;celery&#39;</span><span class="p">,</span> <span class="s1">&#39;celery</span><span class="se">\x06\x16</span><span class="s1">3&#39;</span><span class="p">,</span> <span class="s1">&#39;celery</span><span class="se">\x06\x16</span><span class="s1">6&#39;</span><span class="p">,</span> <span class="s1">&#39;celery</span><span class="se">\x06\x16</span><span class="s1">9&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>If you want more priority levels or a different separator you can set the
+priority_steps and sep transport options:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">broker_transport_options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;priority_steps&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)),</span>
+    <span class="s1">&#39;sep&#39;</span><span class="p">:</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;queue_order_strategy&#39;</span><span class="p">:</span> <span class="s1">&#39;priority&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The config above will give you these queue names:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;celery&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:1&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:2&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:3&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:4&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:5&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:6&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:7&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:8&#39;</span><span class="p">,</span> <span class="s1">&#39;celery:9&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>That said, note that this will never be as good as priorities implemented at the
+broker server level, and may be approximate at best. But it may still be good
+enough for your application.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="amqp">
+<h2>AMQP 入门<a class="headerlink" href="#amqp" title="Link to this heading">¶</a></h2>
+<p>AMQP Primer</p>
+<section id="id7">
+<h3>消息​​<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<p>Messages</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>一条消息由 <em>消息头</em> （headers）和 <em>消息体</em> （body）组成。Celery 使用消息头来存储消息的内容类型（content type）和内容编码（content encoding）。内容类型通常是用于序列化消息的格式。消息体包含要执行的任务名称、任务 ID（UUID）、调用时使用的参数，以及一些附加元数据 —— 比如重试次数或预计执行时间（ETA）等。</p>
+<p>以下是一个以 Python 字典形式表示的任务消息示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;task&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;myapp.tasks.add&#39;</span><span class="p">,</span>
+<span class="s1">&#39;id&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;54086c5e-6193-4575-8308-dbab76798756&#39;</span><span class="p">,</span>
+<span class="s1">&#39;args&#39;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">4</span><span class="p">,</span><span class="w"> </span><span class="mf">4</span><span class="p">],</span>
+<span class="s1">&#39;kwargs&#39;</span><span class="o">:</span><span class="w"> </span><span class="p">{}}</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>A message consists of headers and a body. Celery uses headers to store
+the content type of the message and its content encoding. The
+content type is usually the serialization format used to serialize the
+message. The body contains the name of the task to execute, the
+task id (UUID), the arguments to apply it with and some additional
+meta-data -- like the number of retries or an ETA.</p>
+<p>This is an example task message represented as a Python dictionary:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;task&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;myapp.tasks.add&#39;</span><span class="p">,</span>
+<span class="s1">&#39;id&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;54086c5e-6193-4575-8308-dbab76798756&#39;</span><span class="p">,</span>
+<span class="s1">&#39;args&#39;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">4</span><span class="p">,</span><span class="w"> </span><span class="mf">4</span><span class="p">],</span>
+<span class="s1">&#39;kwargs&#39;</span><span class="o">:</span><span class="w"> </span><span class="p">{}}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="amqp-producers-consumers-brokers">
+<span id="id8"></span><h3>生产者、消费者和代理<a class="headerlink" href="#amqp-producers-consumers-brokers" title="Link to this heading">¶</a></h3>
+<p>Producers, consumers, and brokers</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>发送消息的一方通常称为 <em>发布者</em> （<em>publisher</em>）或 <em>生产者</em> （<em>producer</em>），而接收消息的一方称为 <em>消费者</em> （<em>consumer</em>）。</p>
+<p><em>Broker</em> 是消息服务器，负责将消息从生产者路由给消费者。</p>
+<p>在 AMQP 相关的资料中，你很可能会频繁看到以下术语的使用：</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>The client sending messages is typically called a <em>publisher</em>, or
+a <em>producer</em>, while the entity receiving messages is called
+a <em>consumer</em>.</p>
+<p>The <em>broker</em> is the message server, routing messages from producers
+to consumers.</p>
+<p>You're likely to see these terms used a lot in AMQP related material.</p>
+</div>
+</div>
+</section>
+<section id="amqp-exchanges-queues-keys">
+<span id="id9"></span><h3>交换器、队列和路由键<a class="headerlink" href="#amqp-exchanges-queues-keys" title="Link to this heading">¶</a></h3>
+<p>Exchanges, queues, and routing keys</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<ol class="arabic simple">
+<li><p>消息被发送到交换器（exchange）。</p></li>
+<li><p>交换器将消息路由到一个或多个队列。存在多种交换器类型，提供不同的路由机制或用于实现不同的消息模式。</p></li>
+<li><p>消息在队列中等待，直到有消费者进行处理。</p></li>
+<li><p>消息一旦被确认（acknowledge）处理后，就会从队列中删除。</p></li>
+</ol>
+<p>发送和接收消息的基本步骤如下：</p>
+<ol class="arabic simple">
+<li><p>创建一个交换器（exchange）</p></li>
+<li><p>创建一个队列（queue）</p></li>
+<li><p>将队列绑定到交换器</p></li>
+</ol>
+<p>Celery 会自动创建 <a class="reference internal" href="configuration.html#std-setting-task_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queues</span></code></a> 中定义的队列所需的实体（除非该队列的 <cite>auto_declare</cite> 设置为 <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code>）。</p>
+<p>下面是一个包含三个队列的配置示例；
+分别用于视频、图像，以及一个默认队列用于处理其他任务：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exchange</span><span class="p">,</span> <span class="n">Queue</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">),</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;videos&#39;</span><span class="p">,</span>  <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">),</span>   <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;media.video&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">,</span>  <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">),</span>   <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;media.image&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_queue</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_exchange_type</span> <span class="o">=</span> <span class="s1">&#39;direct&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_routing_key</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<ol class="arabic simple">
+<li><p>Messages are sent to exchanges.</p></li>
+<li><p>An exchange routes messages to one or more queues. Several exchange types
+exists, providing different ways to do routing, or implementing
+different messaging scenarios.</p></li>
+<li><p>The message waits in the queue until someone consumes it.</p></li>
+<li><p>The message is deleted from the queue when it has been acknowledged.</p></li>
+</ol>
+<p>The steps required to send and receive messages are:</p>
+<ol class="arabic simple">
+<li><p>Create an exchange</p></li>
+<li><p>Create a queue</p></li>
+<li><p>Bind the queue to the exchange.</p></li>
+</ol>
+<p>Celery automatically creates the entities necessary for the queues in
+<a class="reference internal" href="configuration.html#std-setting-task_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queues</span></code></a> to work (except if the queue's <cite>auto_declare</cite>
+setting is set to <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code>).</p>
+<p>Here's an example queue configuration with three queues;
+One for video, one for images, and one default queue for everything else:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exchange</span><span class="p">,</span> <span class="n">Queue</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">),</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;videos&#39;</span><span class="p">,</span>  <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">),</span>   <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;media.video&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">,</span>  <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">),</span>   <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;media.image&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_queue</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_exchange_type</span> <span class="o">=</span> <span class="s1">&#39;direct&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_routing_key</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="amqp-exchange-types">
+<span id="id10"></span><h3>交换器类型<a class="headerlink" href="#amqp-exchange-types" title="Link to this heading">¶</a></h3>
+<p>Exchange types</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>交换器类型（exchange type）定义了消息在交换器中是如何被路由的。
+AMQP 标准中定义的交换器类型有 <cite>direct</cite>、 <cite>topic</cite>、 <cite>fanout</cite> 和 <cite>headers</cite>。RabbitMQ 还支持一些非标准的交换器类型作为插件，比如 Michael Bridgen 提供的 <a class="reference external" href="https://github.com/squaremo/rabbitmq-lvc-plugin">last-value-cache plug-in</a>。</p>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<p>The exchange type defines how the messages are routed through the exchange.
+The exchange types defined in the standard are <cite>direct</cite>, <cite>topic</cite>,
+<cite>fanout</cite> and <cite>headers</cite>. Also non-standard exchange types are available
+as plug-ins to RabbitMQ, like the <a class="reference external" href="https://github.com/squaremo/rabbitmq-lvc-plugin">last-value-cache plug-in</a> by Michael
+Bridgen.</p>
+</div>
+</div>
+<section id="amqp-exchange-type-direct">
+<span id="id11"></span><h4>直接交换器<a class="headerlink" href="#amqp-exchange-type-direct" title="Link to this heading">¶</a></h4>
+<p>Direct exchanges</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">中文</label><div class="tab-content docutils container">
+<p>Direct（直连）交换器按精确的路由键（routing key）进行匹配，因此一个绑定了路由键为 <cite>video</cite> 的队列只会接收到具有该路由键的消息。</p>
+</div>
+<input class="tab-input" id="tab-set--11-input--2" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--2">英文</label><div class="tab-content docutils container">
+<p>Direct exchanges match by exact routing keys, so a queue bound by
+the routing key <cite>video</cite> only receives messages with that routing key.</p>
+</div>
+</div>
+</section>
+<section id="amqp-exchange-type-topic">
+<span id="id12"></span><h4>主题交换器<a class="headerlink" href="#amqp-exchange-type-topic" title="Link to this heading">¶</a></h4>
+<p>Topic exchanges</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">中文</label><div class="tab-content docutils container">
+<p>Topic（主题）交换器使用以点（ <cite>.</cite> ）分隔的单词作为路由键，并支持通配符： <code class="docutils literal notranslate"><span class="pre">*</span></code> （匹配一个单词）和 <code class="docutils literal notranslate"><span class="pre">#</span></code> （匹配零个或多个单词）。</p>
+<p>举例来说，若消息的路由键为 <code class="docutils literal notranslate"><span class="pre">usa.news</span></code>、 <code class="docutils literal notranslate"><span class="pre">usa.weather</span></code>、 <code class="docutils literal notranslate"><span class="pre">norway.news</span></code> 和 <code class="docutils literal notranslate"><span class="pre">norway.weather</span></code>，则以下绑定方式均可使用：
+<code class="docutils literal notranslate"><span class="pre">*.news</span></code> （匹配所有新闻）、 <code class="docutils literal notranslate"><span class="pre">usa.#</span></code> （匹配所有美国相关消息）、 或 <code class="docutils literal notranslate"><span class="pre">usa.weather</span></code> （仅匹配美国天气类消息）。</p>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">英文</label><div class="tab-content docutils container">
+<p>Topic exchanges matches routing keys using dot-separated words, and the
+wild-card characters: <code class="docutils literal notranslate"><span class="pre">*</span></code> (matches a single word), and <code class="docutils literal notranslate"><span class="pre">#</span></code> (matches
+zero or more words).</p>
+<p>With routing keys like <code class="docutils literal notranslate"><span class="pre">usa.news</span></code>, <code class="docutils literal notranslate"><span class="pre">usa.weather</span></code>, <code class="docutils literal notranslate"><span class="pre">norway.news</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">norway.weather</span></code>, bindings could be <code class="docutils literal notranslate"><span class="pre">*.news</span></code> (all news), <code class="docutils literal notranslate"><span class="pre">usa.#</span></code> (all
+items in the USA), or <code class="docutils literal notranslate"><span class="pre">usa.weather</span></code> (all USA weather items).</p>
+</div>
+</div>
+</section>
+</section>
+<section id="api">
+<span id="amqp-api"></span><h3>相关 API 命令<a class="headerlink" href="#api" title="Link to this heading">¶</a></h3>
+<p>Related API commands</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--13-input--1" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--1">中文</label><div class="tab-content docutils container">
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">exchange.declare(exchange_name,</span> <span class="pre">type,</span> <span class="pre">passive,</span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">durable,</span> <span class="pre">auto_delete,</span> <span class="pre">internal)</span></span></dt>
+<dd><p>按名称声明一个交换器（exchange）。</p>
+<p>参见 <a class="reference external" href="https://docs.celeryq.dev/projects/amqp/en/latest/reference/amqp.channel.html#amqp.channel.Channel.exchange_declare" title="（在 py-amqp v5.3）"><code class="xref py py-meth docutils literal notranslate"><span class="pre">amqp:Channel.exchange_declare</span></code></a>。</p>
+<dl class="field-list simple">
+<dt class="field-odd">关键字参数<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>passive</strong> -- 如果为 True，表示被动声明，即不会创建交换器，
+但可以用来检查该交换器是否已存在。</p></li>
+<li><p><strong>durable</strong> -- 持久化的交换器在 broker 重启后仍然存在。</p></li>
+<li><p><strong>auto_delete</strong> -- 表示当没有队列使用该交换器时，broker 会自动将其删除。</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="queue.declare">
+<span class="sig-prename descclassname"><span class="pre">queue.</span></span><span class="sig-name descname"><span class="pre">declare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queue_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">passive</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">durable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclusive</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_delete</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#queue.declare" title="Link to this definition">¶</a></dt>
+<dd><p>按名称声明一个队列。</p>
+<p>参见 <a class="reference external" href="https://docs.celeryq.dev/projects/amqp/en/latest/reference/amqp.channel.html#amqp.channel.Channel.queue_declare" title="（在 py-amqp v5.3）"><code class="xref py py-meth docutils literal notranslate"><span class="pre">amqp:Channel.queue_declare</span></code></a></p>
+<p>独占队列（exclusive）只能被当前连接消费。
+设为独占的队列也隐含了 <cite>auto_delete</cite> 属性。</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="queue.bind">
+<span class="sig-prename descclassname"><span class="pre">queue.</span></span><span class="sig-name descname"><span class="pre">bind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queue_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exchange_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">routing_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#queue.bind" title="Link to this definition">¶</a></dt>
+<dd><p>使用路由键将一个队列绑定到一个交换器。</p>
+<p>未绑定的队列无法接收消息，因此绑定是必要的操作。</p>
+<p>参见 <a class="reference external" href="https://docs.celeryq.dev/projects/amqp/en/latest/reference/amqp.channel.html#amqp.channel.Channel.queue_bind" title="（在 py-amqp v5.3）"><code class="xref py py-meth docutils literal notranslate"><span class="pre">amqp:Channel.queue_bind</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="queue.delete">
+<span class="sig-prename descclassname"><span class="pre">queue.</span></span><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">if_unused</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">if_empty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#queue.delete" title="Link to this definition">¶</a></dt>
+<dd><p>删除一个队列及其绑定关系。</p>
+<p>参见 <a class="reference external" href="https://docs.celeryq.dev/projects/amqp/en/latest/reference/amqp.channel.html#amqp.channel.Channel.queue_delete" title="（在 py-amqp v5.3）"><code class="xref py py-meth docutils literal notranslate"><span class="pre">amqp:Channel.queue_delete</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exchange.delete">
+<span class="sig-prename descclassname"><span class="pre">exchange.</span></span><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">if_unused</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exchange.delete" title="Link to this definition">¶</a></dt>
+<dd><p>删除一个交换器。</p>
+<p>参见 <code class="xref py py-meth docutils literal notranslate"><span class="pre">amqp:Channel.exchange_delete</span></code></p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>声明（declare）并不一定意味着“创建”。声明的本质是 <em>断言</em> 该实体存在且可操作。
+并没有规定是消费者还是生产者负责最初创建交换器、队列或绑定。
+通常是首先需要它的一方负责创建。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--13-input--2" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--2">英文</label><div class="tab-content docutils container">
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">exchange.declare(exchange_name,</span> <span class="pre">type,</span> <span class="pre">passive,</span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">durable,</span> <span class="pre">auto_delete,</span> <span class="pre">internal)</span></span></dt>
+<dd><p>Declares an exchange by name.</p>
+<p>See <a class="reference external" href="https://docs.celeryq.dev/projects/amqp/en/latest/reference/amqp.channel.html#amqp.channel.Channel.exchange_declare" title="（在 py-amqp v5.3）"><code class="xref py py-meth docutils literal notranslate"><span class="pre">amqp:Channel.exchange_declare</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">关键字参数<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>passive</strong> -- Passive means the exchange won't be created, but you
+can use this to check if the exchange already exists.</p></li>
+<li><p><strong>durable</strong> -- Durable exchanges are persistent (i.e., they survive
+a broker restart).</p></li>
+<li><p><strong>auto_delete</strong> -- This means the exchange will be deleted by the broker
+when there are no more queues using it.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">queue.</span></span><span class="sig-name descname"><span class="pre">declare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queue_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">passive</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">durable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclusive</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_delete</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Declares a queue by name.</p>
+<p>See <a class="reference external" href="https://docs.celeryq.dev/projects/amqp/en/latest/reference/amqp.channel.html#amqp.channel.Channel.queue_declare" title="（在 py-amqp v5.3）"><code class="xref py py-meth docutils literal notranslate"><span class="pre">amqp:Channel.queue_declare</span></code></a></p>
+<p>Exclusive queues can only be consumed from by the current connection.
+Exclusive also implies <cite>auto_delete</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">queue.</span></span><span class="sig-name descname"><span class="pre">bind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queue_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exchange_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">routing_key</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Binds a queue to an exchange with a routing key.</p>
+<p>Unbound queues won't receive messages, so this is necessary.</p>
+<p>See <a class="reference external" href="https://docs.celeryq.dev/projects/amqp/en/latest/reference/amqp.channel.html#amqp.channel.Channel.queue_bind" title="（在 py-amqp v5.3）"><code class="xref py py-meth docutils literal notranslate"><span class="pre">amqp:Channel.queue_bind</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">queue.</span></span><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">if_unused</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">if_empty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Deletes a queue and its binding.</p>
+<p>See <a class="reference external" href="https://docs.celeryq.dev/projects/amqp/en/latest/reference/amqp.channel.html#amqp.channel.Channel.queue_delete" title="（在 py-amqp v5.3）"><code class="xref py py-meth docutils literal notranslate"><span class="pre">amqp:Channel.queue_delete</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">exchange.</span></span><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">if_unused</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Deletes an exchange.</p>
+<p>See <a class="reference external" href="https://docs.celeryq.dev/projects/amqp/en/latest/reference/amqp.channel.html#amqp.channel.Channel.exchange_delete" title="（在 py-amqp v5.3）"><code class="xref py py-meth docutils literal notranslate"><span class="pre">amqp:Channel.exchange_delete</span></code></a></p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Declaring doesn't necessarily mean &quot;create&quot;. When you declare you
+<em>assert</em> that the entity exists and that it's operable. There's no
+rule as to whom should initially create the exchange/queue/binding,
+whether consumer or producer. Usually the first one to need it will
+be the one to create it.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="amqp-api-hands-on">
+<span id="id13"></span><h3>API 实践<a class="headerlink" href="#amqp-api-hands-on" title="Link to this heading">¶</a></h3>
+<p>Hands-on with the API</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--14-input--1" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--1">中文</label><div class="tab-content docutils container">
+<p>Celery 提供了一个命令行工具 <strong class="program">celery amqp</strong>，
+可用于访问 AMQP API，执行管理任务，比如创建/删除队列和交换器、
+清空队列或发送消息。它也可以用于非 AMQP 的 broker，
+但不同实现可能不会支持所有命令。</p>
+<p>你可以将命令作为参数直接传给 <strong class="program">celery amqp</strong>，
+也可以不传参数启动交互式 shell 模式：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>amqp
+<span class="go">-&gt; connecting to amqp://guest@localhost:5672/.</span>
+<span class="go">-&gt; connected.</span>
+<span class="go">1&gt;</span>
+</pre></div>
+</div>
+<p>此处的 <code class="docutils literal notranslate"><span class="pre">1&gt;</span></code> 是命令提示符。数字 1 表示你目前已执行的命令数。
+输入 <code class="docutils literal notranslate"><span class="pre">help</span></code> 可获取所有可用命令的列表。
+该工具还支持自动补全 —— 输入命令的前缀后按下 <cite>tab</cite> 键即可显示可能的匹配项。</p>
+<p>下面是创建一个可用于发送消息的队列的过程：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>amqp
+<span class="go">1&gt; exchange.declare testexchange direct</span>
+<span class="go">ok.</span>
+<span class="go">2&gt; queue.declare testqueue</span>
+<span class="go">ok. queue:testqueue messages:0 consumers:0.</span>
+<span class="go">3&gt; queue.bind testqueue testexchange testkey</span>
+<span class="go">ok.</span>
+</pre></div>
+</div>
+<p>上述操作创建了一个 direct 类型的交换器 <code class="docutils literal notranslate"><span class="pre">testexchange</span></code>，以及一个名为 <code class="docutils literal notranslate"><span class="pre">testqueue</span></code> 的队列。
+该队列使用路由键 <code class="docutils literal notranslate"><span class="pre">testkey</span></code> 与交换器绑定。</p>
+<p>从现在起，所有发送到交换器 <code class="docutils literal notranslate"><span class="pre">testexchange</span></code> 且路由键为 <code class="docutils literal notranslate"><span class="pre">testkey</span></code> 的消息都会被路由到该队列。
+你可以使用 <code class="docutils literal notranslate"><span class="pre">basic.publish</span></code> 命令发送一条消息：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">4&gt; basic.publish &#39;This is a message!&#39; testexchange testkey</span>
+<span class="go">ok.</span>
+</pre></div>
+</div>
+<p>消息发送后，你可以取回它。这里我们使用 <code class="docutils literal notranslate"><span class="pre">basic.get</span></code> 命令，它以同步方式轮询队列以获取新消息
+（该方式适合维护任务，对于服务则推荐使用 <code class="docutils literal notranslate"><span class="pre">basic.consume</span></code>）。</p>
+<p>从队列中取出一条消息：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">5&gt; basic.get testqueue</span>
+<span class="go">{&#39;body&#39;: &#39;This is a message!&#39;,</span>
+<span class="go">&#39;delivery_info&#39;: {&#39;delivery_tag&#39;: 1,</span>
+<span class="go">                &#39;exchange&#39;: u&#39;testexchange&#39;,</span>
+<span class="go">                &#39;message_count&#39;: 0,</span>
+<span class="go">                &#39;redelivered&#39;: False,</span>
+<span class="go">                &#39;routing_key&#39;: u&#39;testkey&#39;},</span>
+<span class="go">&#39;properties&#39;: {}}</span>
+</pre></div>
+</div>
+<p>AMQP 使用确认（acknowledgment）机制来表明消息已成功接收并处理。
+如果消息未被确认且消费者通道被关闭，该消息将被重新投递给其他消费者。</p>
+<p>请注意上面结构中的 delivery tag；
+在一个连接通道中，每条接收到的消息都有一个唯一的 delivery tag，
+用于对该消息进行确认。
+需要注意的是 delivery tag 在不同连接之间并不唯一，因此另一个客户端中的 tag <cite>1</cite>
+可能对应不同的消息。</p>
+<p>你可以使用 <code class="docutils literal notranslate"><span class="pre">basic.ack</span></code> 命令确认接收到的消息：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">6&gt; basic.ack 1</span>
+<span class="go">ok.</span>
+</pre></div>
+</div>
+<p>最后，为了清理测试过程中的资源，应删除创建的实体：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">7&gt; queue.delete testqueue</span>
+<span class="go">ok. 0 messages deleted.</span>
+<span class="go">8&gt; exchange.delete testexchange</span>
+<span class="go">ok.</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--14-input--2" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--2">英文</label><div class="tab-content docutils container">
+<p>Celery comes with a tool called <strong class="program">celery amqp</strong>
+that's used for command line access to the AMQP API, enabling access to
+administration tasks like creating/deleting queues and exchanges, purging
+queues or sending messages. It can also be used for non-AMQP brokers,
+but different implementation may not implement all commands.</p>
+<p>You can write commands directly in the arguments to <strong class="program">celery amqp</strong>,
+or just start with no arguments to start it in shell-mode:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>amqp
+<span class="go">-&gt; connecting to amqp://guest@localhost:5672/.</span>
+<span class="go">-&gt; connected.</span>
+<span class="go">1&gt;</span>
+</pre></div>
+</div>
+<p>Here <code class="docutils literal notranslate"><span class="pre">1&gt;</span></code> is the prompt. The number 1, is the number of commands you
+have executed so far. Type <code class="docutils literal notranslate"><span class="pre">help</span></code> for a list of commands available.
+It also supports auto-completion, so you can start typing a command and then
+hit the <cite>tab</cite> key to show a list of possible matches.</p>
+<p>Let's create a queue you can send messages to:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>amqp
+<span class="go">1&gt; exchange.declare testexchange direct</span>
+<span class="go">ok.</span>
+<span class="go">2&gt; queue.declare testqueue</span>
+<span class="go">ok. queue:testqueue messages:0 consumers:0.</span>
+<span class="go">3&gt; queue.bind testqueue testexchange testkey</span>
+<span class="go">ok.</span>
+</pre></div>
+</div>
+<p>This created the direct exchange <code class="docutils literal notranslate"><span class="pre">testexchange</span></code>, and a queue
+named <code class="docutils literal notranslate"><span class="pre">testqueue</span></code>. The queue is bound to the exchange using
+the routing key <code class="docutils literal notranslate"><span class="pre">testkey</span></code>.</p>
+<p>From now on all messages sent to the exchange <code class="docutils literal notranslate"><span class="pre">testexchange</span></code> with routing
+key <code class="docutils literal notranslate"><span class="pre">testkey</span></code> will be moved to this queue. You can send a message by
+using the <code class="docutils literal notranslate"><span class="pre">basic.publish</span></code> command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">4&gt; basic.publish &#39;This is a message!&#39; testexchange testkey</span>
+<span class="go">ok.</span>
+</pre></div>
+</div>
+<p>Now that the message is sent you can retrieve it again. You can use the
+<code class="docutils literal notranslate"><span class="pre">basic.get</span></code> command here, that polls for new messages on the queue
+in a synchronous manner
+(this is OK for maintenance tasks, but for services you want to use
+<code class="docutils literal notranslate"><span class="pre">basic.consume</span></code> instead)</p>
+<p>Pop a message off the queue:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">5&gt; basic.get testqueue</span>
+<span class="go">{&#39;body&#39;: &#39;This is a message!&#39;,</span>
+<span class="go">&#39;delivery_info&#39;: {&#39;delivery_tag&#39;: 1,</span>
+<span class="go">                &#39;exchange&#39;: u&#39;testexchange&#39;,</span>
+<span class="go">                &#39;message_count&#39;: 0,</span>
+<span class="go">                &#39;redelivered&#39;: False,</span>
+<span class="go">                &#39;routing_key&#39;: u&#39;testkey&#39;},</span>
+<span class="go">&#39;properties&#39;: {}}</span>
+</pre></div>
+</div>
+<p>AMQP uses acknowledgment to signify that a message has been received
+and processed successfully. If the message hasn't been acknowledged
+and consumer channel is closed, the message will be delivered to
+another consumer.</p>
+<p>Note the delivery tag listed in the structure above; Within a connection
+channel, every received message has a unique delivery tag,
+This tag is used to acknowledge the message. Also note that
+delivery tags aren't unique across connections, so in another client
+the delivery tag <cite>1</cite> might point to a different message than in this channel.</p>
+<p>You can acknowledge the message you received using <code class="docutils literal notranslate"><span class="pre">basic.ack</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">6&gt; basic.ack 1</span>
+<span class="go">ok.</span>
+</pre></div>
+</div>
+<p>To clean up after our test session you should delete the entities you created:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">7&gt; queue.delete testqueue</span>
+<span class="go">ok. 0 messages deleted.</span>
+<span class="go">8&gt; exchange.delete testexchange</span>
+<span class="go">ok.</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="routing-tasks">
+<span id="id14"></span><h2>路由任务<a class="headerlink" href="#routing-tasks" title="Link to this heading">¶</a></h2>
+<p>Routing Tasks</p>
+<section id="routing-defining-queues">
+<span id="id15"></span><h3>定义队列<a class="headerlink" href="#routing-defining-queues" title="Link to this heading">¶</a></h3>
+<p>Defining queues</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--15-input--1" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--1">中文</label><div class="tab-content docutils container">
+<p>在 Celery 中，可用的队列由 <a class="reference internal" href="configuration.html#std-setting-task_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queues</span></code></a> 设置定义。</p>
+<p>以下是一个包含三个队列的示例队列配置；
+一个用于视频，一个用于图像，还有一个默认队列，用于处理其他所有任务：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">default_exchange</span> <span class="o">=</span> <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;direct&#39;</span><span class="p">)</span>
+<span class="n">media_exchange</span> <span class="o">=</span> <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;direct&#39;</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">default_exchange</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;videos&#39;</span><span class="p">,</span> <span class="n">media_exchange</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;media.video&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">,</span> <span class="n">media_exchange</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;media.image&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_queue</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_exchange</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_routing_key</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+</pre></div>
+</div>
+<p>在上述配置中，<a class="reference internal" href="configuration.html#std-setting-task_default_queue"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_queue</span></code></a> 将用于路由那些未显式指定路由的任务。</p>
+<p>默认交换器、交换器类型和路由键将作为任务的默认路由参数，同时也作为
+<a class="reference internal" href="configuration.html#std-setting-task_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queues</span></code></a> 项中条目的默认值。</p>
+<p>还支持将多个绑定连接到同一个队列。以下是一个将两个路由键绑定到同一个队列的示例：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exchange</span><span class="p">,</span> <span class="n">Queue</span><span class="p">,</span> <span class="n">binding</span>
+
+<span class="n">media_exchange</span> <span class="o">=</span> <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;direct&#39;</span><span class="p">)</span>
+
+<span class="n">CELERY_QUEUES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="n">binding</span><span class="p">(</span><span class="n">media_exchange</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;media.video&#39;</span><span class="p">),</span>
+        <span class="n">binding</span><span class="p">(</span><span class="n">media_exchange</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;media.image&#39;</span><span class="p">),</span>
+    <span class="p">]),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--15-input--2" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--2">英文</label><div class="tab-content docutils container">
+<p>In Celery available queues are defined by the <a class="reference internal" href="configuration.html#std-setting-task_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queues</span></code></a> setting.</p>
+<p>Here's an example queue configuration with three queues;
+One for video, one for images, and one default queue for everything else:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">default_exchange</span> <span class="o">=</span> <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;direct&#39;</span><span class="p">)</span>
+<span class="n">media_exchange</span> <span class="o">=</span> <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;direct&#39;</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">default_exchange</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;videos&#39;</span><span class="p">,</span> <span class="n">media_exchange</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;media.video&#39;</span><span class="p">),</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">,</span> <span class="n">media_exchange</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;media.image&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_queue</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_exchange</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_default_routing_key</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+</pre></div>
+</div>
+<p>Here, the <a class="reference internal" href="configuration.html#std-setting-task_default_queue"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_default_queue</span></code></a> will be used to route tasks that
+doesn't have an explicit route.</p>
+<p>The default exchange, exchange type, and routing key will be used as the
+default routing values for tasks, and as the default values for entries
+in <a class="reference internal" href="configuration.html#std-setting-task_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queues</span></code></a>.</p>
+<p>Multiple bindings to a single queue are also supported.  Here's an example
+of two routing keys that are both bound to the same queue:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exchange</span><span class="p">,</span> <span class="n">Queue</span><span class="p">,</span> <span class="n">binding</span>
+
+<span class="n">media_exchange</span> <span class="o">=</span> <span class="n">Exchange</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;direct&#39;</span><span class="p">)</span>
+
+<span class="n">CELERY_QUEUES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Queue</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="n">binding</span><span class="p">(</span><span class="n">media_exchange</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;media.video&#39;</span><span class="p">),</span>
+        <span class="n">binding</span><span class="p">(</span><span class="n">media_exchange</span><span class="p">,</span> <span class="n">routing_key</span><span class="o">=</span><span class="s1">&#39;media.image&#39;</span><span class="p">),</span>
+    <span class="p">]),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="routing-task-destination">
+<span id="id16"></span><h3>指定任务目标<a class="headerlink" href="#routing-task-destination" title="Link to this heading">¶</a></h3>
+<p>Specifying task destination</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--16-input--1" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--1">中文</label><div class="tab-content docutils container">
+<p>任务的投递目标由以下内容决定（按顺序）：</p>
+<ol class="arabic simple">
+<li><p>调用 <code class="xref py py-func docutils literal notranslate"><span class="pre">Task.apply_async()</span></code> 时传入的路由参数。</p></li>
+<li><p>在 <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task" title="celery.app.task.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">Task</span></code></a> 上定义的与路由相关的属性。</p></li>
+<li><p>在 <a class="reference internal" href="configuration.html#std-setting-task_routes"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_routes</span></code></a> 中定义的 <a class="reference internal" href="#routers"><span class="std std-ref">路由器</span></a>。</p></li>
+</ol>
+<p>最佳实践是不硬编码这些设置，而是通过使用 <a class="reference internal" href="#routers"><span class="std std-ref">路由器</span></a> 留作配置选项；
+这是一种最灵活的方式，但仍可以通过任务属性设置合理的默认值。</p>
+</div>
+<input class="tab-input" id="tab-set--16-input--2" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--2">英文</label><div class="tab-content docutils container">
+<p>The destination for a task is decided by the following (in order):</p>
+<ol class="arabic simple">
+<li><p>The routing arguments to <code class="xref py py-func docutils literal notranslate"><span class="pre">Task.apply_async()</span></code>.</p></li>
+<li><p>Routing related attributes defined on the <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task" title="celery.app.task.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">Task</span></code></a>
+itself.</p></li>
+<li><p>The <a class="reference internal" href="#routers"><span class="std std-ref">路由器</span></a> defined in <a class="reference internal" href="configuration.html#std-setting-task_routes"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_routes</span></code></a>.</p></li>
+</ol>
+<p>It's considered best practice to not hard-code these settings, but rather
+leave that as configuration options by using <a class="reference internal" href="#routers"><span class="std std-ref">路由器</span></a>;
+This is the most flexible approach, but sensible defaults can still be set
+as task attributes.</p>
+</div>
+</div>
+</section>
+<section id="routers">
+<span id="id17"></span><h3>路由器<a class="headerlink" href="#routers" title="Link to this heading">¶</a></h3>
+<p>Routers</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--17-input--1" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--1">中文</label><div class="tab-content docutils container">
+<p>路由器是决定任务路由选项的函数。</p>
+<p>定义一个新的路由器函数，只需要定义一个具有如下签名的函数：
+<code class="docutils literal notranslate"><span class="pre">(name,</span> <span class="pre">args,</span> <span class="pre">kwargs,</span> <span class="pre">options,</span> <span class="pre">task=None,</span> <span class="pre">**kw)</span></code>：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">route_task</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;myapp.tasks.compress_video&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="s1">&#39;video&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;exchange_type&#39;</span><span class="p">:</span> <span class="s1">&#39;topic&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;routing_key&#39;</span><span class="p">:</span> <span class="s1">&#39;video.compress&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>如果你返回了 <code class="docutils literal notranslate"><span class="pre">queue</span></code> 键，它将会展开成该队列在 <a class="reference internal" href="configuration.html#std-setting-task_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queues</span></code></a> 中定义的设置：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;routing_key&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video.compress&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>展开为 --&gt;</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video&#39;</span><span class="p">,</span>
+<span class="s1">&#39;exchange&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video&#39;</span><span class="p">,</span>
+<span class="s1">&#39;exchange_type&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;topic&#39;</span><span class="p">,</span>
+<span class="s1">&#39;routing_key&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video.compress&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>你可以通过将路由器类添加到 <a class="reference internal" href="configuration.html#std-setting-task_routes"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_routes</span></code></a> 设置中来安装它们：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">(</span><span class="n">route_task</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>路由器函数也可以通过名称添加：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;myapp.routers.route_task&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>对于简单的任务名 -&gt; 路由映射，你可以直接将字典传递给 <a class="reference internal" href="configuration.html#std-setting-task_routes"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_routes</span></code></a>，
+以实现与上述示例相同的行为：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;myapp.tasks.compress_video&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;video&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;routing_key&#39;</span><span class="p">:</span> <span class="s1">&#39;video.compress&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>之后路由器将按顺序遍历，只要遇到一个返回了真值的路由器，就会停止，并使用该路由作为任务的最终路由。</p>
+<p>你也可以将多个路由器按顺序定义在列表中：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">route_task</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;myapp.tasks.compress_video&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;video&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;routing_key&#39;</span><span class="p">:</span> <span class="s1">&#39;video.compress&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>这些路由器将依次被调用，选择第一个返回值的路由器作为结果。</p>
+<p>如果你使用的是 Redis 或 RabbitMQ，也可以在路由中指定队列的默认优先级：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;myapp.tasks.compress_video&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;video&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;routing_key&#39;</span><span class="p">:</span> <span class="s1">&#39;video.compress&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;priority&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>类似地，调用任务的 <cite>apply_async</cite> 方法也可以覆盖默认优先级：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">priority</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition- admonition">
+<p class="admonition-title">优先级顺序与集群响应性</p>
+<p>需要注意的是，由于 worker 预取（prefetching）机制的存在，
+如果一批任务在同一时间提交，可能最初不会按优先级顺序执行。
+禁用 worker 预取可以避免该问题，但对于短小快速的任务，这可能会导致性能下降。
+在大多数情况下，仅将 <cite>worker_prefetch_multiplier</cite> 降为 1 就是更简单且更优雅的方式，
+它能提高系统响应性而不需完全禁用预取。</p>
+<p>注意，在使用 Redis broker 时，优先级值是逆序排序的：0 表示最高优先级。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--17-input--2" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--2">英文</label><div class="tab-content docutils container">
+<p>A router is a function that decides the routing options for a task.</p>
+<p>All you need to define a new router is to define a function with
+the signature <code class="docutils literal notranslate"><span class="pre">(name,</span> <span class="pre">args,</span> <span class="pre">kwargs,</span> <span class="pre">options,</span> <span class="pre">task=None,</span> <span class="pre">**kw)</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">route_task</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;myapp.tasks.compress_video&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="s1">&#39;video&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;exchange_type&#39;</span><span class="p">:</span> <span class="s1">&#39;topic&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;routing_key&#39;</span><span class="p">:</span> <span class="s1">&#39;video.compress&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If you return the <code class="docutils literal notranslate"><span class="pre">queue</span></code> key, it'll expand with the defined settings of
+that queue in <a class="reference internal" href="configuration.html#std-setting-task_queues"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_queues</span></code></a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;routing_key&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video.compress&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>becomes --&gt;</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;queue&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video&#39;</span><span class="p">,</span>
+<span class="s1">&#39;exchange&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video&#39;</span><span class="p">,</span>
+<span class="s1">&#39;exchange_type&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;topic&#39;</span><span class="p">,</span>
+<span class="s1">&#39;routing_key&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;video.compress&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>You install router classes by adding them to the <a class="reference internal" href="configuration.html#std-setting-task_routes"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_routes</span></code></a>
+setting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">(</span><span class="n">route_task</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>Router functions can also be added by name:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;myapp.routers.route_task&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>For simple task name -&gt; route mappings like the router example above,
+you can simply drop a dict into <a class="reference internal" href="configuration.html#std-setting-task_routes"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_routes</span></code></a> to get the
+same behavior:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;myapp.tasks.compress_video&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;video&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;routing_key&#39;</span><span class="p">:</span> <span class="s1">&#39;video.compress&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The routers will then be traversed in order, it will stop at the first router
+returning a true value, and use that as the final route for the task.</p>
+<p>You can also have multiple routers defined in a sequence:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">route_task</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;myapp.tasks.compress_video&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;video&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;routing_key&#39;</span><span class="p">:</span> <span class="s1">&#39;video.compress&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The routers will then be visited in turn, and the first to return
+a value will be chosen.</p>
+<p>If you're using Redis or RabbitMQ you can also specify the queue's default priority
+in the route.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;myapp.tasks.compress_video&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;video&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;routing_key&#39;</span><span class="p">:</span> <span class="s1">&#39;video.compress&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;priority&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Similarly, calling <cite>apply_async</cite> on a task will override that
+default priority.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">priority</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-priority-order-and-cluster-responsiveness admonition">
+<p class="admonition-title">Priority Order and Cluster Responsiveness</p>
+<p>It is important to note that, due to worker prefetching, if a bunch of tasks
+submitted at the same time they may be out of priority order at first.
+Disabling worker prefetching will prevent this issue, but may cause less than
+ideal performance for small, fast tasks. In most cases, simply reducing
+<cite>worker_prefetch_multiplier</cite> to 1 is an easier and cleaner way to increase the
+responsiveness of your system without the costs of disabling prefetching
+entirely.</p>
+<p>Note that priorities values are sorted in reverse when
+using the redis broker: 0 being highest priority.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="id18">
+<h3>广播<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
+<p>Broadcast</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--18-input--1" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--1">中文</label><div class="tab-content docutils container">
+<p>Celery 也支持广播路由（broadcast routing）。
+下面是一个名为 <code class="docutils literal notranslate"><span class="pre">broadcast_tasks</span></code> 的交换器示例，它会将任务的副本
+发送给所有连接到它的 worker：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">Broadcast</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">(</span><span class="n">Broadcast</span><span class="p">(</span><span class="s1">&#39;broadcast_tasks&#39;</span><span class="p">),)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;tasks.reload_cache&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;broadcast_tasks&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="s1">&#39;broadcast_tasks&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>现在， <code class="docutils literal notranslate"><span class="pre">tasks.reload_cache</span></code> 任务将会被发送给所有从该队列消费的 worker。</p>
+<p>以下是另一个使用广播路由的示例，这次是结合 <strong class="program">celery beat</strong> 调度器：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">Broadcast</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery.schedules</span><span class="w"> </span><span class="kn">import</span> <span class="n">crontab</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">(</span><span class="n">Broadcast</span><span class="p">(</span><span class="s1">&#39;broadcast_tasks&#39;</span><span class="p">),)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;test-task&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="s1">&#39;tasks.reload_cache&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="n">crontab</span><span class="p">(</span><span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="s1">&#39;*/3&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="s1">&#39;broadcast_tasks&#39;</span><span class="p">}</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition- admonition">
+<p class="admonition-title">广播与结果存储</p>
+<p>请注意，Celery 的任务结果机制并未定义当两个任务具有相同 task_id 时会发生什么。
+如果同一个任务被分发给多个 worker，那么任务状态的历史记录可能无法被保留。</p>
+<p>在这种情况下，建议设置 <code class="docutils literal notranslate"><span class="pre">task.ignore_result</span></code> 属性以避免不一致。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--18-input--2" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--2">英文</label><div class="tab-content docutils container">
+<p>Celery can also support broadcast routing.
+Here is an example exchange <code class="docutils literal notranslate"><span class="pre">broadcast_tasks</span></code> that delivers
+copies of tasks to all workers connected to it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">Broadcast</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">(</span><span class="n">Broadcast</span><span class="p">(</span><span class="s1">&#39;broadcast_tasks&#39;</span><span class="p">),)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;tasks.reload_cache&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="s1">&#39;broadcast_tasks&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="s1">&#39;broadcast_tasks&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now the <code class="docutils literal notranslate"><span class="pre">tasks.reload_cache</span></code> task will be sent to every
+worker consuming from this queue.</p>
+<p>Here is another example of broadcast routing, this time with
+a <strong class="program">celery beat</strong> schedule:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kombu.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">Broadcast</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery.schedules</span><span class="w"> </span><span class="kn">import</span> <span class="n">crontab</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_queues</span> <span class="o">=</span> <span class="p">(</span><span class="n">Broadcast</span><span class="p">(</span><span class="s1">&#39;broadcast_tasks&#39;</span><span class="p">),)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;test-task&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="s1">&#39;tasks.reload_cache&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="n">crontab</span><span class="p">(</span><span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="s1">&#39;*/3&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="s1">&#39;broadcast_tasks&#39;</span><span class="p">}</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition-broadcast-results admonition">
+<p class="admonition-title">Broadcast &amp; Results</p>
+<p>Note that Celery result doesn't define what happens if two
+tasks have the same task_id. If the same task is distributed to more
+than one worker, then the state history may not be preserved.</p>
+<p>It's a good idea to set the <code class="docutils literal notranslate"><span class="pre">task.ignore_result</span></code> attribute in
+this case.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="monitoring.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">监控和管理指南</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="periodic-tasks.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">周期性任务/Tasks</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2009-2023, Ask Solem &amp; contributors
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">路由任务/Tasks</a><ul>
+<li><a class="reference internal" href="#routing-basics">基础知识</a><ul>
+<li><a class="reference internal" href="#routing-automatic">自动路由</a><ul>
+<li><a class="reference internal" href="#routing-changing-default-queue">更改默认队列的名称</a></li>
+<li><a class="reference internal" href="#routing-autoqueue-details">队列的定义方式</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#routing-manual">手动路由</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#routing-special-options">特殊路由选项</a><ul>
+<li><a class="reference internal" href="#rabbitmq">RabbitMQ 消息优先级</a></li>
+<li><a class="reference internal" href="#redis">Redis 消息优先级</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#amqp">AMQP 入门</a><ul>
+<li><a class="reference internal" href="#id7">消息​​</a></li>
+<li><a class="reference internal" href="#amqp-producers-consumers-brokers">生产者、消费者和代理</a></li>
+<li><a class="reference internal" href="#amqp-exchanges-queues-keys">交换器、队列和路由键</a></li>
+<li><a class="reference internal" href="#amqp-exchange-types">交换器类型</a><ul>
+<li><a class="reference internal" href="#amqp-exchange-type-direct">直接交换器</a></li>
+<li><a class="reference internal" href="#amqp-exchange-type-topic">主题交换器</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#api">相关 API 命令</a><ul>
+<li><a class="reference internal" href="#queue.declare"><code class="docutils literal notranslate"><span class="pre">queue.declare()</span></code></a></li>
+<li><a class="reference internal" href="#queue.bind"><code class="docutils literal notranslate"><span class="pre">queue.bind()</span></code></a></li>
+<li><a class="reference internal" href="#queue.delete"><code class="docutils literal notranslate"><span class="pre">queue.delete()</span></code></a></li>
+<li><a class="reference internal" href="#exchange.delete"><code class="docutils literal notranslate"><span class="pre">exchange.delete()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#amqp-api-hands-on">API 实践</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#routing-tasks">路由任务</a><ul>
+<li><a class="reference internal" href="#routing-defining-queues">定义队列</a></li>
+<li><a class="reference internal" href="#routing-task-destination">指定任务目标</a></li>
+<li><a class="reference internal" href="#routers">路由器</a></li>
+<li><a class="reference internal" href="#id18">广播</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=8156d91f"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=5eb1bb1e"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    </body>
+</html>

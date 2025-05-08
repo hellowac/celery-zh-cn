@@ -1,0 +1,1346 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="下一步" href="next-steps.html" /><link rel="prev" title="使用 Google Pub/Sub" href="backends-and-brokers/gcpubsub.html" />
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>使用 Celery 的第一步 - Celery 5.5.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=3ee1c6c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/my.css?v=112ca36d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Celery 5.5.1 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/celery_512_1.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Celery 5.5.1 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../copyright.html">版权</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">快速开始</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 快速开始</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Celery 简介</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="backends-and-brokers/index.html">Backends 和 Brokers</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Backends 和 Brokers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="backends-and-brokers/rabbitmq.html">使用 RabbitMQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="backends-and-brokers/redis.html">使用 Redis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="backends-and-brokers/sqs.html">使用 Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="backends-and-brokers/kafka.html">使用 Kafka</a></li>
+<li class="toctree-l3"><a class="reference internal" href="backends-and-brokers/gcpubsub.html">使用 Google Pub/Sub</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">使用 Celery 的第一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="next-steps.html">下一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">资源</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../userguide/index.html">用户指南</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 用户指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/application.html">应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/tasks.html">任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/calling.html">调用任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/canvas.html">Canvas：设计工作流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/workers.html">Workers 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/daemonizing.html">守护进程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/periodic-tasks.html">周期性任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/routing.html">路由任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/monitoring.html">监控和管理指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/security.html">安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/optimizing.html">优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/debugging.html">调试</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../userguide/concurrency/index.html">并发</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 并发</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../userguide/concurrency/eventlet.html">Eventlet 并发</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../userguide/concurrency/gevent.html">gevent 并发</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/signals.html">信号</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/testing.html">使用 Celery 进行测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/extending.html">扩展 和 Bootsteps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/configuration.html">配置和默认值</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/sphinx.html">使用 Sphinx 文档化任务</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../django/index.html">Django</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Django</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../django/first-steps-with-django.html">使用 Django 的第一步</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">社区资源</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/task-cookbook.html">Task Cookbook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">更改历史</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">API 参考</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of API 参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cli.html">命令行接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">celery</span></code> --- Distributed processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html">Proxies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.task.html"><code class="docutils literal notranslate"><span class="pre">celery.app.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html">AMQP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html#queues">Queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.defaults.html"><code class="docutils literal notranslate"><span class="pre">celery.app.defaults</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.control.html"><code class="docutils literal notranslate"><span class="pre">celery.app.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.registry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.registry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.app.backends</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.builtins.html"><code class="docutils literal notranslate"><span class="pre">celery.app.builtins</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.events.html"><code class="docutils literal notranslate"><span class="pre">celery.app.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.log.html"><code class="docutils literal notranslate"><span class="pre">celery.app.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.app.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.autoretry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.autoretry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bootsteps.html"><code class="docutils literal notranslate"><span class="pre">celery.bootsteps</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.result.html"><code class="docutils literal notranslate"><span class="pre">celery.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.schedules.html"><code class="docutils literal notranslate"><span class="pre">celery.schedules</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.signals.html"><code class="docutils literal notranslate"><span class="pre">celery.signals</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.security.html"><code class="docutils literal notranslate"><span class="pre">celery.security</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.utils.debug.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.debug</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.exceptions.html"><code class="docutils literal notranslate"><span class="pre">celery.exceptions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.app.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.default.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.default</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.base.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html">States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#sets">Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#misc">Misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.FAILURE"><code class="docutils literal notranslate"><span class="pre">FAILURE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.PENDING"><code class="docutils literal notranslate"><span class="pre">PENDING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RECEIVED"><code class="docutils literal notranslate"><span class="pre">RECEIVED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RETRY"><code class="docutils literal notranslate"><span class="pre">RETRY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.REVOKED"><code class="docutils literal notranslate"><span class="pre">REVOKED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.STARTED"><code class="docutils literal notranslate"><span class="pre">STARTED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.SUCCESS"><code class="docutils literal notranslate"><span class="pre">SUCCESS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.precedence"><code class="docutils literal notranslate"><span class="pre">precedence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.state"><code class="docutils literal notranslate"><span class="pre">state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.abortable.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.abortable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.django.task.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.django.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.pytest.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.pytest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.sphinx.html">celery.contrib.sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.app.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.manager.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.manager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.mocks.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.mocks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.rdb.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.rdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.html"><code class="docutils literal notranslate"><span class="pre">celery.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.receiver.html"><code class="docutils literal notranslate"><span class="pre">celery.events.receiver</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.dispatcher.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.event.html"><code class="docutils literal notranslate"><span class="pre">celery.events.event</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.state.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.request.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.request</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.state.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.strategy.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.strategy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.agent.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.agent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.connection.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.connection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.events.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.gossip.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.gossip</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.heart.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.heart</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.mingle.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.mingle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.tasks.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.tasks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.base.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.celery.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.celery</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.events.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.logtool.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.logtool</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.amqp.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.amqp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.graph</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.call.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.call</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.control.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.list.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.list</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.purge.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.purge</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.result.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.shell.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.shell</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.upgrade.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.upgrade</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">内部</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 内部</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../internals/guide.html">代码贡献指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/deprecation.html">Celery 弃用时间表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/worker.html">内部的 worker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/protocol.html">消息协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/app-overview.html">“大实例”重构</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/reference/index.html">内部模块参考</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 内部模块参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.components.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.components</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.loops.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.loops</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.heartbeat.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.heartbeat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.control</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.pidbox.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.pidbox</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.autoscale.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.autoscale</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.solo.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.solo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.prefork.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.prefork</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.eventlet.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.eventlet</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.gevent.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.gevent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.thread.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.thread</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.base.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.backends</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.base.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.asynchronous.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.asynchronous</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.azureblockblob.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.azureblockblob</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.rpc.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.rpc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cache.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.consul.html">celery.backends.consul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchdb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchdb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.mongodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.mongodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.elasticsearch.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.elasticsearch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.redis.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.redis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cassandra.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cassandra</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchbase.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchbase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.arangodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.arangodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.dynamodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.dynamodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.filesystem.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.filesystem</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cosmosdbsql.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cosmosdbsql</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.s3.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.s3</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.gcs.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.gcs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.trace.html"><code class="docutils literal notranslate"><span class="pre">celery.app.trace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.annotations.html"><code class="docutils literal notranslate"><span class="pre">celery.app.annotations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.routes.html"><code class="docutils literal notranslate"><span class="pre">celery.app.routes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.certificate.html"><code class="docutils literal notranslate"><span class="pre">celery.security.certificate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.key.html"><code class="docutils literal notranslate"><span class="pre">celery.security.key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.security.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.security.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.snapshot.html"><code class="docutils literal notranslate"><span class="pre">celery.events.snapshot</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.cursesmon.html"><code class="docutils literal notranslate"><span class="pre">celery.events.cursesmon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.dumper.html"><code class="docutils literal notranslate"><span class="pre">celery.events.dumper</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.models.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.models</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.session.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.session</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.abstract.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.abstract</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.collections.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.collections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.nodenames.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.nodenames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.deprecated.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.deprecated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.functional.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.functional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.graph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.objects.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.term.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.term</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.time.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.time</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.iso8601.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.iso8601</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.saferepr.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.saferepr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.sysinfo.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.sysinfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.threads.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.threads</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.timer2.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.timer2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.imports.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.imports</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.log.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.log</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.text.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.signal.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch.signal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.platforms.html"><code class="docutils literal notranslate"><span class="pre">celery.platforms</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery._state.html"><code class="docutils literal notranslate"><span class="pre">celery._state</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../history/index.html">历史</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 历史</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.5.html">What's new in Celery 5.5 (Immunity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.5.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.4.html">What's new in Celery 5.4 (Opalescent)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.3.html">What's new in Celery 5.3 (Emerald Rush)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.1.html">What's new in Celery 5.1 (Sun Harmonics)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.0.html">What's new in Celery 5.0 (singularity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.4.html">What's new in Celery 4.4 (Cliffs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.3.html">What's new in Celery 4.3 (rhubarb)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.2.html">What's new in Celery 4.2 (windowlicker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.2.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.1.html">What's new in Celery 4.1 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.0.html">What's new in Celery 4.0 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-3.1.html">What's new in Celery 3.1 (Cipater)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-3.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-3.0.html">What's new in Celery 3.0 (Chiastic Slide)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-3.0.html">Change history for Celery 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-2.5.html">What's new in Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.5.html">Change history for Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.4.html">Change history for Celery 2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.3.html">Change history for Celery 2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.2.html">Change history for Celery 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.1.html">Change history for Celery 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.0.html">Change history for Celery 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-1.0.html">Change history for Celery 1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+</ul>
+
+</div>
+<!-- <iframe src="https://ghbtns.com/github-btn.html?user=celery&repo=celery&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe> -->
+<div id="donate">
+  <h5>捐赠</h5>
+  <p>请捐赠以支持这个社区项目</p>
+  <a href="https://opencollective.com/celery/donate" target="_blank">
+    <!-- <img src="https://opencollective.com/celery/donate/button@2x.png?color=blue" /> -->
+    <img src="https://opencollective.com/celery/donate/button.png?color=blue" />
+  </a>
+</div></div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/getting-started/first-steps-with-celery.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="celery">
+<span id="first-steps"></span><span id="tut-celery"></span><h1>使用 Celery 的第一步<a class="headerlink" href="#celery" title="Link to this heading">¶</a></h1>
+<p>First Steps with Celery</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>Celery 是一个“电池齐全”的任务队列系统。
+它易于上手，可以让你在不了解其解决问题的全部复杂性的情况下快速开始使用。
+它围绕最佳实践进行设计，能够让你的产品具备良好的可扩展性，并能够与其他语言集成，
+同时还提供了运行生产系统所需的工具与支持。</p>
+<p>在本教程中，你将学习使用 Celery 的最基础知识。</p>
+<p>学习内容包括：</p>
+<ul class="simple">
+<li><p>选择并安装消息传输组件（broker）；</p></li>
+<li><p>安装 Celery 并创建你的第一个任务；</p></li>
+<li><p>启动 worker 并调用任务；</p></li>
+<li><p>跟踪任务在不同状态之间的转换，并检查其返回值。</p></li>
+</ul>
+<p>Celery 初看可能让人望而生畏 —— 但别担心 —— 本教程会帮你迅速入门。
+教程内容有意保持简洁，以避免高级功能带来的困扰。
+在你完成本教程后，建议继续阅读其余文档，例如 <a class="reference internal" href="next-steps.html#next-steps"><span class="std std-ref">下一步</span></a> 教程将展示 Celery 更强大的能力。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>Celery is a task queue with batteries included.
+It's easy to use so that you can get started without learning
+the full complexities of the problem it solves. It's designed
+around best practices so that your product can scale
+and integrate with other languages, and it comes with the
+tools and support you need to run such a system in production.</p>
+<p>In this tutorial you'll learn the absolute basics of using Celery.</p>
+<p>Learn about:</p>
+<ul class="simple">
+<li><p>Choosing and installing a message transport (broker).</p></li>
+<li><p>Installing Celery and creating your first task.</p></li>
+<li><p>Starting the worker and calling tasks.</p></li>
+<li><p>Keeping track of tasks as they transition through different states,</p></li>
+</ul>
+<p>and inspecting return values.</p>
+<p>Celery may seem daunting at first - but don't worry - this tutorial
+will get you started in no time. It's deliberately kept simple, so
+as to not confuse you with advanced features.
+After you have finished this tutorial,
+it's a good idea to browse the rest of the documentation.
+For example the <a class="reference internal" href="next-steps.html#next-steps"><span class="std std-ref">下一步</span></a> tutorial will
+showcase Celery's capabilities.</p>
+</div>
+</div>
+<section id="broker">
+<span id="celerytut-broker"></span><h2>选择 Broker<a class="headerlink" href="#broker" title="Link to this heading">¶</a></h2>
+<p>Choosing a Broker</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>Celery 需要一个用于发送与接收消息的解决方案；
+这通常表现为一个独立的服务，称为 <em>消息中间件（message broker）</em>。</p>
+<p>你可以从以下几种方案中选择：</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>Celery requires a solution to send and receive messages; usually this
+comes in the form of a separate service called a <em>message broker</em>.</p>
+<p>There are several choices available, including:</p>
+</div>
+</div>
+<section id="rabbitmq">
+<h3>RabbitMQ<a class="headerlink" href="#rabbitmq" title="Link to this heading">¶</a></h3>
+<p>RabbitMQ</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p><a class="reference external" href="http://www.rabbitmq.com/">RabbitMQ</a> 功能完备、稳定可靠、持久性强且易于安装。
+它是生产环境中的优秀选择。
+关于如何将 RabbitMQ 与 Celery 配合使用的详细信息：</p>
+<blockquote>
+<div><p><a class="reference internal" href="backends-and-brokers/rabbitmq.html#broker-rabbitmq"><span class="std std-ref">使用 RabbitMQ</span></a></p>
+</div></blockquote>
+<p>如果你使用的是 Ubuntu 或 Debian，可以执行以下命令安装 RabbitMQ：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>rabbitmq-server
+</pre></div>
+</div>
+<p>或者，如果你想使用 Docker 运行它，可以执行：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">5672</span>:5672<span class="w"> </span>rabbitmq
+</pre></div>
+</div>
+<p>命令执行完成后，broker 会在后台运行，准备好为你传递消息：
+<code class="docutils literal notranslate"><span class="pre">Starting</span> <span class="pre">rabbitmq-server:</span> <span class="pre">SUCCESS</span></code>。</p>
+<p>如果你不是使用 Ubuntu 或 Debian，也不必担心，
+你可以访问以下网址，查找适用于其他平台（包括 Microsoft Windows）的安装指南：</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.rabbitmq.com/download.html">http://www.rabbitmq.com/download.html</a></p>
+</div></blockquote>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p><a class="reference external" href="http://www.rabbitmq.com/">RabbitMQ</a> is feature-complete, stable, durable and easy to install.
+It's an excellent choice for a production environment.
+Detailed information about using RabbitMQ with Celery:</p>
+<blockquote>
+<div><p><a class="reference internal" href="backends-and-brokers/rabbitmq.html#broker-rabbitmq"><span class="std std-ref">使用 RabbitMQ</span></a></p>
+</div></blockquote>
+<p>If you're using Ubuntu or Debian install RabbitMQ by executing this
+command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>rabbitmq-server
+</pre></div>
+</div>
+<p>Or, if you want to run it on Docker execute this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">5672</span>:5672<span class="w"> </span>rabbitmq
+</pre></div>
+</div>
+<p>When the command completes, the broker will already be running in the background,
+ready to move messages for you: <code class="docutils literal notranslate"><span class="pre">Starting</span> <span class="pre">rabbitmq-server:</span> <span class="pre">SUCCESS</span></code>.</p>
+<p>Don't worry if you're not running Ubuntu or Debian, you can go to this
+website to find similarly simple installation instructions for other
+platforms, including Microsoft Windows:</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.rabbitmq.com/download.html">http://www.rabbitmq.com/download.html</a></p>
+</div></blockquote>
+</div>
+</div>
+</section>
+<section id="redis">
+<h3>Redis<a class="headerlink" href="#redis" title="Link to this heading">¶</a></h3>
+<p>Redis</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p><a class="reference external" href="https://redis.io/">Redis</a> 也是一个功能完备的解决方案，
+但在遇到异常终止或断电的情况下更容易出现数据丢失。
+关于使用 Redis 的详细信息：</p>
+<p><a class="reference internal" href="backends-and-brokers/redis.html#broker-redis"><span class="std std-ref">使用 Redis</span></a></p>
+<p>如果你想在 Docker 中运行 Redis，可以执行以下命令：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">6379</span>:6379<span class="w"> </span>redis
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p><a class="reference external" href="https://redis.io/">Redis</a> is also feature-complete, but is more susceptible to data loss in
+the event of abrupt termination or power failures. Detailed information about using Redis:</p>
+<p><a class="reference internal" href="backends-and-brokers/redis.html#broker-redis"><span class="std std-ref">使用 Redis</span></a></p>
+<p>If you want to run it on Docker execute this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">6379</span>:6379<span class="w"> </span>redis
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id3">
+<h3>其他 broker<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<p>Other brokers</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>除了上述方案外，还有一些实验性的传输实现可供选择，
+包括 <a class="reference internal" href="backends-and-brokers/sqs.html#broker-sqs"><span class="std std-ref">Amazon SQS</span></a> 等。</p>
+<p>完整列表请参见 <a class="reference internal" href="backends-and-brokers/index.html#broker-overview"><span class="std std-ref">Broker 概览</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>In addition to the above, there are other experimental transport implementations
+to choose from, including <a class="reference internal" href="backends-and-brokers/sqs.html#broker-sqs"><span class="std std-ref">Amazon SQS</span></a>.</p>
+<p>See <a class="reference internal" href="backends-and-brokers/index.html#broker-overview"><span class="std std-ref">Broker 概览</span></a> for a full list.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="celerytut-installation">
+<span id="id4"></span><h2>安装 Celery<a class="headerlink" href="#celerytut-installation" title="Link to this heading">¶</a></h2>
+<p>Installing Celery</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>Celery 已发布至 Python 软件包索引（PyPI），因此可以使用标准的 Python 工具（如 <code class="docutils literal notranslate"><span class="pre">pip</span></code> ）进行安装:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Celery is on the Python Package Index (PyPI), so it can be installed
+with standard Python tools like <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="application">
+<h2>Application<a class="headerlink" href="#application" title="Link to this heading">¶</a></h2>
+<p>Application</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>你首先需要一个 Celery 实例。我们称之为 <em>Celery 应用</em>，简称 <em>app</em>。由于该实例是你在 Celery 中执行所有操作的入口点（如创建任务、管理 Worker 等），它必须能被其他模块导入。</p>
+<p>本教程将所有内容集中在一个模块中，但在较大的项目中，建议创建一个 <a class="reference internal" href="next-steps.html#project-layout"><span class="std std-ref">专用模块</span></a>。</p>
+<p>我们来创建一个 <code class="file docutils literal notranslate"><span class="pre">tasks.py</span></code> 文件：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">Celery</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s1">&#39;tasks&#39;</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="s1">&#39;pyamqp://guest@localhost//&#39;</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Celery</span></code> 的第一个参数是当前模块的名称，这样在任务定义于 <cite>__main__</cite> 模块时可以自动生成名称。</p>
+<p>第二个参数是 <code class="docutils literal notranslate"><span class="pre">broker</span></code> 关键字参数，用于指定你想使用的消息中间件的 URL。这里我们使用的是 RabbitMQ（也是默认选项）。</p>
+<p>更多中间件选项参见 <a class="reference internal" href="#celerytut-broker"><span class="std std-ref">选择 Broker</span></a> —— 如果你使用 RabbitMQ，可以写成 <code class="docutils literal notranslate"><span class="pre">amqp://localhost</span></code>，使用 Redis 则可以写成 <code class="docutils literal notranslate"><span class="pre">redis://localhost</span></code>。</p>
+<p>你定义了一个简单的任务 <code class="docutils literal notranslate"><span class="pre">add</span></code>，用于返回两个数的和。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>The first thing you need is a Celery instance.  We call this the <em>Celery
+application</em> or just <em>app</em> for short. As this instance is used as
+the entry-point for everything you want to do in Celery, like creating tasks and
+managing workers, it must be possible for other modules to import it.</p>
+<p>In this tutorial we keep everything contained in a single module,
+but for larger projects you want to create
+a <a class="reference internal" href="next-steps.html#project-layout"><span class="std std-ref">dedicated module</span></a>.</p>
+<p>Let's create the file <code class="file docutils literal notranslate"><span class="pre">tasks.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">Celery</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s1">&#39;tasks&#39;</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="s1">&#39;pyamqp://guest@localhost//&#39;</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p>The first argument to <code class="xref py py-class docutils literal notranslate"><span class="pre">Celery</span></code> is the name of the current module.
+This is only needed so that names can be automatically generated when the tasks are
+defined in the <cite>__main__</cite> module.</p>
+<p>The second argument is the broker keyword argument, specifying the URL of the
+message broker you want to use. Here we are using RabbitMQ (also the default option).</p>
+<p>See <a class="reference internal" href="#celerytut-broker"><span class="std std-ref">选择 Broker</span></a> above for more choices --
+for RabbitMQ you can use <code class="docutils literal notranslate"><span class="pre">amqp://localhost</span></code>, or for Redis you can
+use <code class="docutils literal notranslate"><span class="pre">redis://localhost</span></code>.</p>
+<p>You defined a single task, called <code class="docutils literal notranslate"><span class="pre">add</span></code>, returning the sum of two numbers.</p>
+</div>
+</div>
+</section>
+<section id="celery-worker">
+<span id="celerytut-running-the-worker"></span><h2>运行 Celery Worker 服务<a class="headerlink" href="#celery-worker" title="Link to this heading">¶</a></h2>
+<p>Running the Celery worker server</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>你现在可以通过在程序中加入 <code class="docutils literal notranslate"><span class="pre">worker</span></code> 参数来运行 worker 进程：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>tasks<span class="w"> </span>worker<span class="w"> </span>--loglevel<span class="o">=</span>INFO
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果 worker 无法启动，请参考 <a class="reference internal" href="#celerytut-troubleshooting"><span class="std std-ref">问题排查</span></a> 部分进行排查。</p>
+</div>
+<p>在生产环境中，你可能希望将 worker 作为后台守护进程运行。
+要实现这一点，你需要使用你的操作系统所提供的工具，或者使用像 <a class="reference external" href="http://supervisord.org">supervisord</a> 这样的进程管理器（参见 <a class="reference internal" href="../userguide/daemonizing.html#daemonizing"><span class="std std-ref">守护进程</span></a> 了解更多信息）。</p>
+<p>若要查看所有可用的命令行选项，可运行：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>worker<span class="w"> </span>--help
+</pre></div>
+</div>
+<p>此外 Celery 还有许多其他可用的命令，也可以通过以下方式查看帮助信息：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>--help
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>You can now run the worker by executing our program with the <code class="docutils literal notranslate"><span class="pre">worker</span></code>
+argument:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>tasks<span class="w"> </span>worker<span class="w"> </span>--loglevel<span class="o">=</span>INFO
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>See the <a class="reference internal" href="#celerytut-troubleshooting"><span class="std std-ref">问题排查</span></a> section if the worker
+doesn't start.</p>
+</div>
+<p>In production you'll want to run the worker in the
+background as a daemon. To do this you need to use the tools provided
+by your platform, or something like <a class="reference external" href="http://supervisord.org">supervisord</a> (see <a class="reference internal" href="../userguide/daemonizing.html#daemonizing"><span class="std std-ref">守护进程</span></a>
+for more information).</p>
+<p>For a complete listing of the command-line options available, do:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$  </span>celery<span class="w"> </span>worker<span class="w"> </span>--help
+</pre></div>
+</div>
+<p>There are also several other commands available, and help is also available:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>--help
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="celerytut-calling">
+<span id="id5"></span><h2>调用任务<a class="headerlink" href="#celerytut-calling" title="Link to this heading">¶</a></h2>
+<p>Calling the task</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>要调用我们的任务，可以使用 <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.delay" title="celery.app.task.Task.delay"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delay()</span></code></a> 方法。</p>
+<p>这是 <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.apply_async" title="celery.app.task.Task.apply_async"><code class="xref py py-meth docutils literal notranslate"><span class="pre">apply_async()</span></code></a> 方法的便捷快捷方式，后者提供了更强大的任务执行控制（见 <a class="reference internal" href="../userguide/calling.html#guide-calling"><span class="std std-ref">调用任务/Tasks</span></a>）：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tasks</span><span class="w"> </span><span class="kn">import</span> <span class="n">add</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>此时任务已经由之前启动的 worker 处理。
+你可以通过查看 worker 控制台的输出，验证任务是否已被处理。</p>
+<p>调用任务会返回一个 <a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult" title="celery.result.AsyncResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncResult</span></code></a> 实例。
+可以使用该实例检查任务的状态、等待任务完成，或者获取任务的返回值（如果任务失败，还可以获取异常和回溯信息）。</p>
+<p>默认情况下，结果功能是禁用的。
+如果你希望进行远程过程调用或跟踪任务结果到数据库中，你需要配置 Celery 使用一个结果后端（Result Backend）。
+有关这方面的配置，请参考下一节。</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>To call our task you can use the <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.delay" title="celery.app.task.Task.delay"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delay()</span></code></a> method.</p>
+<p>This is a handy shortcut to the <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.apply_async" title="celery.app.task.Task.apply_async"><code class="xref py py-meth docutils literal notranslate"><span class="pre">apply_async()</span></code></a>
+method that gives greater control of the task execution (see
+<a class="reference internal" href="../userguide/calling.html#guide-calling"><span class="std std-ref">调用任务/Tasks</span></a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tasks</span><span class="w"> </span><span class="kn">import</span> <span class="n">add</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The task has now been processed by the worker you started earlier.
+You can verify this by looking at the worker's console output.</p>
+<p>Calling a task returns an <a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult" title="celery.result.AsyncResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncResult</span></code></a> instance.
+This can be used to check the state of the task, wait for the task to finish,
+or get its return value (or if the task failed, to get the exception and traceback).</p>
+<p>Results are not enabled by default. In order to do remote procedure calls
+or keep track of task results in a database, you will need to configure Celery to use a result
+backend.  This is described in the next section.</p>
+</div>
+</div>
+</section>
+<section id="celerytut-keeping-results">
+<span id="id6"></span><h2>保存结果<a class="headerlink" href="#celerytut-keeping-results" title="Link to this heading">¶</a></h2>
+<p>Keeping Results</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>如果你希望跟踪任务的状态，Celery 需要将这些状态存储或发送到某个地方。你可以选择多个内置的结果后端： <a class="reference external" href="http://www.sqlalchemy.org/">SQLAlchemy</a> / <a class="reference external" href="http://djangoproject.com">Django</a> ORM、 <a class="reference external" href="http://www.mongodb.org">MongoDB</a> 、 <a class="reference external" href="http://memcached.org">Memcached</a> 、 <a class="reference external" href="https://redis.io/">Redis</a> 、<a class="reference internal" href="../userguide/configuration.html#conf-rpc-result-backend"><span class="std std-ref">RPC</span></a> （ <a class="reference external" href="http://www.rabbitmq.com/">RabbitMQ</a> / AMQP），或者你也可以定义自己的后端。</p>
+<p>在这个示例中，我们使用 <cite>rpc</cite> 结果后端，它将状态作为瞬时消息发送回来。后端通过 <cite>backend</cite> 参数传递给 <code class="xref py py-class docutils literal notranslate"><span class="pre">Celery`（如果你选择使用配置模块，则通过</span> <span class="pre">:setting:`result_backend</span></code> 设置）。因此，你可以修改 <cite>tasks.py</cite> 文件中的这一行来启用 <cite>rpc://</cite> 后端：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s1">&#39;tasks&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;rpc://&#39;</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="s1">&#39;pyamqp://&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>或者，如果你想使用 Redis 作为结果后端，但仍然使用 RabbitMQ 作为消息代理（这是一个常见的组合）：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s1">&#39;tasks&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;redis://localhost&#39;</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="s1">&#39;pyamqp://&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>要了解有关结果后端的更多信息，请参阅 <a class="reference internal" href="../userguide/tasks.html#task-result-backends"><span class="std std-ref">结果后端</span></a>。</p>
+<p>现在，配置了结果后端后，重新启动 worker，关闭当前的 Python 会话，然后再次导入 <cite>tasks</cite> 模块以使更改生效。此时，当你调用任务时，你将持有返回的 <a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult" title="celery.result.AsyncResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncResult</span></code></a> 实例：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tasks</span><span class="w"> </span><span class="kn">import</span> <span class="n">add</span>    <span class="c1"># 关闭并重新打开以获取更新的 &#39;app&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult.ready" title="celery.result.AsyncResult.ready"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ready()</span></code></a> 方法返回任务是否已完成处理：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">ready</span><span class="p">()</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>你可以等待结果完成，但这很少使用，因为它将异步调用转化为同步调用：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">8</span>
+</pre></div>
+</div>
+<p>如果任务引发了异常，<a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult.get" title="celery.result.AsyncResult.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a> 将重新引发该异常，但你可以通过指定 <cite>propagate</cite> 参数来覆盖这一行为：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">propagate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>如果任务引发了异常，你还可以访问原始的回溯信息：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">traceback</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>后端使用资源来存储和传输结果。为了确保资源被释放，你必须最终对每个通过调用任务返回的 <a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult" title="celery.result.AsyncResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncResult</span></code></a> 实例调用 <a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult.get" title="celery.result.AsyncResult.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a> 或 <a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult.forget" title="celery.result.AsyncResult.forget"><code class="xref py py-meth docutils literal notranslate"><span class="pre">forget()</span></code></a>。</p>
+</div>
+<p>请参见 <a class="reference internal" href="../reference/celery.result.html#module-celery.result" title="celery.result"><code class="xref py py-mod docutils literal notranslate"><span class="pre">celery.result</span></code></a> 获取完整的结果对象参考。</p>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>If you want to keep track of the tasks' states, Celery needs to store or send
+the states somewhere. There are several
+built-in result backends to choose from: <a class="reference external" href="http://www.sqlalchemy.org/">SQLAlchemy</a>/<a class="reference external" href="http://djangoproject.com">Django</a> ORM,
+<a class="reference external" href="http://www.mongodb.org">MongoDB</a>, <a class="reference external" href="http://memcached.org">Memcached</a>, <a class="reference external" href="https://redis.io/">Redis</a>, <a class="reference internal" href="../userguide/configuration.html#conf-rpc-result-backend"><span class="std std-ref">RPC</span></a> (<a class="reference external" href="http://www.rabbitmq.com/">RabbitMQ</a>/AMQP),
+and -- or you can define your own.</p>
+<p>For this example we use the <cite>rpc</cite> result backend, that sends states
+back as transient messages. The backend is specified via the <code class="docutils literal notranslate"><span class="pre">backend</span></code> argument to
+<a class="reference internal" href="../reference/celery.html#celery.Celery" title="celery.Celery"><code class="xref py py-class docutils literal notranslate"><span class="pre">Celery</span></code></a>, (or via the <a class="reference internal" href="../userguide/configuration.html#std-setting-result_backend"><code class="xref std std-setting docutils literal notranslate"><span class="pre">result_backend</span></code></a> setting if
+you choose to use a configuration module). So, you can modify this line in the <cite>tasks.py</cite>
+file to enable the <cite>rpc://</cite> backend:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s1">&#39;tasks&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;rpc://&#39;</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="s1">&#39;pyamqp://&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or if you want to use Redis as the result backend, but still use RabbitMQ as
+the message broker (a popular combination):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s1">&#39;tasks&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;redis://localhost&#39;</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="s1">&#39;pyamqp://&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To read more about result backends please see <a class="reference internal" href="../userguide/tasks.html#task-result-backends"><span class="std std-ref">结果后端</span></a>.</p>
+<p>Now with the result backend configured, restart the worker, close the current python session and import the
+<code class="docutils literal notranslate"><span class="pre">tasks</span></code> module again to put the changes into effect. This time you'll hold on to the
+<a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult" title="celery.result.AsyncResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncResult</span></code></a> instance returned when you call a task:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tasks</span><span class="w"> </span><span class="kn">import</span> <span class="n">add</span>    <span class="c1"># close and reopen to get updated &#39;app&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult.ready" title="celery.result.AsyncResult.ready"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ready()</span></code></a> method returns whether the task
+has finished processing or not:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">ready</span><span class="p">()</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>You can wait for the result to complete, but this is rarely used
+since it turns the asynchronous call into a synchronous one:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">8</span>
+</pre></div>
+</div>
+<p>In case the task raised an exception, <a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult.get" title="celery.result.AsyncResult.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a> will
+re-raise the exception, but you can override this by specifying
+the <code class="docutils literal notranslate"><span class="pre">propagate</span></code> argument:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">propagate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the task raised an exception, you can also gain access to the
+original traceback:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">traceback</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Backends use resources to store and transmit results. To ensure
+that resources are released, you must eventually call
+<a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult.get" title="celery.result.AsyncResult.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a> or <a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult.forget" title="celery.result.AsyncResult.forget"><code class="xref py py-meth docutils literal notranslate"><span class="pre">forget()</span></code></a> on
+EVERY <a class="reference internal" href="../reference/celery.result.html#celery.result.AsyncResult" title="celery.result.AsyncResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncResult</span></code></a> instance returned after calling
+a task.</p>
+</div>
+<p>See <a class="reference internal" href="../reference/celery.result.html#module-celery.result" title="celery.result"><code class="xref py py-mod docutils literal notranslate"><span class="pre">celery.result</span></code></a> for the complete result object reference.</p>
+</div>
+</div>
+</section>
+<section id="celerytut-configuration">
+<span id="id7"></span><h2>Celery 配置<a class="headerlink" href="#celerytut-configuration" title="Link to this heading">¶</a></h2>
+<p>Configuration</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>Celery 像一台消费型电器一样，不需要复杂的配置即可运行。
+它有输入和输出。输入必须连接到一个代理（broker），输出可以选择性地连接到结果后端。然而，如果你仔细观察后部，你会发现有很多滑块、旋钮和按钮：这些就是配置项。</p>
+<p>默认配置对于大多数用例应该足够了，但有许多选项可以进行配置，以使 Celery 完全按照需要的方式工作。阅读可用的配置选项是一个好主意，这样可以帮助你了解哪些内容是可以配置的。你可以在 <a class="reference internal" href="../userguide/configuration.html#configuration"><span class="std std-ref">配置和默认值</span></a> 参考中阅读这些选项。</p>
+<p>配置可以直接在应用程序中设置，也可以通过使用专门的配置模块来设置。作为示例，你可以通过更改 <a class="reference internal" href="../userguide/configuration.html#std-setting-task_serializer"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_serializer</span></code></a> 设置来配置默认的任务有效负载序列化器：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_serializer</span> <span class="o">=</span> <span class="s1">&#39;json&#39;</span>
+</pre></div>
+</div>
+<p>如果你一次配置多个设置，可以使用 <code class="docutils literal notranslate"><span class="pre">update</span></code> 方法：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="n">task_serializer</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">,</span>
+    <span class="n">accept_content</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">],</span>  <span class="c1"># 忽略其他内容</span>
+    <span class="n">result_serializer</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">,</span>
+    <span class="n">timezone</span><span class="o">=</span><span class="s1">&#39;Europe/Oslo&#39;</span><span class="p">,</span>
+    <span class="n">enable_utc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>对于较大的项目，推荐使用专门的配置模块。避免将周期性任务间隔和任务路由选项硬编码在代码中。将这些设置集中存放更好，尤其是在库中，这样可以让用户控制他们的任务行为。集中配置也能让系统管理员在发生系统故障时轻松进行调整。</p>
+<p>你可以通过调用 <a class="reference internal" href="../reference/celery.html#celery.Celery.config_from_object" title="celery.Celery.config_from_object"><code class="xref py py-meth docutils literal notranslate"><span class="pre">app.config_from_object()</span></code></a> 方法让 Celery 实例使用配置模块：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">config_from_object</span><span class="p">(</span><span class="s1">&#39;celeryconfig&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这个模块通常被命名为 &quot;<code class="docutils literal notranslate"><span class="pre">celeryconfig</span></code>&quot;，但你可以使用任何模块名。</p>
+<p>在上面的例子中，必须提供一个名为 <code class="docutils literal notranslate"><span class="pre">celeryconfig.py</span></code> 的模块，该模块可以从当前目录或 Python 路径中加载。它可能如下所示：</p>
+<p><code class="file docutils literal notranslate"><span class="pre">celeryconfig.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">broker_url</span> <span class="o">=</span> <span class="s1">&#39;pyamqp://&#39;</span>
+<span class="n">result_backend</span> <span class="o">=</span> <span class="s1">&#39;rpc://&#39;</span>
+
+<span class="n">task_serializer</span> <span class="o">=</span> <span class="s1">&#39;json&#39;</span>
+<span class="n">result_serializer</span> <span class="o">=</span> <span class="s1">&#39;json&#39;</span>
+<span class="n">accept_content</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]</span>
+<span class="n">timezone</span> <span class="o">=</span> <span class="s1">&#39;Europe/Oslo&#39;</span>
+<span class="n">enable_utc</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>为了验证你的配置文件是否正常工作，并且不包含任何语法错误，你可以尝试导入它：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>celeryconfig
+</pre></div>
+</div>
+<p>有关完整的配置选项参考，请参阅 <a class="reference internal" href="../userguide/configuration.html#configuration"><span class="std std-ref">配置和默认值</span></a>。</p>
+<p>为了展示配置文件的强大功能，下面是如何将一个表现不佳的任务路由到专门的队列：</p>
+<p><code class="file docutils literal notranslate"><span class="pre">celeryconfig.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;tasks.add&#39;</span><span class="p">:</span> <span class="s1">&#39;low-priority&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>或者，你也可以选择限制该任务的处理速率，而不是路由它，这样每分钟只允许处理 10 个此类任务（10/m）：</p>
+<p><code class="file docutils literal notranslate"><span class="pre">celeryconfig.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_annotations</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;tasks.add&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;rate_limit&#39;</span><span class="p">:</span> <span class="s1">&#39;10/m&#39;</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>如果你使用的是 RabbitMQ 或 Redis 作为代理，你也可以在运行时指示 worker 为任务设置新的速率限制：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>tasks<span class="w"> </span>control<span class="w"> </span>rate_limit<span class="w"> </span>tasks.add<span class="w"> </span><span class="m">10</span>/m
+<span class="go">worker@example.com: OK</span>
+<span class="go">    new rate limit set successfully</span>
+</pre></div>
+</div>
+<p>参见 <a class="reference internal" href="../userguide/routing.html#guide-routing"><span class="std std-ref">路由任务/Tasks</span></a> 了解更多关于任务路由的信息，和 <a class="reference internal" href="../userguide/configuration.html#std-setting-task_annotations"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_annotations</span></code></a> 设置了解更多关于注释的内容，或者查看 <a class="reference internal" href="../userguide/monitoring.html#guide-monitoring"><span class="std std-ref">监控和管理指南</span></a> 了解更多关于远程控制命令以及如何监控 worker 的运行情况。</p>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<p>Celery, like a consumer appliance, doesn't need much configuration to operate.
+It has an input and an output. The input must be connected to a broker, and the output can
+be optionally connected to a result backend. However, if you look closely at the back,
+there's a lid revealing loads of sliders, dials, and buttons: this is the configuration.</p>
+<p>The default configuration should be good enough for most use cases, but there are
+many options that can be configured to make Celery work exactly as needed.
+Reading about the options available is a good idea to familiarize yourself with what
+can be configured. You can read about the options in the
+<a class="reference internal" href="../userguide/configuration.html#configuration"><span class="std std-ref">配置和默认值</span></a> reference.</p>
+<p>The configuration can be set on the app directly or by using a dedicated
+configuration module.
+As an example you can configure the default serializer used for serializing
+task payloads by changing the <a class="reference internal" href="../userguide/configuration.html#std-setting-task_serializer"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_serializer</span></code></a> setting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_serializer</span> <span class="o">=</span> <span class="s1">&#39;json&#39;</span>
+</pre></div>
+</div>
+<p>If you're configuring many settings at once you can use <code class="docutils literal notranslate"><span class="pre">update</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="n">task_serializer</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">,</span>
+    <span class="n">accept_content</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">],</span>  <span class="c1"># Ignore other content</span>
+    <span class="n">result_serializer</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">,</span>
+    <span class="n">timezone</span><span class="o">=</span><span class="s1">&#39;Europe/Oslo&#39;</span><span class="p">,</span>
+    <span class="n">enable_utc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>For larger projects, a dedicated configuration module is recommended.
+Hard coding periodic task intervals and task routing options is discouraged.
+It is much better to keep these in a centralized location. This is especially
+true for libraries, as it enables users to control how their tasks behave.
+A centralized configuration will also allow your SysAdmin to make simple changes
+in the event of system trouble.</p>
+<p>You can tell your Celery instance to use a configuration module
+by calling the <a class="reference internal" href="../reference/celery.html#celery.Celery.config_from_object" title="celery.Celery.config_from_object"><code class="xref py py-meth docutils literal notranslate"><span class="pre">app.config_from_object()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">config_from_object</span><span class="p">(</span><span class="s1">&#39;celeryconfig&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This module is often called &quot;<code class="docutils literal notranslate"><span class="pre">celeryconfig</span></code>&quot;, but you can use any
+module name.</p>
+<p>In the above case, a module named <code class="docutils literal notranslate"><span class="pre">celeryconfig.py</span></code> must be available to load from the
+current directory or on the Python path. It could look something like this:</p>
+<p><code class="file docutils literal notranslate"><span class="pre">celeryconfig.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">broker_url</span> <span class="o">=</span> <span class="s1">&#39;pyamqp://&#39;</span>
+<span class="n">result_backend</span> <span class="o">=</span> <span class="s1">&#39;rpc://&#39;</span>
+
+<span class="n">task_serializer</span> <span class="o">=</span> <span class="s1">&#39;json&#39;</span>
+<span class="n">result_serializer</span> <span class="o">=</span> <span class="s1">&#39;json&#39;</span>
+<span class="n">accept_content</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]</span>
+<span class="n">timezone</span> <span class="o">=</span> <span class="s1">&#39;Europe/Oslo&#39;</span>
+<span class="n">enable_utc</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>To verify that your configuration file works properly and doesn't
+contain any syntax errors, you can try to import it:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>celeryconfig
+</pre></div>
+</div>
+<p>For a complete reference of configuration options, see <a class="reference internal" href="../userguide/configuration.html#configuration"><span class="std std-ref">配置和默认值</span></a>.</p>
+<p>To demonstrate the power of configuration files, this is how you'd
+route a misbehaving task to a dedicated queue:</p>
+<p><code class="file docutils literal notranslate"><span class="pre">celeryconfig.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;tasks.add&#39;</span><span class="p">:</span> <span class="s1">&#39;low-priority&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Or instead of routing it you could rate limit the task
+instead, so that only 10 tasks of this type can be processed in a minute
+(10/m):</p>
+<p><code class="file docutils literal notranslate"><span class="pre">celeryconfig.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_annotations</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;tasks.add&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;rate_limit&#39;</span><span class="p">:</span> <span class="s1">&#39;10/m&#39;</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If you're using RabbitMQ or Redis as the
+broker then you can also direct the workers to set a new rate limit
+for the task at runtime:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>tasks<span class="w"> </span>control<span class="w"> </span>rate_limit<span class="w"> </span>tasks.add<span class="w"> </span><span class="m">10</span>/m
+<span class="go">worker@example.com: OK</span>
+<span class="go">    new rate limit set successfully</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="../userguide/routing.html#guide-routing"><span class="std std-ref">路由任务/Tasks</span></a> to read more about task routing,
+and the <a class="reference internal" href="../userguide/configuration.html#std-setting-task_annotations"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_annotations</span></code></a> setting for more about annotations,
+or <a class="reference internal" href="../userguide/monitoring.html#guide-monitoring"><span class="std std-ref">监控和管理指南</span></a> for more about remote control commands
+and how to monitor what your workers are doing.</p>
+</div>
+</div>
+</section>
+<section id="id8">
+<h2>进一步学习<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
+<p>Where to go from here</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">中文</label><div class="tab-content docutils container">
+<p>如果你想深入了解，应该继续阅读 <a class="reference internal" href="next-steps.html#next-steps"><span class="std std-ref">Next Steps</span></a> 教程，之后可以阅读 <a class="reference internal" href="../userguide/index.html#guide"><span class="std std-ref">User Guide</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--11-input--2" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--2">英文</label><div class="tab-content docutils container">
+<p>If you want to learn more you should continue to the
+<a class="reference internal" href="next-steps.html#next-steps"><span class="std std-ref">Next Steps</span></a> tutorial, and after that you
+can read the <a class="reference internal" href="../userguide/index.html#guide"><span class="std std-ref">User Guide</span></a>.</p>
+</div>
+</div>
+</section>
+<section id="celerytut-troubleshooting">
+<span id="id9"></span><h2>问题排查<a class="headerlink" href="#celerytut-troubleshooting" title="Link to this heading">¶</a></h2>
+<p>Troubleshooting</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">中文</label><div class="tab-content docutils container">
+<p>另外，在 <a class="reference internal" href="../faq.html#faq"><span class="std std-ref">常见问题</span></a> 中还有故障排除部分。</p>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">英文</label><div class="tab-content docutils container">
+<p>There's also a troubleshooting section in the <a class="reference internal" href="../faq.html#faq"><span class="std std-ref">常见问题</span></a>.</p>
+</div>
+</div>
+<section id="worker-permission-error">
+<h3>worker 没有开始执行: Permission Error<a class="headerlink" href="#worker-permission-error" title="Link to this heading">¶</a></h3>
+<p>Worker doesn't start: Permission Error</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--13-input--1" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--1">中文</label><div class="tab-content docutils container">
+<ul>
+<li><p>如果你使用的是 Debian、Ubuntu 或其他基于 Debian 的发行版：</p>
+<blockquote>
+<div><p>Debian 最近将 <code class="file docutils literal notranslate"><span class="pre">/dev/shm</span></code> 特殊文件重命名为 <code class="file docutils literal notranslate"><span class="pre">/run/shm</span></code>。</p>
+<p>一个简单的解决方法是创建一个符号链接：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>ln<span class="w"> </span>-s<span class="w"> </span>/run/shm<span class="w"> </span>/dev/shm
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>其他情况：</p>
+<blockquote>
+<div><p>如果你提供了 <a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-pidfile"><code class="xref std std-option docutils literal notranslate"><span class="pre">--pidfile</span></code></a>、<a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-f"><code class="xref std std-option docutils literal notranslate"><span class="pre">--logfile</span></code></a> 或 <a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">--statedb</span></code></a> 参数，那么你必须确保它们指向一个可写且可读的文件或目录，并且该目录对启动 worker 的用户是可访问的。</p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--13-input--2" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--2">英文</label><div class="tab-content docutils container">
+<ul>
+<li><p>If you're using Debian, Ubuntu or other Debian-based distributions:</p>
+<blockquote>
+<div><p>Debian recently renamed the <code class="file docutils literal notranslate"><span class="pre">/dev/shm</span></code> special file
+to <code class="file docutils literal notranslate"><span class="pre">/run/shm</span></code>.</p>
+<p>A simple workaround is to create a symbolic link:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>ln<span class="w"> </span>-s<span class="w"> </span>/run/shm<span class="w"> </span>/dev/shm
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Others:</p>
+<blockquote>
+<div><p>If you provide any of the <a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-pidfile"><code class="xref std std-option docutils literal notranslate"><span class="pre">--pidfile</span></code></a>,
+<a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-f"><code class="xref std std-option docutils literal notranslate"><span class="pre">--logfile</span></code></a> or
+<a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">--statedb</span></code></a> arguments, then you must
+make sure that they point to a file or directory that's writable and
+readable by the user starting the worker.</p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="pending">
+<h3>结果后端没有工作或者任务总是处在 <code class="docutils literal notranslate"><span class="pre">PENDING</span></code> 状态<a class="headerlink" href="#pending" title="Link to this heading">¶</a></h3>
+<p>Result backend doesn't work or tasks are always in <code class="docutils literal notranslate"><span class="pre">PENDING</span></code> state</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--14-input--1" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--1">中文</label><div class="tab-content docutils container">
+<p>所有任务默认状态为 <a class="reference internal" href="../userguide/tasks.html#std-state-PENDING"><code class="xref std std-state docutils literal notranslate"><span class="pre">PENDING</span></code></a>，因此其状态本应更准确地命名为“未知”。Celery 在发送任务时不会更新状态，任何没有历史记录的任务都被认为是待处理的（毕竟你知道任务 ID）。</p>
+<ol class="arabic">
+<li><p>确保任务没有启用 <code class="docutils literal notranslate"><span class="pre">ignore_result</span></code>。</p>
+<blockquote>
+<div><p>启用此选项会强制 worker 跳过更新状态。</p>
+</div></blockquote>
+</li>
+<li><p>确保 <a class="reference internal" href="../userguide/configuration.html#std-setting-task_ignore_result"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_ignore_result</span></code></a> 设置未启用。</p></li>
+<li><p>确保没有任何旧的 worker 仍在运行。</p>
+<blockquote>
+<div><p>很容易不小心启动多个 worker，因此请确保在启动新 worker 之前，先正确关闭旧的 worker。</p>
+<p>一个未配置为使用预期结果后端的旧 worker 可能仍在运行，并劫持了任务。</p>
+<p>可以将 <a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-pidfile"><code class="xref std std-option docutils literal notranslate"><span class="pre">--pidfile</span></code></a> 参数设置为绝对路径，以确保不会发生这种情况。</p>
+</div></blockquote>
+</li>
+<li><p>确保客户端配置了正确的后端。</p>
+<blockquote>
+<div><p>如果由于某种原因，客户端配置为使用与 worker 不同的后端，则无法接收结果。确保正确配置了后端：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">delay</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">backend</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<input class="tab-input" id="tab-set--14-input--2" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--2">英文</label><div class="tab-content docutils container">
+<p>All tasks are <a class="reference internal" href="../userguide/tasks.html#std-state-PENDING"><code class="xref std std-state docutils literal notranslate"><span class="pre">PENDING</span></code></a> by default, so the state would've been
+better named &quot;unknown&quot;. Celery doesn't update the state when a task
+is sent, and any task with no history is assumed to be pending (you know
+the task id, after all).</p>
+<ol class="arabic">
+<li><p>Make sure that the task doesn't have <code class="docutils literal notranslate"><span class="pre">ignore_result</span></code> enabled.</p>
+<blockquote>
+<div><p>Enabling this option will force the worker to skip updating
+states.</p>
+</div></blockquote>
+</li>
+<li><p>Make sure the <a class="reference internal" href="../userguide/configuration.html#std-setting-task_ignore_result"><code class="xref std std-setting docutils literal notranslate"><span class="pre">task_ignore_result</span></code></a> setting isn't enabled.</p></li>
+<li><p>Make sure that you don't have any old workers still running.</p>
+<blockquote>
+<div><p>It's easy to start multiple workers by accident, so make sure
+that the previous worker is properly shut down before you start a new one.</p>
+<p>An old worker that isn't configured with the expected result backend
+may be running and is hijacking the tasks.</p>
+<p>The <a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-pidfile"><code class="xref std std-option docutils literal notranslate"><span class="pre">--pidfile</span></code></a> argument can be set to
+an absolute path to make sure this doesn't happen.</p>
+</div></blockquote>
+</li>
+<li><p>Make sure the client is configured with the right backend.</p>
+<blockquote>
+<div><p>If, for some reason, the client is configured to use a different backend
+than the worker, you won't be able to receive the result.
+Make sure the backend is configured correctly:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">delay</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">backend</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="next-steps.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">下一步</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="backends-and-brokers/gcpubsub.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">使用 Google Pub/Sub</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2009-2023, Ask Solem &amp; contributors
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">使用 Celery 的第一步</a><ul>
+<li><a class="reference internal" href="#broker">选择 Broker</a><ul>
+<li><a class="reference internal" href="#rabbitmq">RabbitMQ</a></li>
+<li><a class="reference internal" href="#redis">Redis</a></li>
+<li><a class="reference internal" href="#id3">其他 broker</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#celerytut-installation">安装 Celery</a></li>
+<li><a class="reference internal" href="#application">Application</a></li>
+<li><a class="reference internal" href="#celery-worker">运行 Celery Worker 服务</a></li>
+<li><a class="reference internal" href="#celerytut-calling">调用任务</a></li>
+<li><a class="reference internal" href="#celerytut-keeping-results">保存结果</a></li>
+<li><a class="reference internal" href="#celerytut-configuration">Celery 配置</a></li>
+<li><a class="reference internal" href="#id8">进一步学习</a></li>
+<li><a class="reference internal" href="#celerytut-troubleshooting">问题排查</a><ul>
+<li><a class="reference internal" href="#worker-permission-error">worker 没有开始执行: Permission Error</a></li>
+<li><a class="reference internal" href="#pending">结果后端没有工作或者任务总是处在 <code class="docutils literal notranslate"><span class="pre">PENDING</span></code> 状态</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=8156d91f"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=5eb1bb1e"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    </body>
+</html>

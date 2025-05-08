@@ -1,0 +1,1505 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="路由任务/Tasks" href="routing.html" /><link rel="prev" title="守护进程" href="daemonizing.html" />
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>周期性任务/Tasks - Celery 5.5.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=3ee1c6c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/my.css?v=112ca36d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Celery 5.5.1 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/celery_512_1.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Celery 5.5.1 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../copyright.html">版权</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/index.html">快速开始</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 快速开始</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/introduction.html">Celery 简介</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting-started/backends-and-brokers/index.html">Backends 和 Brokers</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Backends 和 Brokers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/rabbitmq.html">使用 RabbitMQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/redis.html">使用 Redis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/sqs.html">使用 Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/kafka.html">使用 Kafka</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/backends-and-brokers/gcpubsub.html">使用 Google Pub/Sub</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/first-steps-with-celery.html">使用 Celery 的第一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/next-steps.html">下一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/resources.html">资源</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">用户指南</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 用户指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="application.html">应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tasks.html">任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calling.html">调用任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="canvas.html">Canvas：设计工作流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workers.html">Workers 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="daemonizing.html">守护进程</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">周期性任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routing.html">路由任务/Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html">监控和管理指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html">优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">调试</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concurrency/index.html">并发</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 并发</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="concurrency/eventlet.html">Eventlet 并发</a></li>
+<li class="toctree-l3"><a class="reference internal" href="concurrency/gevent.html">gevent 并发</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="signals.html">信号</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">使用 Celery 进行测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extending.html">扩展 和 Bootsteps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">配置和默认值</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx.html">使用 Sphinx 文档化任务</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../django/index.html">Django</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Django</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../django/first-steps-with-django.html">使用 Django 的第一步</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">社区资源</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/task-cookbook.html">Task Cookbook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">更改历史</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">API 参考</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of API 参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cli.html">命令行接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">celery</span></code> --- Distributed processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html">Proxies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.task.html"><code class="docutils literal notranslate"><span class="pre">celery.app.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html">AMQP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.amqp.html#queues">Queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.defaults.html"><code class="docutils literal notranslate"><span class="pre">celery.app.defaults</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.control.html"><code class="docutils literal notranslate"><span class="pre">celery.app.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.registry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.registry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.app.backends</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.builtins.html"><code class="docutils literal notranslate"><span class="pre">celery.app.builtins</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.events.html"><code class="docutils literal notranslate"><span class="pre">celery.app.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.log.html"><code class="docutils literal notranslate"><span class="pre">celery.app.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.app.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.app.autoretry.html"><code class="docutils literal notranslate"><span class="pre">celery.app.autoretry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bootsteps.html"><code class="docutils literal notranslate"><span class="pre">celery.bootsteps</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.result.html"><code class="docutils literal notranslate"><span class="pre">celery.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.schedules.html"><code class="docutils literal notranslate"><span class="pre">celery.schedules</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.signals.html"><code class="docutils literal notranslate"><span class="pre">celery.signals</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.security.html"><code class="docutils literal notranslate"><span class="pre">celery.security</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.utils.debug.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.debug</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.exceptions.html"><code class="docutils literal notranslate"><span class="pre">celery.exceptions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.app.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.default.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.default</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.loaders.base.html"><code class="docutils literal notranslate"><span class="pre">celery.loaders.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html">States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#sets">Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#misc">Misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.FAILURE"><code class="docutils literal notranslate"><span class="pre">FAILURE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.PENDING"><code class="docutils literal notranslate"><span class="pre">PENDING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RECEIVED"><code class="docutils literal notranslate"><span class="pre">RECEIVED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.RETRY"><code class="docutils literal notranslate"><span class="pre">RETRY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.REVOKED"><code class="docutils literal notranslate"><span class="pre">REVOKED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.STARTED"><code class="docutils literal notranslate"><span class="pre">STARTED</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.SUCCESS"><code class="docutils literal notranslate"><span class="pre">SUCCESS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.precedence"><code class="docutils literal notranslate"><span class="pre">precedence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.states.html#celery.states.state"><code class="docutils literal notranslate"><span class="pre">state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.abortable.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.abortable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.django.task.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.django.task</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.pytest.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.pytest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.sphinx.html">celery.contrib.sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.app.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.app</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.manager.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.manager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.testing.mocks.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.testing.mocks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.contrib.rdb.html"><code class="docutils literal notranslate"><span class="pre">celery.contrib.rdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.html"><code class="docutils literal notranslate"><span class="pre">celery.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.receiver.html"><code class="docutils literal notranslate"><span class="pre">celery.events.receiver</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.dispatcher.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.event.html"><code class="docutils literal notranslate"><span class="pre">celery.events.event</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.events.state.html"><code class="docutils literal notranslate"><span class="pre">celery.events.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.apps.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.apps.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.request.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.request</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.state.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.strategy.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.strategy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.agent.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.agent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.connection.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.connection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.consumer.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.consumer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.events.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.gossip.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.gossip</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.heart.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.heart</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.mingle.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.mingle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.consumer.tasks.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.consumer.tasks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.worker.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.base.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.celery.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.celery</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.worker.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.worker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.beat.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.beat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.events.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.events</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.logtool.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.logtool</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.amqp.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.amqp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.graph</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.multi.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.multi</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.call.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.call</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.control.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.control</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.list.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.list</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.migrate.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.migrate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.purge.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.purge</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.result.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.shell.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.shell</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/celery.bin.upgrade.html"><code class="docutils literal notranslate"><span class="pre">celery.bin.upgrade</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">内部</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 内部</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../internals/guide.html">代码贡献指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/deprecation.html">Celery 弃用时间表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/worker.html">内部的 worker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/protocol.html">消息协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/app-overview.html">“大实例”重构</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/reference/index.html">内部模块参考</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 内部模块参考</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.components.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.components</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.loops.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.loops</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.heartbeat.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.heartbeat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.control.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.control</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.pidbox.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.pidbox</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.worker.autoscale.html"><code class="docutils literal notranslate"><span class="pre">celery.worker.autoscale</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.solo.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.solo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.prefork.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.prefork</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.eventlet.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.eventlet</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.gevent.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.gevent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.thread.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.thread</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.concurrency.base.html"><code class="docutils literal notranslate"><span class="pre">celery.concurrency.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.html"><code class="docutils literal notranslate"><span class="pre">celery.backends</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.base.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.base</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.asynchronous.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.asynchronous</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.azureblockblob.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.azureblockblob</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.rpc.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.rpc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cache.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.consul.html">celery.backends.consul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchdb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchdb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.mongodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.mongodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.elasticsearch.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.elasticsearch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.redis.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.redis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cassandra.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cassandra</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.couchbase.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.couchbase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.arangodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.arangodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.dynamodb.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.dynamodb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.filesystem.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.filesystem</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.cosmosdbsql.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.cosmosdbsql</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.s3.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.s3</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.gcs.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.gcs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.trace.html"><code class="docutils literal notranslate"><span class="pre">celery.app.trace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.annotations.html"><code class="docutils literal notranslate"><span class="pre">celery.app.annotations</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.app.routes.html"><code class="docutils literal notranslate"><span class="pre">celery.app.routes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.certificate.html"><code class="docutils literal notranslate"><span class="pre">celery.security.certificate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.key.html"><code class="docutils literal notranslate"><span class="pre">celery.security.key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.security.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.security.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.security.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.snapshot.html"><code class="docutils literal notranslate"><span class="pre">celery.events.snapshot</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.cursesmon.html"><code class="docutils literal notranslate"><span class="pre">celery.events.cursesmon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.events.dumper.html"><code class="docutils literal notranslate"><span class="pre">celery.events.dumper</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.models.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.models</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.backends.database.session.html"><code class="docutils literal notranslate"><span class="pre">celery.backends.database.session</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.html"><code class="docutils literal notranslate"><span class="pre">celery.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.abstract.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.abstract</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.collections.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.collections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.nodenames.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.nodenames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.deprecated.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.deprecated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.functional.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.functional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.graph.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.graph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.objects.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.term.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.term</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.time.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.time</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.iso8601.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.iso8601</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.saferepr.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.saferepr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.serialization.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.serialization</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.sysinfo.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.sysinfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.threads.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.threads</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.timer2.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.timer2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.imports.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.imports</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.log.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.log</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.text.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.utils.dispatch.signal.html"><code class="docutils literal notranslate"><span class="pre">celery.utils.dispatch.signal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery.platforms.html"><code class="docutils literal notranslate"><span class="pre">celery.platforms</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/reference/celery._state.html"><code class="docutils literal notranslate"><span class="pre">celery._state</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../history/index.html">历史</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 历史</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.5.html">What's new in Celery 5.5 (Immunity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.5.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.4.html">What's new in Celery 5.4 (Opalescent)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.3.html">What's new in Celery 5.3 (Emerald Rush)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.1.html">What's new in Celery 5.1 (Sun Harmonics)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-5.0.html">What's new in Celery 5.0 (singularity)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-5.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.4.html">What's new in Celery 4.4 (Cliffs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.4.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.3.html">What's new in Celery 4.3 (rhubarb)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.3.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.2.html">What's new in Celery 4.2 (windowlicker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.2.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.1.html">What's new in Celery 4.1 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-4.0.html">What's new in Celery 4.0 (latentcall)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-4.0.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-3.1.html">What's new in Celery 3.1 (Cipater)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-3.1.html">Change history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-3.0.html">What's new in Celery 3.0 (Chiastic Slide)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-3.0.html">Change history for Celery 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/whatsnew-2.5.html">What's new in Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.5.html">Change history for Celery 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.4.html">Change history for Celery 2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.3.html">Change history for Celery 2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.2.html">Change history for Celery 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.1.html">Change history for Celery 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-2.0.html">Change history for Celery 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/changelog-1.0.html">Change history for Celery 1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+</ul>
+
+</div>
+<!-- <iframe src="https://ghbtns.com/github-btn.html?user=celery&repo=celery&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe> -->
+<div id="donate">
+  <h5>捐赠</h5>
+  <p>请捐赠以支持这个社区项目</p>
+  <a href="https://opencollective.com/celery/donate" target="_blank">
+    <!-- <img src="https://opencollective.com/celery/donate/button@2x.png?color=blue" /> -->
+    <img src="https://opencollective.com/celery/donate/button.png?color=blue" />
+  </a>
+</div></div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/userguide/periodic-tasks.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="tasks">
+<span id="guide-beat"></span><h1>周期性任务/Tasks<a class="headerlink" href="#tasks" title="Link to this heading">¶</a></h1>
+<p>Periodic Tasks</p>
+<section id="id1">
+<h2>简介<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<p>Introduction</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p><strong class="program">celery beat</strong> 是一个调度器；它会在固定的时间间隔触发任务，
+随后由集群中可用的 worker 节点来执行这些任务。</p>
+<p>默认情况下，任务条目来源于 <a class="reference internal" href="configuration.html#std-setting-beat_schedule"><code class="xref std std-setting docutils literal notranslate"><span class="pre">beat_schedule</span></code></a> 配置项，
+但也可以使用自定义存储后端，比如将任务条目存储在 SQL 数据库中。</p>
+<p>你需要确保在任意时刻只运行一个调度器实例，否则会导致重复任务执行。
+采用集中式方式意味着调度无需同步，该服务在无需使用锁的情况下也可运行。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p><strong class="program">celery beat</strong> is a scheduler; It kicks off tasks at regular intervals,
+that are then executed by available worker nodes in the cluster.</p>
+<p>By default the entries are taken from the <a class="reference internal" href="configuration.html#std-setting-beat_schedule"><code class="xref std std-setting docutils literal notranslate"><span class="pre">beat_schedule</span></code></a> setting,
+but custom stores can also be used, like storing the entries in a SQL database.</p>
+<p>You have to ensure only a single scheduler is running for a schedule
+at a time, otherwise you'd end up with duplicate tasks. Using
+a centralized approach means the schedule doesn't have to be synchronized,
+and the service can operate without using locks.</p>
+</div>
+</div>
+</section>
+<section id="beat-timezones">
+<span id="id2"></span><h2>时区<a class="headerlink" href="#beat-timezones" title="Link to this heading">¶</a></h2>
+<p>Time Zones</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>定时任务调度默认使用 UTC 时区，
+但你可以通过 <a class="reference internal" href="configuration.html#std-setting-timezone"><code class="xref std std-setting docutils literal notranslate"><span class="pre">timezone</span></code></a> 配置项来修改所使用的时区。</p>
+<p>一个示例时区为 <cite>Europe/London</cite>：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">timezone</span> <span class="o">=</span> <span class="s1">&#39;Europe/London&#39;</span>
+</pre></div>
+</div>
+<p>该配置项必须添加到你的应用中，可以通过直接配置
+（<code class="docutils literal notranslate"><span class="pre">app.conf.timezone</span> <span class="pre">=</span> <span class="pre">'Europe/London'</span></code>），
+或在使用 <code class="docutils literal notranslate"><span class="pre">app.config_from_object</span></code> 配置模块时添加。
+参见 <a class="reference internal" href="../getting-started/first-steps-with-celery.html#celerytut-configuration"><span class="std std-ref">Celery 配置</span></a> 获取更多配置信息。</p>
+<p>默认调度器（使用 <code class="file docutils literal notranslate"><span class="pre">celerybeat-schedule</span></code> 文件存储调度信息）
+会自动检测时区变化并重置调度，
+但其他调度器可能无法做到这一点（例如 Django 的数据库调度器，见下文），
+此时你需要手动重置调度计划。</p>
+<div class="admonition-django admonition">
+<p class="admonition-title">Django 用户</p>
+<p>Celery 推荐使用并兼容 Django 1.4 引入的 <code class="docutils literal notranslate"><span class="pre">USE_TZ</span></code> 设置。</p>
+<p>对于 Django 用户，将使用 <code class="docutils literal notranslate"><span class="pre">TIME_ZONE</span></code> 配置的时区，
+你也可以单独为 Celery 指定一个自定义时区，
+使用 <a class="reference internal" href="configuration.html#std-setting-timezone"><code class="xref std std-setting docutils literal notranslate"><span class="pre">timezone</span></code></a> 配置项即可。</p>
+<p>当时区相关配置发生变化时，数据库调度器不会自动重置，
+因此你必须手动执行以下操作：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+<span class="go">&gt;&gt;&gt; from djcelery.models import PeriodicTask</span>
+<span class="go">&gt;&gt;&gt; PeriodicTask.objects.update(last_run_at=None)</span>
+</pre></div>
+</div>
+<p>Django-Celery 仅支持 Celery 4.0 及以下版本，若使用 Celery 4.0 及以上版本，请按如下方式操作：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+<span class="go">&gt;&gt;&gt; from django_celery_beat.models import PeriodicTask</span>
+<span class="go">&gt;&gt;&gt; PeriodicTask.objects.update(last_run_at=None)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>The periodic task schedules uses the UTC time zone by default,
+but you can change the time zone used using the <a class="reference internal" href="configuration.html#std-setting-timezone"><code class="xref std std-setting docutils literal notranslate"><span class="pre">timezone</span></code></a>
+setting.</p>
+<p>An example time zone could be <cite>Europe/London</cite>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">timezone</span> <span class="o">=</span> <span class="s1">&#39;Europe/London&#39;</span>
+</pre></div>
+</div>
+<p>This setting must be added to your app, either by configuring it directly
+using (<code class="docutils literal notranslate"><span class="pre">app.conf.timezone</span> <span class="pre">=</span> <span class="pre">'Europe/London'</span></code>), or by adding
+it to your configuration module if you have set one up using
+<code class="docutils literal notranslate"><span class="pre">app.config_from_object</span></code>. See <a class="reference internal" href="../getting-started/first-steps-with-celery.html#celerytut-configuration"><span class="std std-ref">Celery 配置</span></a> for
+more information about configuration options.</p>
+<p>The default scheduler (storing the schedule in the <code class="file docutils literal notranslate"><span class="pre">celerybeat-schedule</span></code>
+file) will automatically detect that the time zone has changed, and so will
+reset the schedule itself, but other schedulers may not be so smart (e.g., the
+Django database scheduler, see below) and in that case you'll have to reset the
+schedule manually.</p>
+<div class="admonition-django-users admonition">
+<p class="admonition-title">Django Users</p>
+<p>Celery recommends and is compatible with the <code class="docutils literal notranslate"><span class="pre">USE_TZ</span></code> setting introduced
+in Django 1.4.</p>
+<p>For Django users the time zone specified in the <code class="docutils literal notranslate"><span class="pre">TIME_ZONE</span></code> setting
+will be used, or you can specify a custom time zone for Celery alone
+by using the <a class="reference internal" href="configuration.html#std-setting-timezone"><code class="xref std std-setting docutils literal notranslate"><span class="pre">timezone</span></code></a> setting.</p>
+<p>The database scheduler won't reset when timezone related settings
+change, so you must do this manually:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+<span class="go">&gt;&gt;&gt; from djcelery.models import PeriodicTask</span>
+<span class="go">&gt;&gt;&gt; PeriodicTask.objects.update(last_run_at=None)</span>
+</pre></div>
+</div>
+<p>Django-Celery only supports Celery 4.0 and below, for Celery 4.0 and above, do as follow:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+<span class="go">&gt;&gt;&gt; from django_celery_beat.models import PeriodicTask</span>
+<span class="go">&gt;&gt;&gt; PeriodicTask.objects.update(last_run_at=None)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="beat-entries">
+<span id="id3"></span><h2>条目<a class="headerlink" href="#beat-entries" title="Link to this heading">¶</a></h2>
+<p>Entries</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>要实现周期性任务调用，你需要在 beat 的调度列表中添加一个条目：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">Celery</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery.schedules</span><span class="w"> </span><span class="kn">import</span> <span class="n">crontab</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">()</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">on_after_configure</span><span class="o">.</span><span class="n">connect</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_periodic_tasks</span><span class="p">(</span><span class="n">sender</span><span class="p">:</span> <span class="n">Celery</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c1"># 每 10 秒调用一次 test(&#39;hello&#39;)</span>
+    <span class="n">sender</span><span class="o">.</span><span class="n">add_periodic_task</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;add every 10&#39;</span><span class="p">)</span>
+
+    <span class="c1"># 每 30 秒调用一次 test(&#39;hello&#39;)</span>
+    <span class="c1"># 使用相同的签名并显式指定名称，以避免覆盖前一个任务</span>
+    <span class="n">sender</span><span class="o">.</span><span class="n">add_periodic_task</span><span class="p">(</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;add every 30&#39;</span><span class="p">)</span>
+
+    <span class="c1"># 每 30 秒调用一次 test(&#39;world&#39;)</span>
+    <span class="n">sender</span><span class="o">.</span><span class="n">add_periodic_task</span><span class="p">(</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;world&#39;</span><span class="p">),</span> <span class="n">expires</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># 每周一早上 7:30 执行一次</span>
+    <span class="n">sender</span><span class="o">.</span><span class="n">add_periodic_task</span><span class="p">(</span>
+        <span class="n">crontab</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">day_of_week</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">test</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;Happy Mondays!&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>在 <a class="reference internal" href="../reference/celery.html#celery.Celery.on_after_configure" title="celery.Celery.on_after_configure"><code class="xref py py-data docutils literal notranslate"><span class="pre">on_after_configure</span></code></a> 处理器中设置这些任务，
+意味着我们不会在模块级别对 app 进行求值（即使用 <code class="docutils literal notranslate"><span class="pre">test.s()</span></code> 不会在模块加载时执行）。
+注意 <a class="reference internal" href="../reference/celery.html#celery.Celery.on_after_configure" title="celery.Celery.on_after_configure"><code class="xref py py-data docutils literal notranslate"><span class="pre">on_after_configure</span></code></a> 信号是在 app 设置完成后发送的，
+因此如果你的任务定义在声明 app 的模块之外（例如在通过
+<a class="reference internal" href="../reference/celery.html#celery.Celery.autodiscover_tasks" title="celery.Celery.autodiscover_tasks"><code class="xref py py-meth docutils literal notranslate"><span class="pre">celery.Celery.autodiscover_tasks()</span></code></a> 发现的 <cite>tasks.py</cite> 文件中），
+则应使用更晚触发的信号，例如 <a class="reference internal" href="../reference/celery.html#celery.Celery.on_after_finalize" title="celery.Celery.on_after_finalize"><code class="xref py py-data docutils literal notranslate"><span class="pre">on_after_finalize</span></code></a>。</p>
+<p><a class="reference internal" href="../reference/celery.html#celery.Celery.add_periodic_task" title="celery.Celery.add_periodic_task"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_periodic_task()</span></code></a> 方法会在后台将任务条目添加到
+<a class="reference internal" href="configuration.html#std-setting-beat_schedule"><code class="xref std std-setting docutils literal notranslate"><span class="pre">beat_schedule</span></code></a> 配置项中，
+你也可以手动使用该配置项来设置周期性任务：</p>
+<p>示例：每 30 秒运行一次 <cite>tasks.add</cite> 任务。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;add-every-30-seconds&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="s1">&#39;tasks.add&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="mf">30.0</span><span class="p">,</span>
+        <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">timezone</span> <span class="o">=</span> <span class="s1">&#39;UTC&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果你不确定这些配置应放在哪，请参阅 <a class="reference internal" href="../getting-started/first-steps-with-celery.html#celerytut-configuration"><span class="std std-ref">Celery 配置</span></a>。
+你可以直接在 app 上设置这些选项，
+也可以使用独立的配置模块。</p>
+<p>如果你希望为 <cite>args</cite> 使用一个单元素的元组，请注意：
+元组的构造依赖逗号而非括号。</p>
+</div>
+<p>如果使用 <a class="reference external" href="https://docs.python.org/dev/library/datetime.html#datetime.timedelta" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a> 作为调度方式，
+那么任务会每隔 30 秒被发送一次（第一次发送发生在 <cite>celery beat</cite> 启动后的 30 秒，
+之后每次都在上一次运行后的 30 秒）。</p>
+<p>也可以使用类 Crontab 的调度方式，详见 <a class="reference internal" href="#crontab-schedules"><span class="std std-ref">Crontab 调度</span></a> 一节。</p>
+<p>如同 <strong class="command">cron</strong> 一样，如果第一个任务尚未完成，后一个任务就会触发，则会出现任务重叠问题。
+如果你担心这种情况发生，应使用锁机制确保同一时间只运行一个实例（参考 <a class="reference internal" href="../tutorials/task-cookbook.html#cookbook-task-serial"><span class="std std-ref">确保每次只执行一个任务</span></a> ）。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>To call a task periodically you have to add an entry to the
+beat schedule list.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">Celery</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery.schedules</span><span class="w"> </span><span class="kn">import</span> <span class="n">crontab</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">()</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">on_after_configure</span><span class="o">.</span><span class="n">connect</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_periodic_tasks</span><span class="p">(</span><span class="n">sender</span><span class="p">:</span> <span class="n">Celery</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c1"># Calls test(&#39;hello&#39;) every 10 seconds.</span>
+    <span class="n">sender</span><span class="o">.</span><span class="n">add_periodic_task</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;add every 10&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Calls test(&#39;hello&#39;) every 30 seconds.</span>
+    <span class="c1"># It uses the same signature of previous task, an explicit name is</span>
+    <span class="c1"># defined to avoid this task replacing the previous one defined.</span>
+    <span class="n">sender</span><span class="o">.</span><span class="n">add_periodic_task</span><span class="p">(</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;add every 30&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Calls test(&#39;world&#39;) every 30 seconds</span>
+    <span class="n">sender</span><span class="o">.</span><span class="n">add_periodic_task</span><span class="p">(</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;world&#39;</span><span class="p">),</span> <span class="n">expires</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># Executes every Monday morning at 7:30 a.m.</span>
+    <span class="n">sender</span><span class="o">.</span><span class="n">add_periodic_task</span><span class="p">(</span>
+        <span class="n">crontab</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">day_of_week</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">test</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;Happy Mondays!&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Setting these up from within the <a class="reference internal" href="../reference/celery.html#celery.Celery.on_after_configure" title="celery.Celery.on_after_configure"><code class="xref py py-data docutils literal notranslate"><span class="pre">on_after_configure</span></code></a> handler means
+that we'll not evaluate the app at module level when using <code class="docutils literal notranslate"><span class="pre">test.s()</span></code>. Note that
+<a class="reference internal" href="../reference/celery.html#celery.Celery.on_after_configure" title="celery.Celery.on_after_configure"><code class="xref py py-data docutils literal notranslate"><span class="pre">on_after_configure</span></code></a> is sent after the app is set up, so tasks outside the
+module where the app is declared (e.g. in a <cite>tasks.py</cite> file located by
+<a class="reference internal" href="../reference/celery.html#celery.Celery.autodiscover_tasks" title="celery.Celery.autodiscover_tasks"><code class="xref py py-meth docutils literal notranslate"><span class="pre">celery.Celery.autodiscover_tasks()</span></code></a>) must use a later signal, such as
+<a class="reference internal" href="../reference/celery.html#celery.Celery.on_after_finalize" title="celery.Celery.on_after_finalize"><code class="xref py py-data docutils literal notranslate"><span class="pre">on_after_finalize</span></code></a>.</p>
+<p>The <a class="reference internal" href="../reference/celery.html#celery.Celery.add_periodic_task" title="celery.Celery.add_periodic_task"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_periodic_task()</span></code></a> function will add the entry to the
+<a class="reference internal" href="configuration.html#std-setting-beat_schedule"><code class="xref std std-setting docutils literal notranslate"><span class="pre">beat_schedule</span></code></a> setting behind the scenes, and the same setting
+can also be used to set up periodic tasks manually:</p>
+<p>Example: Run the <cite>tasks.add</cite> task every 30 seconds.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;add-every-30-seconds&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="s1">&#39;tasks.add&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="mf">30.0</span><span class="p">,</span>
+        <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">timezone</span> <span class="o">=</span> <span class="s1">&#39;UTC&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>If you're wondering where these settings should go then
+please see <a class="reference internal" href="../getting-started/first-steps-with-celery.html#celerytut-configuration"><span class="std std-ref">Celery 配置</span></a>. You can either
+set these options on your app directly or you can keep
+a separate module for configuration.</p>
+<p>If you want to use a single item tuple for <cite>args</cite>, don't forget
+that the constructor is a comma, and not a pair of parentheses.</p>
+</div>
+<p>Using a <a class="reference external" href="https://docs.python.org/dev/library/datetime.html#datetime.timedelta" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a> for the schedule means the task will
+be sent in 30 second intervals (the first task will be sent 30 seconds
+after <cite>celery beat</cite> starts, and then every 30 seconds
+after the last run).</p>
+<p>A Crontab like schedule also exists, see the section on <a class="reference internal" href="#crontab-schedules">Crontab schedules</a>.</p>
+<p>Like with <strong class="command">cron</strong>, the tasks may overlap if the first task doesn't complete
+before the next. If that's a concern you should use a locking
+strategy to ensure only one instance can run at a time (see for example
+<a class="reference internal" href="../tutorials/task-cookbook.html#cookbook-task-serial"><span class="std std-ref">确保每次只执行一个任务</span></a>).</p>
+</div>
+</div>
+<section id="beat-entry-fields">
+<span id="id4"></span><h3>可用字段<a class="headerlink" href="#beat-entry-fields" title="Link to this heading">¶</a></h3>
+<p>Available Fields</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<ul>
+<li><p><cite>task</cite></p>
+<p>要执行的任务名称。</p>
+<p>有关任务名称的说明，请参阅用户指南中的 <a class="reference internal" href="tasks.html#task-names"><span class="std std-ref">名称</span></a> 部分。
+请注意，这不是任务的导入路径，尽管默认的命名模式看起来类似于导入路径。</p>
+</li>
+<li><p><cite>schedule</cite></p>
+<p>执行频率。</p>
+<p>可以是一个整数（表示秒数）、一个 <a class="reference external" href="https://docs.python.org/dev/library/datetime.html#datetime.timedelta" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a> 对象，
+或一个 <a class="reference internal" href="../reference/celery.schedules.html#celery.schedules.crontab" title="celery.schedules.crontab"><code class="xref py py-class docutils literal notranslate"><span class="pre">crontab</span></code></a> 对象。
+你也可以通过扩展 <a class="reference internal" href="../reference/celery.schedules.html#celery.schedules.schedule" title="celery.schedules.schedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">schedule</span></code></a> 接口定义自定义的调度类型。</p>
+</li>
+<li><p><cite>args</cite></p>
+<p>位置参数（<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#list" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> 或 <a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#tuple" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> 类型）。</p>
+</li>
+<li><p><cite>kwargs</cite></p>
+<p>关键字参数（<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#dict" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> 类型）。</p>
+</li>
+<li><p><cite>options</cite></p>
+<p>执行选项（<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#dict" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> 类型）。</p>
+<p>可以是任何被 <a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.apply_async" title="celery.app.task.Task.apply_async"><code class="xref py py-meth docutils literal notranslate"><span class="pre">apply_async()</span></code></a> 支持的参数——
+比如 <cite>exchange</cite>、<cite>routing_key</cite>、<cite>expires</cite> 等。</p>
+</li>
+<li><p><cite>relative</cite></p>
+<p>如果 <cite>relative</cite> 为 true，则 <a class="reference external" href="https://docs.python.org/dev/library/datetime.html#datetime.timedelta" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a> 类型的调度将以“按时钟”的方式执行。
+这意味着调度周期将会被四舍五入为最接近的秒、分钟、小时或天，
+具体取决于 <a class="reference external" href="https://docs.python.org/dev/library/datetime.html#datetime.timedelta" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a> 所表示的周期。</p>
+<p>默认情况下，<cite>relative</cite> 为 false，调度不会被四舍五入，
+而是相对于 <strong class="program">celery beat</strong> 启动时的时间点来计算。</p>
+</li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<ul>
+<li><p><cite>task</cite></p>
+<p>The name of the task to execute.</p>
+<p>Task names are described in the <a class="reference internal" href="tasks.html#task-names"><span class="std std-ref">名称</span></a> section of the User Guide.
+Note that this is not the import path of the task, even though the default
+naming pattern is built like it is.</p>
+</li>
+<li><p><cite>schedule</cite></p>
+<p>The frequency of execution.</p>
+<p>This can be the number of seconds as an integer, a
+<a class="reference external" href="https://docs.python.org/dev/library/datetime.html#datetime.timedelta" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a>, or a <a class="reference internal" href="../reference/celery.schedules.html#celery.schedules.crontab" title="celery.schedules.crontab"><code class="xref py py-class docutils literal notranslate"><span class="pre">crontab</span></code></a>.
+You can also define your own custom schedule types, by extending the
+interface of <a class="reference internal" href="../reference/celery.schedules.html#celery.schedules.schedule" title="celery.schedules.schedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">schedule</span></code></a>.</p>
+</li>
+<li><p><cite>args</cite></p>
+<p>Positional arguments (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#list" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> or <a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#tuple" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>).</p>
+</li>
+<li><p><cite>kwargs</cite></p>
+<p>Keyword arguments (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#dict" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>).</p>
+</li>
+<li><p><cite>options</cite></p>
+<p>Execution options (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#dict" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>).</p>
+<p>This can be any argument supported by
+<a class="reference internal" href="../reference/celery.app.task.html#celery.app.task.Task.apply_async" title="celery.app.task.Task.apply_async"><code class="xref py py-meth docutils literal notranslate"><span class="pre">apply_async()</span></code></a> --
+<cite>exchange</cite>, <cite>routing_key</cite>, <cite>expires</cite>, and so on.</p>
+</li>
+<li><p><cite>relative</cite></p>
+<p>If <cite>relative</cite> is true <a class="reference external" href="https://docs.python.org/dev/library/datetime.html#datetime.timedelta" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a> schedules are scheduled
+&quot;by the clock.&quot; This means the frequency is rounded to the nearest
+second, minute, hour or day depending on the period of the
+<a class="reference external" href="https://docs.python.org/dev/library/datetime.html#datetime.timedelta" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a>.</p>
+<p>By default <cite>relative</cite> is false, the frequency isn't rounded and will be
+relative to the time when <strong class="program">celery beat</strong> was started.</p>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="crontab">
+<span id="crontab-schedules"></span><span id="beat-crontab"></span><h2>Crontab 调度<a class="headerlink" href="#crontab" title="Link to this heading">¶</a></h2>
+<p>Crontab schedules</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>如果你希望对任务的执行时间有更精细的控制，例如特定的时间或星期几，
+你可以使用 <a class="reference internal" href="../reference/celery.schedules.html#celery.schedules.crontab" title="celery.schedules.crontab"><code class="xref py py-class docutils literal notranslate"><span class="pre">crontab</span></code></a> 类型的调度：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">celery.schedules</span><span class="w"> </span><span class="kn">import</span> <span class="n">crontab</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># 每周一早上 7:30 执行一次。</span>
+    <span class="s1">&#39;add-every-monday-morning&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="s1">&#39;tasks.add&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="n">crontab</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">day_of_week</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>这些 Crontab 表达式的语法非常灵活。</p>
+<p>一些示例：</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>示例</strong></p></td>
+<td><p><strong>含义</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab()</span></code></p></td>
+<td><p>每分钟执行一次.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute=0,</span> <span class="pre">hour=0)</span></code></p></td>
+<td><p>每天午夜 12 点执行.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute=0,</span> <span class="pre">hour='*/3')</span></code></p></td>
+<td><p>每三小时执行一次: 午夜, 3am, 6am, 9am, 中午, 3pm, 6pm, 9pm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute=0,hour='0,3,6,9,12,15,18,21')</span></code></p></td>
+<td><p>同上.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute='*/15')</span></code></p></td>
+<td><p>每 15 分钟执行一次。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(day_of_week='sunday')</span></code></p></td>
+<td><p>每周日每分钟执行一次（注意频率！）。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute='*',</span> <span class="pre">hour='*',</span> <span class="pre">day_of_week='sun')</span></code></p></td>
+<td><p>同上。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute='*/10',</span> <span class="pre">hour='3,17,22',</span> <span class="pre">day_of_week='thu,fri')</span></code></p></td>
+<td><p>每十分钟执行一次，但仅在以下时段： 凌晨 3-4 点、下午 5-6 点和晚上 10-11 点，并且仅限于周四和周五。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute=0,</span> <span class="pre">hour='*/2,*/3')</span></code></p></td>
+<td><p>每个偶数小时执行一次，以及每个能被 3 整除的小时执行一次。也就是说，除以下时刻外均执行：1am、5am、7am、11am、1pm、5pm、7pm、11pm。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute=0,</span> <span class="pre">hour='*/5')</span></code></p></td>
+<td><p>每个能被 5 整除的小时执行一次。即会在下午 3 点（即 24 小时制的 15 点）触发，而不是下午 5 点。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute=0,</span> <span class="pre">hour='*/3,8-17')</span></code></p></td>
+<td><p>每个能被 3 整除的小时，以及每天的办公时段（早上 8 点至下午 5 点）都执行一次。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(0,</span> <span class="pre">0,</span> <span class="pre">day_of_month='2')</span></code></p></td>
+<td><p>每月的第 2 天执行一次。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(0,</span> <span class="pre">0,</span> <span class="pre">day_of_month='2-30/2')</span></code></p></td>
+<td><p>每个月的所有偶数日执行一次。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(0,</span> <span class="pre">0,</span> <span class="pre">day_of_month='1-7,15-21')</span></code></p></td>
+<td><p>每月的第 1 周和第 3 周执行一次。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(0,</span> <span class="pre">0,</span> <span class="pre">day_of_month='11',</span> <span class="pre">month_of_year='5')</span></code></p></td>
+<td><p>每年 5 月 11 日执行一次。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(0,</span> <span class="pre">0,</span> <span class="pre">month_of_year='*/3')</span></code></p></td>
+<td><p>每个季度的第一个月每天执行一次。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>更多信息请参见 <a class="reference internal" href="../reference/celery.schedules.html#celery.schedules.crontab" title="celery.schedules.crontab"><code class="xref py py-class docutils literal notranslate"><span class="pre">celery.schedules.crontab</span></code></a> 的文档。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>If you want more control over when the task is executed, for
+example, a particular time of day or day of the week, you can use
+the <a class="reference internal" href="../reference/celery.schedules.html#celery.schedules.crontab" title="celery.schedules.crontab"><code class="xref py py-class docutils literal notranslate"><span class="pre">crontab</span></code></a> schedule type:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">celery.schedules</span><span class="w"> </span><span class="kn">import</span> <span class="n">crontab</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># Executes every Monday morning at 7:30 a.m.</span>
+    <span class="s1">&#39;add-every-monday-morning&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="s1">&#39;tasks.add&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="n">crontab</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">day_of_week</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The syntax of these Crontab expressions are very flexible.</p>
+<p>Some examples:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>Example</strong></p></td>
+<td><p><strong>Meaning</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab()</span></code></p></td>
+<td><p>Execute every minute.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute=0,</span> <span class="pre">hour=0)</span></code></p></td>
+<td><p>Execute daily at midnight.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute=0,</span> <span class="pre">hour='*/3')</span></code></p></td>
+<td><p>Execute every three hours:
+midnight, 3am, 6am, 9am,
+noon, 3pm, 6pm, 9pm.</p></td>
+</tr>
+<tr class="row-odd"><td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">crontab(minute=0,</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">hour='0,3,6,9,12,15,18,21')</span></code></p>
+</dd>
+</dl>
+</td>
+<td><p>Same as previous.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute='*/15')</span></code></p></td>
+<td><p>Execute every 15 minutes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(day_of_week='sunday')</span></code></p></td>
+<td><p>Execute every minute (!) at Sundays.</p></td>
+</tr>
+<tr class="row-even"><td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">crontab(minute='*',</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">hour='*',</span></code>
+<code class="docutils literal notranslate"><span class="pre">day_of_week='sun')</span></code></p>
+</dd>
+</dl>
+</td>
+<td><p>Same as previous.</p></td>
+</tr>
+<tr class="row-odd"><td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">crontab(minute='*/10',</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">hour='3,17,22',</span></code>
+<code class="docutils literal notranslate"><span class="pre">day_of_week='thu,fri')</span></code></p>
+</dd>
+</dl>
+</td>
+<td><p>Execute every ten minutes, but only
+between 3-4 am, 5-6 pm, and 10-11 pm on
+Thursdays or Fridays.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute=0,</span> <span class="pre">hour='*/2,*/3')</span></code></p></td>
+<td><p>Execute every even hour, and every hour
+divisible by three. This means:
+at every hour <em>except</em>: 1am,
+5am, 7am, 11am, 1pm, 5pm, 7pm,
+11pm</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute=0,</span> <span class="pre">hour='*/5')</span></code></p></td>
+<td><p>Execute hour divisible by 5. This means
+that it is triggered at 3pm, not 5pm
+(since 3pm equals the 24-hour clock
+value of &quot;15&quot;, which is divisible by 5).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(minute=0,</span> <span class="pre">hour='*/3,8-17')</span></code></p></td>
+<td><p>Execute every hour divisible by 3, and
+every hour during office hours (8am-5pm).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crontab(0,</span> <span class="pre">0,</span> <span class="pre">day_of_month='2')</span></code></p></td>
+<td><p>Execute on the second day of every month.</p></td>
+</tr>
+<tr class="row-even"><td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">crontab(0,</span> <span class="pre">0,</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">day_of_month='2-30/2')</span></code></p>
+</dd>
+</dl>
+</td>
+<td><p>Execute on every even numbered day.</p></td>
+</tr>
+<tr class="row-odd"><td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">crontab(0,</span> <span class="pre">0,</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">day_of_month='1-7,15-21')</span></code></p>
+</dd>
+</dl>
+</td>
+<td><p>Execute on the first and third weeks of
+the month.</p></td>
+</tr>
+<tr class="row-even"><td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">crontab(0,</span> <span class="pre">0,</span> <span class="pre">day_of_month='11',</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">month_of_year='5')</span></code></p>
+</dd>
+</dl>
+</td>
+<td><p>Execute on the eleventh of May every year.</p></td>
+</tr>
+<tr class="row-odd"><td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">crontab(0,</span> <span class="pre">0,</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">month_of_year='*/3')</span></code></p>
+</dd>
+</dl>
+</td>
+<td><p>Execute every day on the first month
+of every quarter.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>See <a class="reference internal" href="../reference/celery.schedules.html#celery.schedules.crontab" title="celery.schedules.crontab"><code class="xref py py-class docutils literal notranslate"><span class="pre">celery.schedules.crontab</span></code></a> for more documentation.</p>
+</div>
+</div>
+</section>
+<section id="solar">
+<span id="beat-solar"></span><h2>Solar 调度<a class="headerlink" href="#solar" title="Link to this heading">¶</a></h2>
+<p>Solar schedules</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>如果你有一个任务需要根据日出、日落、黎明或黄昏时间执行，可以使用
+<a class="reference internal" href="../reference/celery.schedules.html#celery.schedules.solar" title="celery.schedules.solar"><code class="xref py py-class docutils literal notranslate"><span class="pre">solar</span></code></a> 调度类型：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">celery.schedules</span><span class="w"> </span><span class="kn">import</span> <span class="n">solar</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># 在墨尔本日落时执行</span>
+    <span class="s1">&#39;add-at-melbourne-sunset&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="s1">&#39;tasks.add&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="n">solar</span><span class="p">(</span><span class="s1">&#39;sunset&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">37.81753</span><span class="p">,</span> <span class="mf">144.96715</span><span class="p">),</span>
+        <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>该调用的参数格式为：<code class="docutils literal notranslate"><span class="pre">solar(event,</span> <span class="pre">latitude,</span> <span class="pre">longitude)</span></code></p>
+<p>请确保纬度和经度的正负号使用正确：</p>
+<div class="table-wrapper docutils container" id="id7">
+<table class="docutils align-default" id="id7">
+<caption><span class="caption-text">纬度和经度符号说明</span><a class="headerlink" href="#id7" title="Link to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>符号</strong></p></th>
+<th class="head"><p><strong>参数</strong></p></th>
+<th class="head"><p><strong>含义</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">+</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">latitude</span></code></p></td>
+<td><p>北纬</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">latitude</span></code></p></td>
+<td><p>南纬</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">+</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">longitude</span></code></p></td>
+<td><p>东经</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">longitude</span></code></p></td>
+<td><p>西经</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>可用的事件类型如下：</p>
+<div class="table-wrapper docutils container" id="id8">
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-text">可用太阳事件类型</span><a class="headerlink" href="#id8" title="Link to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>事件</strong></p></th>
+<th class="head"><p><strong>含义</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dawn_astronomical</span></code></p></td>
+<td><p>在天空不再完全黑暗的那一刻执行，即太阳位于地平线下 18 度时。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dawn_nautical</span></code></p></td>
+<td><p>当有足够阳光以辨认地平线和一些物体时执行，形式上为太阳位于地平线下 12 度。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dawn_civil</span></code></p></td>
+<td><p>有足够光线让人辨别物体、可以开始户外活动时执行，形式上为太阳位于地平线下 6 度。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sunrise</span></code></p></td>
+<td><p>太阳上缘出现在东方地平线上的那一刻执行。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">solar_noon</span></code></p></td>
+<td><p>太阳当天在天空中最高点时执行。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sunset</span></code></p></td>
+<td><p>太阳下缘落入西方地平线下的那一刻执行。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dusk_civil</span></code></p></td>
+<td><p>民用暮光结束时执行，此时仍可辨别物体，可见部分星体，形式上为太阳位于地平线下 6 度。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dusk_nautical</span></code></p></td>
+<td><p>太阳位于地平线下 12 度时执行，此时不可辨认物体，肉眼无法看见地平线。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dusk_astronomical</span></code></p></td>
+<td><p>天空完全变暗的那一刻执行，形式上为太阳位于地平线下 18 度。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>所有太阳事件均使用 UTC 进行计算，因此不会受到你所在时区的影响。</p>
+<p>在极地地区，太阳可能不会每天升起或落下。调度器能够处理这类情况（例如，若当天没有日出事件，则不会运行该事件）。
+唯一的例外是 <code class="docutils literal notranslate"><span class="pre">solar_noon</span></code>，它正式定义为太阳过中天（穿越天球子午线）时的时刻，即便太阳在地平线以下也会每日发生。</p>
+<p>暮光（twilight）被定义为黎明与日出之间、以及日落与黄昏之间的时间段。
+你可以根据“暮光”时间调度事件，取决于你选择的暮光类型（民用、航海、天文）以及你希望事件在暮光的开始或结束执行，
+可使用上面列表中的相应事件类型。</p>
+<p>参见 <a class="reference internal" href="../reference/celery.schedules.html#celery.schedules.solar" title="celery.schedules.solar"><code class="xref py py-class docutils literal notranslate"><span class="pre">celery.schedules.solar</span></code></a> 获取更多文档信息。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>If you have a task that should be executed according to sunrise,
+sunset, dawn or dusk, you can use the
+<a class="reference internal" href="../reference/celery.schedules.html#celery.schedules.solar" title="celery.schedules.solar"><code class="xref py py-class docutils literal notranslate"><span class="pre">solar</span></code></a> schedule type:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">celery.schedules</span><span class="w"> </span><span class="kn">import</span> <span class="n">solar</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># Executes at sunset in Melbourne</span>
+    <span class="s1">&#39;add-at-melbourne-sunset&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="s1">&#39;tasks.add&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="n">solar</span><span class="p">(</span><span class="s1">&#39;sunset&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">37.81753</span><span class="p">,</span> <span class="mf">144.96715</span><span class="p">),</span>
+        <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The arguments are simply: <code class="docutils literal notranslate"><span class="pre">solar(event,</span> <span class="pre">latitude,</span> <span class="pre">longitude)</span></code></p>
+<p>Be sure to use the correct sign for latitude and longitude:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>Sign</strong></p></td>
+<td><p><strong>Argument</strong></p></td>
+<td><p><strong>Meaning</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">+</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">latitude</span></code></p></td>
+<td><p>North</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">latitude</span></code></p></td>
+<td><p>South</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">+</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">longitude</span></code></p></td>
+<td><p>East</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">longitude</span></code></p></td>
+<td><p>West</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Possible event types are:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>Event</strong></p></td>
+<td><p><strong>Meaning</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dawn_astronomical</span></code></p></td>
+<td><p>Execute at the moment after which the sky
+is no longer completely dark. This is when
+the sun is 18 degrees below the horizon.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dawn_nautical</span></code></p></td>
+<td><p>Execute when there's enough sunlight for
+the horizon and some objects to be
+distinguishable; formally, when the sun is
+12 degrees below the horizon.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dawn_civil</span></code></p></td>
+<td><p>Execute when there's enough light for
+objects to be distinguishable so that
+outdoor activities can commence;
+formally, when the Sun is 6 degrees below
+the horizon.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sunrise</span></code></p></td>
+<td><p>Execute when the upper edge of the sun
+appears over the eastern horizon in the
+morning.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">solar_noon</span></code></p></td>
+<td><p>Execute when the sun is highest above the
+horizon on that day.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sunset</span></code></p></td>
+<td><p>Execute when the trailing edge of the sun
+disappears over the western horizon in the
+evening.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dusk_civil</span></code></p></td>
+<td><p>Execute at the end of civil twilight, when
+objects are still distinguishable and some
+stars and planets are visible. Formally,
+when the sun is 6 degrees below the
+horizon.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dusk_nautical</span></code></p></td>
+<td><p>Execute when the sun is 12 degrees below
+the horizon. Objects are no longer
+distinguishable, and the horizon is no
+longer visible to the naked eye.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dusk_astronomical</span></code></p></td>
+<td><p>Execute at the moment after which the sky
+becomes completely dark; formally, when
+the sun is 18 degrees below the horizon.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>All solar events are calculated using UTC, and are therefore
+unaffected by your timezone setting.</p>
+<p>In polar regions, the sun may not rise or set every day. The scheduler
+is able to handle these cases (i.e., a <code class="docutils literal notranslate"><span class="pre">sunrise</span></code> event won't run on a day
+when the sun doesn't rise). The one exception is <code class="docutils literal notranslate"><span class="pre">solar_noon</span></code>, which is
+formally defined as the moment the sun transits the celestial meridian,
+and will occur every day even if the sun is below the horizon.</p>
+<p>Twilight is defined as the period between dawn and sunrise; and between
+sunset and dusk. You can schedule an event according to &quot;twilight&quot;
+depending on your definition of twilight (civil, nautical, or astronomical),
+and whether you want the event to take place at the beginning or end
+of twilight, using the appropriate event from the list above.</p>
+<p>See <a class="reference internal" href="../reference/celery.schedules.html#celery.schedules.solar" title="celery.schedules.solar"><code class="xref py py-class docutils literal notranslate"><span class="pre">celery.schedules.solar</span></code></a> for more documentation.</p>
+</div>
+</div>
+</section>
+<section id="beat-starting">
+<span id="id5"></span><h2>启动调度程序<a class="headerlink" href="#beat-starting" title="Link to this heading">¶</a></h2>
+<p>Starting the Scheduler</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>要启动 <strong class="program">celery beat</strong> 服务：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>beat
+</pre></div>
+</div>
+<p>你也可以通过启用 worker 的 <a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-B"><code class="xref std std-option docutils literal notranslate"><span class="pre">-B</span></code></a> 选项将 <cite>beat</cite> 嵌入到 worker 中。
+这在你只运行一个 worker 节点时较为方便，但由于不是常规用法，不推荐在生产环境中使用：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-B
+</pre></div>
+</div>
+<p>Beat 需要在本地数据库文件中存储任务的最后运行时间（默认文件名为 <cite>celerybeat-schedule</cite>），
+因此需要当前目录具有写权限，或者你可以为该文件指定一个自定义路径：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>beat<span class="w"> </span>-s<span class="w"> </span>/home/celery/var/run/celerybeat-schedule
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如需将 beat 守护化运行，请参阅 <a class="reference internal" href="daemonizing.html#daemonizing"><span class="std std-ref">守护进程</span></a>。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>To start the <strong class="program">celery beat</strong> service:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>beat
+</pre></div>
+</div>
+<p>You can also embed <cite>beat</cite> inside the worker by enabling the
+workers <a class="reference internal" href="../reference/cli.html#cmdoption-celery-worker-B"><code class="xref std std-option docutils literal notranslate"><span class="pre">-B</span></code></a> option, this is convenient if you'll
+never run more than one worker node, but it's not commonly used and for that
+reason isn't recommended for production use:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>worker<span class="w"> </span>-B
+</pre></div>
+</div>
+<p>Beat needs to store the last run times of the tasks in a local database
+file (named <cite>celerybeat-schedule</cite> by default), so it needs access to
+write in the current directory, or alternatively you can specify a custom
+location for this file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>beat<span class="w"> </span>-s<span class="w"> </span>/home/celery/var/run/celerybeat-schedule
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>To daemonize beat see <a class="reference internal" href="daemonizing.html#daemonizing"><span class="std std-ref">守护进程</span></a>.</p>
+</div>
+</div>
+</div>
+<section id="beat-custom-schedulers">
+<span id="id6"></span><h3>使用自定义调度程序类<a class="headerlink" href="#beat-custom-schedulers" title="Link to this heading">¶</a></h3>
+<p>Using custom scheduler classes</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>你可以在命令行上指定自定义调度器类（使用 <a class="reference internal" href="../reference/cli.html#cmdoption-celery-beat-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">--scheduler</span></code></a> 参数）。</p>
+<p>默认调度器为 <a class="reference internal" href="../reference/celery.beat.html#celery.beat.PersistentScheduler" title="celery.beat.PersistentScheduler"><code class="xref py py-class docutils literal notranslate"><span class="pre">celery.beat.PersistentScheduler</span></code></a>，它会使用本地 <a class="reference external" href="https://docs.python.org/dev/library/shelve.html#module-shelve" title="（在 Python v3.15）"><code class="xref py py-mod docutils literal notranslate"><span class="pre">shelve</span></code></a> 数据库文件记录任务的最后运行时间。</p>
+<p>此外还有 <a class="extlink-pypi reference external" href="https://pypi.org/project/django-celery-beat/">https://pypi.org/project/django-celery-beat/</a> 扩展，它会将调度数据存储在 Django 数据库中，并提供便捷的管理界面以在运行时管理定期任务。</p>
+<p>要安装并使用该扩展：</p>
+<ol class="arabic">
+<li><p>使用 <strong class="command">pip</strong> 安装该软件包：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>django-celery-beat
+</pre></div>
+</div>
+</li>
+<li><p>在你的 Django 项目的 <code class="file docutils literal notranslate"><span class="pre">settings.py</span></code> 文件中将 <code class="docutils literal notranslate"><span class="pre">django_celery_beat</span></code> 添加至 <code class="docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="s1">&#39;django_celery_beat&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>注意：模块名中使用的是下划线（underscore），不是破折号。</p>
+</li>
+<li><p>应用 Django 数据库迁移，以创建所需的数据表：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+</pre></div>
+</div>
+</li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">django_celery_beat.schedulers:DatabaseScheduler</span></code> 启动 <strong class="program">celery beat</strong> 服务：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>beat<span class="w"> </span>-l<span class="w"> </span>INFO<span class="w"> </span>--scheduler<span class="w"> </span>django_celery_beat.schedulers:DatabaseScheduler
+</pre></div>
+</div>
+<p>注意：你也可以将此调度器类配置为 <a class="reference internal" href="configuration.html#std-setting-beat_scheduler"><code class="xref std std-setting docutils literal notranslate"><span class="pre">beat_scheduler</span></code></a> 设置项。</p>
+</li>
+<li><p>访问 Django 管理界面，创建一些周期性任务。</p></li>
+</ol>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>Custom scheduler classes can be specified on the command-line (the
+<a class="reference internal" href="../reference/cli.html#cmdoption-celery-beat-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">--scheduler</span></code></a> argument).</p>
+<p>The default scheduler is the <a class="reference internal" href="../reference/celery.beat.html#celery.beat.PersistentScheduler" title="celery.beat.PersistentScheduler"><code class="xref py py-class docutils literal notranslate"><span class="pre">celery.beat.PersistentScheduler</span></code></a>,
+that simply keeps track of the last run times in a local <a class="reference external" href="https://docs.python.org/dev/library/shelve.html#module-shelve" title="（在 Python v3.15）"><code class="xref py py-mod docutils literal notranslate"><span class="pre">shelve</span></code></a>
+database file.</p>
+<p>There's also the <a class="extlink-pypi reference external" href="https://pypi.org/project/django-celery-beat/">https://pypi.org/project/django-celery-beat/</a> extension that stores the schedule
+in the Django database, and presents a convenient admin interface to manage
+periodic tasks at runtime.</p>
+<p>To install and use this extension:</p>
+<ol class="arabic">
+<li><p>Use <strong class="command">pip</strong> to install the package:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>django-celery-beat
+</pre></div>
+</div>
+</li>
+<li><p>Add the <code class="docutils literal notranslate"><span class="pre">django_celery_beat</span></code> module to <code class="docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code> in your
+Django project' <code class="file docutils literal notranslate"><span class="pre">settings.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="s1">&#39;django_celery_beat&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that there is no dash in the module name, only underscores.</p>
+</li>
+<li><p>Apply Django database migrations so that the necessary tables are created:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+</pre></div>
+</div>
+</li>
+<li><p>Start the <strong class="program">celery beat</strong> service using the <code class="docutils literal notranslate"><span class="pre">django_celery_beat.schedulers:DatabaseScheduler</span></code> scheduler:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>proj<span class="w"> </span>beat<span class="w"> </span>-l<span class="w"> </span>INFO<span class="w"> </span>--scheduler<span class="w"> </span>django_celery_beat.schedulers:DatabaseScheduler
+</pre></div>
+</div>
+<p>Note:  You may also add this as the <a class="reference internal" href="configuration.html#std-setting-beat_scheduler"><code class="xref std std-setting docutils literal notranslate"><span class="pre">beat_scheduler</span></code></a> setting directly.</p>
+</li>
+<li><p>Visit the Django-Admin interface to set up some periodic tasks.</p></li>
+</ol>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="routing.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">路由任务/Tasks</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="daemonizing.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">守护进程</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2009-2023, Ask Solem &amp; contributors
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">周期性任务/Tasks</a><ul>
+<li><a class="reference internal" href="#id1">简介</a></li>
+<li><a class="reference internal" href="#beat-timezones">时区</a></li>
+<li><a class="reference internal" href="#beat-entries">条目</a><ul>
+<li><a class="reference internal" href="#beat-entry-fields">可用字段</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#crontab">Crontab 调度</a></li>
+<li><a class="reference internal" href="#solar">Solar 调度</a></li>
+<li><a class="reference internal" href="#beat-starting">启动调度程序</a><ul>
+<li><a class="reference internal" href="#beat-custom-schedulers">使用自定义调度程序类</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=8156d91f"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=5eb1bb1e"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    </body>
+</html>
