@@ -46,7 +46,7 @@ Glossary
 
         .. tab:: 中文
 
-            任务在执行之后被 :term:`acknowledged`（无论成功与否，包括抛出错误的情况），这意味着如果机器在任务执行过程中断电，或者 worker 被杀死，该任务将被重新投递给其他 worker。
+            任务在执行之后被 :term:`acknowledged` （无论成功与否，包括抛出错误的情况），这意味着如果机器在任务执行过程中断电，或者 worker 被杀死，该任务将被重新投递给其他 worker。
 
             通过 :setting:`task_acks_late` 配置。
 
@@ -91,7 +91,7 @@ Glossary
 
         .. tab:: 中文
 
-            任务消息在 worker 内部被转换为 *请求（requests）*。请求信息也可以通过任务的 :term:`context`（即 ``task.request`` 属性）获取。
+            任务消息在 worker 内部被转换为 *请求（requests）*。请求信息也可以通过任务的 :term:`context` （即 ``task.request`` 属性）获取。
 
         .. tab:: 英文
 
